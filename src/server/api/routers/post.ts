@@ -5,6 +5,7 @@ import {
   protectedProcedure,
 } from "~/server/api/trpc";
 
+
 export const postRouter = createTRPCRouter({
   hello: publicProcedure
     .input(z.object({ text: z.string() }))
@@ -21,7 +22,34 @@ export const postRouter = createTRPCRouter({
   byId: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(({ ctx, input }) =>
-      ctx.prisma.post.findUnique({ where: { id: input.id } })
+      ctx.prisma.post.findUnique({
+        where: { id: input.id },
+        select: {
+          id: true,
+          title: true,
+          body: true,
+          updatedAt: true,
+          createdAt: true,
+          comments: {
+            select: {
+              id: true,
+              createdAt: true,
+              updatedAt: true,
+              message: true,
+              parentId: true,
+              user: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+          },
+        },
+      })
     ),
 
   getSecretMessage: protectedProcedure.query(() => {
