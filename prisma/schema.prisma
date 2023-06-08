@@ -6,8 +6,8 @@ generator client {
     previewFeatures = ["jsonProtocol"]
 }
 
-datasource db {
-    provider = "sqlite"
+datasource dev {
+    provider = "postgresql"
     // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
