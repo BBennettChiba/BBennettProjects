@@ -1,11 +1,12 @@
 import { Comment } from "src/components/Comment";
-import type { CommentsFromByIdQueryOutput } from "~/server/api/root";
+import type { CommentsFromByIdQuery as Comments } from "~/server/api/root";
 
 type Props = {
-  comments: CommentsFromByIdQueryOutput;
+  comments: Comments;
 };
 
 export function CommentsList({ comments }: Props) {
+  comments;
   return (
     <>
       {comments.map((comment) => (

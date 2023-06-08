@@ -9,6 +9,9 @@ import superjson from "superjson";
 import { CommentsList } from "src/components/CommentsList";
 import { createInnerTRPCContext } from "~/server/api/trpc";
 import { api } from "~/utils/api";
+import type {
+  CommentFromByIdQuery as Comment,
+} from "src/server/api/root";
 
 export async function getServerSideProps(
   context: GetServerSidePropsContext<{ id: string }>
@@ -37,15 +40,12 @@ export default function PostViewPage(
   const postQuery = api.post.byId.useQuery({ id });
   const { data } = postQuery;
 
-  type Comment = NonNullable<typeof data>["comments"][number];
-
   const commentsByParentId = useMemo(() => {
     if (!data?.comments) return new Map<string | null, Comment[]>();
     return data.comments.reduce((acc, comment) => {
       const key = comment.parentId;
-      acc.has(comment.parentId)
-        ? acc.get(key)!.push(comment)
-        : acc.set(key, [comment]);
+      if (acc.has(key)) acc.get(key)?.push(comment);
+      else acc.set(key, [comment]);
       return acc;
     }, new Map<string | null, Comment[]>());
   }, [data?.comments]);
@@ -58,9 +58,12 @@ export default function PostViewPage(
   return (
     <>
       <h1>{data.title}</h1>
-      <em>Created {data.createdAt.toLocaleDateString()}</em>
-      <p>{data.body}</p>
-      <CommentsList comments={commentsByParentId.get(null) || []} />
+      {/* <em>Created {data.createdAt.toLocaleDateString()}</em> */}
+      <article>{data.body}</article>
+      <h3>Comments</h3>
+      <section>
+        <CommentsList comments={commentsByParentId.get(null) || []} />
+      </section>
     </>
   );
 }

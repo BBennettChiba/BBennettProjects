@@ -1,5 +1,11 @@
-import type { CommentsFromByIdQueryOutput } from "~/server/api/root";
-type Props = CommentsFromByIdQueryOutput[number];
+import type { CommentFromByIdQuery as Comment } from "~/server/api/root";
+const dateFormatter = new Intl.DateTimeFormat(undefined, {
+  dateStyle: "medium",
+  timeStyle: "short",
+});
+
+type Props = Comment;
+
 export function Comment({
   createdAt,
   id,
@@ -8,5 +14,13 @@ export function Comment({
   updatedAt,
   user,
 }: Props) {
-  return <div>{message}</div>;
+  return (
+    <div>
+      <div>
+        <span>{user.name}</span>
+        <span>{dateFormatter.format(createdAt)}</span>
+      </div>
+      <div>{message}</div>
+    </div>
+  );
 }
