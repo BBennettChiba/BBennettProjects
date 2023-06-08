@@ -11,7 +11,8 @@
     "migrate:prod": "dotenv -e .env.prod pnpm prisma migrate dev",
     "db:push:local": "dotenv -e .env.local prisma db push",
     "db:push:prod": "dotenv -e.env.prod prisma db push",
-    "db:seed": "dotenv -e.env.local prisma db seed"
+    "db:seed": "dotenv -e.env.local prisma db seed",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.5",
