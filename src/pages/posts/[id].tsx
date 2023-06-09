@@ -10,6 +10,7 @@ import { CommentsList } from "src/components/CommentsList";
 import { createInnerTRPCContext } from "~/server/api/trpc";
 import { api } from "~/utils/api";
 import type { CommentFromByIdQuery as Comment } from "src/server/api/root";
+import CommentForm from "~/components/CommentForm";
 
 export async function getServerSideProps(
   context: GetServerSidePropsContext<{ id: string }>
@@ -52,31 +53,32 @@ export default function PostViewPage(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
   const { id } = props;
-  const postQuery = api.post.byId.useQuery({ id });
-  const { data } = postQuery;
+  const { data: post, status } = api.post.byId.useQuery({ id });
 
   const commentsByParentId = useMemo(() => {
-    if (!data?.comments) return new Map<string | null, Comment[]>();
-    return data.comments.reduce((acc, comment) => {
+    if (!post?.comments) return new Map<string | null, Comment[]>();
+    return post.comments.reduce((acc, comment) => {
       const key = comment.parentId;
       if (acc.has(key)) acc.get(key)?.push(comment);
       else acc.set(key, [comment]);
       return acc;
     }, new Map<string | null, Comment[]>());
-  }, [data?.comments]);
+  }, [post?.comments]);
 
-  if (postQuery.status !== "success") {
+  if (status !== "success") {
     return <>Loading...</>;
   }
-  if (!data) throw new Error("Post not found");
+
+  if (!post) throw new Error("Post not found");
 
   return (
     <div className="container">
       <CommentsContext.Provider value={commentsByParentId}>
-        <h1>{data.title}</h1>
-        <article>{data.body}</article>
+        <h1>{post.title}</h1>
+        <article>{post.body}</article>
         <h3 className="comments-title">Comments</h3>
         <section>
+          <CommentForm postId={id} parentId={null} />
           <div className="mt-4">
             <CommentsList comments={commentsByParentId.get(null) || []} />
           </div>
