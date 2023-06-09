@@ -1,13 +1,9 @@
 import { type NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
-import Link from "next/link";
 import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
-  const hello = api.post.hello.useQuery({ text: "from tRPC" });
-  const posts = api.post.getPosts.useQuery();
-
   return (
     <>
       <Head>
@@ -18,23 +14,8 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="">
-        <div className="">
-          <h1 className=""></h1>
-          <div className="">
-            <p className="">
-              {hello.data ? hello.data.greeting : "Loading tRPC query..."}
-              {posts.data && posts.data.length > 0
-                ? posts.data.map((post) => (
-                    <Link href={`posts/${post.id}`} key={post.id}>
-                      <h1>{post.title}</h1>
-                    </Link>
-                  ))
-                : null}
-            </p>
-            <AuthShowcase />
-          </div>
-        </div>
+      <main>
+        <AuthShowcase />
       </main>
     </>
   );

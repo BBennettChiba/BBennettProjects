@@ -3,15 +3,13 @@ import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
 } from "next";
-import { useMemo } from "react";
+import { createContext, useMemo } from "react";
 import { appRouter } from "src/server/api/root";
 import superjson from "superjson";
 import { CommentsList } from "src/components/CommentsList";
 import { createInnerTRPCContext } from "~/server/api/trpc";
 import { api } from "~/utils/api";
-import type {
-  CommentFromByIdQuery as Comment,
-} from "src/server/api/root";
+import type { CommentFromByIdQuery as Comment } from "src/server/api/root";
 
 export async function getServerSideProps(
   context: GetServerSidePropsContext<{ id: string }>
@@ -32,6 +30,23 @@ export async function getServerSideProps(
     },
   };
 }
+
+type Context = Map<
+  string | null,
+  {
+    user: {
+      id: string;
+      name: string | null;
+    };
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    message: string;
+    parentId: string | null;
+  }[]
+>;
+
+export const CommentsContext = createContext<Context | null>(null);
 
 export default function PostViewPage(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
@@ -56,14 +71,17 @@ export default function PostViewPage(
   if (!data) throw new Error("Post not found");
 
   return (
-    <>
-      <h1>{data.title}</h1>
-      {/* <em>Created {data.createdAt.toLocaleDateString()}</em> */}
-      <article>{data.body}</article>
-      <h3>Comments</h3>
-      <section>
-        <CommentsList comments={commentsByParentId.get(null) || []} />
-      </section>
-    </>
+    <div className="container">
+      <CommentsContext.Provider value={commentsByParentId}>
+        <h1>{data.title}</h1>
+        <article>{data.body}</article>
+        <h3 className="comments-title">Comments</h3>
+        <section>
+          <div className="mt-4">
+            <CommentsList comments={commentsByParentId.get(null) || []} />
+          </div>
+        </section>
+      </CommentsContext.Provider>
+    </div>
   );
 }

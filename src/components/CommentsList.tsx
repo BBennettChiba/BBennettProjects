@@ -10,7 +10,7 @@ export function CommentsList({ comments }: Props) {
   return (
     <>
       {comments.map((comment) => (
-        <div key={comment.id}>
+        <div key={comment.id} className="comment-stack">
           <Comment {...comment} />
         </div>
       ))}
