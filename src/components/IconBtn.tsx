@@ -10,7 +10,7 @@ type Props = {
 export default function IconBtn({ Icon, isActive, color, children }: Props) {
   return (
     <button
-      className={`btn icon-btn ${isActive ? "icon-btn-active" : ""} ${color || ""}`}
+      className={`p-1 flex items-center ${color || ""} my-auto`}
     >
       <span className={`${children !== null ? "mr-1" : ""}`}>
         <Icon />

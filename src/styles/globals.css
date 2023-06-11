@@ -16,28 +16,6 @@
   margin-bottom: 0.5rem;
 }
 
-.comment-form-row {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.message-input {
-  flex-grow: 1;
-  resize: none;
-  height: 70px;
-  border-radius: 0.5em;
-  padding: 0.5em;
-  font-size: inherit;
-  font-family: inherit;
-  border: 2px solid hsl(235, 50%, 74%);
-  line-height: 1.4;
-}
-
-.message-input:focus {
-  border-color: hsl(235, 100%, 67%);
-  outline: none;
-}
-
 .comment-stack {
   margin: 0.5rem 0;
 }
@@ -79,66 +57,6 @@
   transition: background-color 100ms ease-in-out;
 }
 
-.hide {
-  display: none;
-}
-//@todo button change integration with daisy
-.btn {
-  --hue: 235;
-  --color: hsl(var(--hue), 100%, 67%);
-  padding: 0.5em 1em;
-  background: var(--color);
-  border: none;
-  color: white;
-  border-radius: 0.5em;
-  font-size: 0.75em;
-  cursor: pointer;
-}
-
-.btn:hover,
-.btn:focus-visible {
-  --color: hsl(var(--hue), 100%, 74%);
-}
-
-.btn.icon-btn {
-  background: none;
-  color: var(--color);
-  padding: 0.25em;
-  display: flex;
-  align-items: center;
-}
-
-.mr-1 {
-  margin-right: 0.25em;
-}
-
-.icon-btn:hover,
-.icon-btn:focus-visible {
-  --color: hsl(var(--hue), 100%, 74%);
-}
-
-.icon-btn-active,
-.icon-btn.danger {
-  --hue: 0;
-}
-
-.icon-btn-active {
-  position: relative;
-}
-
-.icon-btn-active::before {
-  content: "\00D7";
-  position: absolute;
-  font-size: 0.75em;
-  width: 1em;
-  height: 1em;
-  color: white;
-  background-color: var(--color);
-  border-radius: 50%;
-  bottom: 0.1em;
-  right: 0.1em;
-}
-
 .comment {
   padding: 0.5rem;
   border: 1px solid hsl(235, 100%, 90%);
@@ -169,6 +87,4 @@
   margin-top: 0.5rem;
 }
 
-.btn[disabled] {
-  --color: hsl(var(--hue), 20%, 74%);
-}
+

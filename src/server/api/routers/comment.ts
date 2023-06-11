@@ -11,7 +11,7 @@ export const commentRouter = createTRPCRouter({
       z.object({
         postId: z.string(),
         parentId: z.string().nullable(),
-        message: z.string(),
+        message: z.string().nonempty(),
       })
     )
     .mutation(async ({ ctx, input }) => {

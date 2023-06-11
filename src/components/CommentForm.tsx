@@ -42,14 +42,17 @@ export default function CommentForm({ postId, parentId }: Props) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="comment-form-row">
+      <div className="min-h-20 flex gap-2">
         <textarea
-          className="message-input"
+          className="min-h-full flex-grow resize-y rounded-lg border-2 border-solid border-purple-700 p-2 focus:border-purple-300 focus:outline-none"
           autoFocus
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button className="btn" disabled={loading}>
+        <button
+          className="btn-primary btn h-20"
+          disabled={loading || !message.trim()}
+        >
           {loading ? "loading" : "Post"}
         </button>
       </div>
