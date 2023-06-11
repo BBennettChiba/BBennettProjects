@@ -18,8 +18,10 @@ export type AppRouter = typeof appRouter;
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 
-type ByIdQueryOutput = RouterOutput["post"]["byId"];
+export type PostByIdQueryOutput = RouterOutput["post"]["byId"];
 
-export type CommentsFromByIdQuery = NonNullable<ByIdQueryOutput>["comments"];
+export type CommentsFromByIdQuery = NonNullable<PostByIdQueryOutput>["comments"];
 
 export type CommentFromByIdQuery = CommentsFromByIdQuery[number];
+
+

@@ -2,6 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { type FormEvent, useState } from "react";
 import { api } from "~/utils/api";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { type PostByIdQueryOutput } from "~/server/api/root";
 
 type Props = {
   postId: string;
@@ -15,7 +16,7 @@ export default function CommentForm({ postId, parentId }: Props) {
 
   const { mutate, error } = api.comment.create.useMutation({
     onSuccess: (data) => {
-      client.setQueryData(
+      client.setQueryData<NonNullable<PostByIdQueryOutput>>(
         [
           ["post", "byId"],
           {
@@ -26,8 +27,8 @@ export default function CommentForm({ postId, parentId }: Props) {
           },
         ],
         (oldData) => {
+          if (!oldData) throw new Error("no Old Data");
           const oldComments = oldData.comments;
-
           return { ...oldData, comments: [data, ...oldComments] };
         }
       );
