@@ -43,7 +43,15 @@ export const postRouter = createTRPCRouter({
       })
     ),
 
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
-  }),
+  create: protectedProcedure
+    .input(z.object({ body: z.string(), title: z.string() }))
+    .mutation(({ ctx, input }) =>
+      ctx.prisma.post.create({
+        data: {
+          title: input.title,
+          body: input.body,
+          userId: ctx.session.user.id,
+        },
+      })
+    ),
 });

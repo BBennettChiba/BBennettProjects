@@ -8,23 +8,6 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.4;
-}
-
-.container {
-  max-width: 1200px;
-  width: calc(100vw - 4rem);
-  margin: 2rem auto;
-}
-
-button {
-  font-size: inherit;
-  font-family: inherit;
-}
-
 .error-msg {
   color: hsl(0, 100%, 67%);
 }
@@ -55,14 +38,6 @@ button {
   outline: none;
 }
 
-.mt-4 {
-  margin-top: 1rem;
-}
-
-.mt-1 {
-  margin-top: 0.25rem;
-}
-
 .comment-stack {
   margin: 0.5rem 0;
 }
@@ -74,10 +49,6 @@ button {
 .nested-comments {
   padding-left: 0.5rem;
   flex-grow: 1;
-}
-
-.nested-comments-stack {
-  display: flex;
 }
 
 .collapse-line {
@@ -111,7 +82,7 @@ button {
 .hide {
   display: none;
 }
-
+//@todo button change integration with daisy
 .btn {
   --hue: 235;
   --color: hsl(var(--hue), 100%, 67%);
@@ -196,10 +167,6 @@ button {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.5rem;
-}
-
-.ml-3 {
-  margin-left: 1.5rem;
 }
 
 .btn[disabled] {

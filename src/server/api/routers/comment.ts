@@ -6,7 +6,7 @@ import {
 } from "~/server/api/trpc";
 
 export const commentRouter = createTRPCRouter({
-  create: publicProcedure
+  create: protectedProcedure
     .input(
       z.object({
         postId: z.string(),
@@ -16,11 +16,8 @@ export const commentRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const { postId, parentId, message } = input;
-      const users = await ctx.prisma.user.findMany();
-      const randomUser = users[Math.floor(Math.random() * users.length)];
-      if (!randomUser) throw new Error("no users found");
       return ctx.prisma.comment.create({
-        data: { message, postId, parentId, userId: randomUser.id },
+        data: { message, postId, parentId, userId: ctx.session.user.id },
         select: {
           id: true,
           createdAt: true,

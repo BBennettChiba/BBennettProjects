@@ -43,11 +43,7 @@ export function Comment({
       </div>
       {childComments && childComments?.length > 0 && (
         <>
-          <div
-            className={`nested-comments-stack ${
-              areChildrenHidden ? "hide" : ""
-            }`}
-          >
+          <div className={`${areChildrenHidden ? "hidden" : ""} flex`}>
             <button
               aria-label="hide replies"
               className="collapse-line"
@@ -58,7 +54,7 @@ export function Comment({
             </div>
           </div>
           <button
-            className={`btn mt-1 ${!areChildrenHidden ? "hide" : ""}`}
+            className={`btn mt-1 ${!areChildrenHidden ? "hidden" : ""}`}
             onClick={() => setAreChildrenHidden(false)}
           >
             Show Replies

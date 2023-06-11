@@ -11,6 +11,7 @@ import { createInnerTRPCContext } from "~/server/api/trpc";
 import { api } from "~/utils/api";
 import type { CommentFromByIdQuery as Comment } from "src/server/api/root";
 import CommentForm from "~/components/CommentForm";
+import { PostContent } from "~/components/PostContent";
 
 export async function getServerSideProps(
   context: GetServerSidePropsContext<{ id: string }>
@@ -72,10 +73,14 @@ export default function PostViewPage(
   if (!post) throw new Error("Post not found");
 
   return (
-    <div className="container">
+    <div className="container mx-auto px-4 pt-5">
       <CommentsContext.Provider value={commentsByParentId}>
-        <h1>{post.title}</h1>
-        <article>{post.body}</article>
+        <PostContent
+          post={post}
+          onDelete={() => {
+            null;
+          }}
+        />
         <h3 className="comments-title">Comments</h3>
         <section>
           <CommentForm postId={id} parentId={null} />
