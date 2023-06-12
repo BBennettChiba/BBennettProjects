@@ -13,7 +13,7 @@ export default function New() {
     },
   });
   return (
-    <div className="container mx-auto p-5">
+    <div className="container mx-auto p-4">
       <NoteEditor onSave={({ body, title }) => mutate({ body, title })} />
     </div>
   );

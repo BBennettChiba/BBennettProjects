@@ -81,7 +81,7 @@ export default function PostViewPage(
             null;
           }}
         />
-        <h3 className="comments-title">Comments</h3>
+        <h3 className="mb-2">Comments</h3>
         <section>
           <CommentForm postId={id} parentId={null} />
           <div className="mt-4">

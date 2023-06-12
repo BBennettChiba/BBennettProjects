@@ -26,13 +26,13 @@ export function Comment({
 
   return (
     <>
-      <div className="comment">
-        <div className="header">
-          <span className="name">{user.name}</span>
+      <div className="rounded-lg border border-solid border-blue-300 p-2">
+        <div className="mb-1 flex justify-between text-xs text-blue-300">
+          <span className="font-bold">{user.name}</span>
           <span className="date">{dateFormatter.format(createdAt)}</span>
         </div>
-        <div className="message">{message}</div>
-        <div className="footer">
+        <div className="mx-2 whitespace-pre-wrap">{message}</div>
+        <div className="mt-2 flex gap-2">
           <IconBtn aria-label="Like" Icon={FaHeart}>
             2
           </IconBtn>
@@ -46,10 +46,10 @@ export function Comment({
           <div className={`${areChildrenHidden ? "hidden" : ""} flex`}>
             <button
               aria-label="hide replies"
-              className="collapse-line"
+              className="background-none relative mt-2 w-4 -translate-x-2/4 cursor-pointer border-none p-0 outline-none before:absolute before:inset-y-0 before:left-2/4 before:w-px before:bg-[hsl(235,50%,74%)] before:transition-[background-color] before:duration-100 before:ease-[ease-in-out] before:content-[''] hover:before:bg-purple-600 focus-visible:before:bg-purple-600"
               onClick={() => setAreChildrenHidden(true)}
             />
-            <div className="nested-comments">
+            <div className="flex-grow pl-2">
               <CommentsList comments={childComments} />
             </div>
           </div>

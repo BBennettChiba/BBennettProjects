@@ -10,6 +10,7 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { type Session } from "next-auth";
+import { getSession } from "next-auth/react";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { getServerAuthSession } from "~/server/auth";
@@ -128,3 +129,12 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+
+export const createContext = async (opts: CreateNextContextOptions) => {
+  const session = await getSession({ req: opts.req });
+ 
+  return {
+    session,
+  };
+};
+ 

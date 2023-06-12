@@ -56,7 +56,7 @@ export default function CommentForm({ postId, parentId }: Props) {
           {loading ? "loading" : "Post"}
         </button>
       </div>
-      <div className="error-msg">{error ? "error" : ""}</div>
+      <div className="text-red-600">{error ? "error" : ""}</div>
       <ReactQueryDevtools />
     </form>
   );
