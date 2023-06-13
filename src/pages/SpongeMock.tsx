@@ -1,10 +1,6 @@
-import { useSession } from "next-auth/react";
 import { useMemo, useState } from "react";
 
 export default function SpongeMock() {
-  const session = useSession();
-  console.log(session);
-
   const isLowerCase = (char: string) => char.toLowerCase() === char;
   const [originalText, setOriginalText] = useState("");
 
@@ -13,7 +9,6 @@ export default function SpongeMock() {
     for (let i = 0; i < originalText.length; i++) {
       const char = originalText[i];
       const lastChar = i === 0 ? " " : result[i - 1];
-      console.log(char, lastChar);
       if (!char || !lastChar) throw new Error("something went very wrong");
       if (isLowerCase(lastChar)) {
         result += char.toUpperCase();
@@ -31,6 +26,7 @@ export default function SpongeMock() {
           Type / paste your text here
         </h3>
         <textarea
+          value={originalText}
           onChange={(e) => setOriginalText(e.target.value)}
           className="m-3.5 h-32 w-96 cursor-text resize whitespace-pre-wrap break-words border border-neutral-500 bg-white p-1 text-[0.83rem] text-black"
         ></textarea>
@@ -40,6 +36,7 @@ export default function SpongeMock() {
         </h3>
 
         <textarea
+          readOnly
           value={mockedText}
           className="m-3.5 h-32 w-96 cursor-text resize whitespace-pre-wrap break-words border border-neutral-500 bg-white p-1 text-[0.83rem] text-black"
         ></textarea>

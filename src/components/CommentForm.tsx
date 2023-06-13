@@ -1,15 +1,21 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { type FormEvent, useState } from "react";
 import { api } from "~/utils/api";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { type PostByIdQueryOutput } from "~/server/api/root";
 
 type Props = {
   postId: string;
   parentId: string | null;
+  autoFocus?: boolean;
+  close?: () => void;
 };
 
-export default function CommentForm({ postId, parentId }: Props) {
+export default function CommentForm({
+  postId,
+  parentId,
+  autoFocus = false,
+  close,
+}: Props) {
   const loading = false;
   const [message, setMessage] = useState("");
   const client = useQueryClient();
@@ -32,6 +38,7 @@ export default function CommentForm({ postId, parentId }: Props) {
           return { ...oldData, comments: [data, ...oldComments] };
         }
       );
+      if (close) close();
     },
   });
 
@@ -41,7 +48,7 @@ export default function CommentForm({ postId, parentId }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} autoFocus={autoFocus}>
       <div className="min-h-20 flex gap-2">
         <textarea
           className="min-h-full flex-grow resize-y rounded-lg border-2 border-solid border-purple-700 p-2 focus:border-purple-300 focus:outline-none"
@@ -57,7 +64,6 @@ export default function CommentForm({ postId, parentId }: Props) {
         </button>
       </div>
       <div className="text-red-600">{error ? "error" : ""}</div>
-      <ReactQueryDevtools />
     </form>
   );
 }

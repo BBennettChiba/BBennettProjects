@@ -4,6 +4,7 @@ import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { Navbar } from "~/components/Navbar";
+import Footer from "~/components/Footer";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -11,8 +12,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <Navbar />
-      <Component {...pageProps} />
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <Component {...pageProps} />
+        <Footer />
+      </div>
     </SessionProvider>
   );
 };

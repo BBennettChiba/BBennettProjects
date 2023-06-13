@@ -5,12 +5,20 @@ type Props = {
   isActive?: boolean;
   color?: string;
   children?: ReactNode;
+  onClick?: () => void;
 };
 
-export default function IconBtn({ Icon, isActive, color, children }: Props) {
+export default function IconBtn({
+  Icon,
+  isActive,
+  color,
+  children,
+  onClick,
+}: Props) {
   return (
     <button
-      className={`p-1 flex items-center ${color || ""} my-auto`}
+      className={`flex items-center p-1 text-${color || ""} my-auto`}
+      onClick={onClick}
     >
       <span className={`${children !== null ? "mr-1" : ""}`}>
         <Icon />

@@ -7,6 +7,8 @@ type Props = {
   onDelete: () => void;
 };
 
+/**@Todo edit state, delete button fix */
+
 export const PostContent = ({ post, onDelete }: Props) => {
   return (
     <div className="card mt-5 border border-gray-200 bg-base-100 shadow-xl">

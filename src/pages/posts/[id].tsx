@@ -72,8 +72,9 @@ export default function PostViewPage(
 
   if (!post) throw new Error("Post not found");
 
+  /**@todo make it so only logged in users can access certain parts like create new post and whatnot */
   return (
-    <div className="container mx-auto px-4 pt-5">
+    <div className="container mx-auto px-4 pb-10 pt-5">
       <CommentsContext.Provider value={commentsByParentId}>
         <PostContent
           post={post}

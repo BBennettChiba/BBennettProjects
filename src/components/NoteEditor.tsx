@@ -2,11 +2,13 @@ import { useState } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { markdownLanguage, markdown } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
+import { useRouter } from "next/router";
 
 type Props = {
   onSave: (post: { title: string; body: string }) => void;
 };
 export default function NoteEditor({ onSave }: Props) {
+  const router = useRouter();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   return (
@@ -35,7 +37,13 @@ export default function NoteEditor({ onSave }: Props) {
         />
         <div className="card-actions justify-end">
           <button
-            className="btn-primary btn"
+            className="btn-secondary btn w-20"
+            onClick={() => router.back()}
+          >
+            Cancel
+          </button>
+          <button
+            className="btn-accent btn w-20"
             onClick={() => {
               onSave({ title, body });
               setBody("");

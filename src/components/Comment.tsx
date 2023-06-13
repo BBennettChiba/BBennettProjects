@@ -4,6 +4,8 @@ import IconBtn from "./IconBtn";
 import { useContext, useState } from "react";
 import { CommentsContext } from "~/pages/posts/[id]";
 import { CommentsList } from "./CommentsList";
+import CommentForm from "./CommentForm";
+import { useRouter } from "next/router";
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
   dateStyle: "medium",
   timeStyle: "short",
@@ -11,18 +13,18 @@ const dateFormatter = new Intl.DateTimeFormat(undefined, {
 
 type Props = Comment;
 
-export function Comment({
-  createdAt,
-  id,
-  message,
-  parentId,
-  updatedAt,
-  user,
-}: Props) {
+/**@TODO functionality to buttons e.g. like, edit, delete */
+
+export function Comment({ createdAt, id: commentId, message, user }: Props) {
+  const router = useRouter();
+  const { id } = router.query;
+  if (typeof id !== "string") throw new Error("id must be a string");
+
   const comments = useContext(CommentsContext);
   const [areChildrenHidden, setAreChildrenHidden] = useState(false);
+  const [isReplying, setIsReplying] = useState(false);
   if (!comments) return null;
-  const childComments = comments.get(id);
+  const childComments = comments.get(commentId);
 
   return (
     <>
@@ -36,11 +38,27 @@ export function Comment({
           <IconBtn aria-label="Like" Icon={FaHeart}>
             2
           </IconBtn>
-          <IconBtn Icon={FaReply} />
+          <IconBtn
+            Icon={FaReply}
+            onClick={() => setIsReplying((prev) => !prev)}
+            isActive={isReplying}
+            aria-label={isReplying ? "Cancel Reply" : "Replying"}
+            color={isReplying ? "red-600" : ""}
+          />
           <IconBtn Icon={FaEdit} />
           <IconBtn Icon={FaTrash} color="red" />
         </div>
       </div>
+      {isReplying ? (
+        <div className="ml-4 mt-1">
+          <CommentForm
+            autoFocus
+            postId={id}
+            parentId={commentId}
+            close={() => setIsReplying(false)}
+          />
+        </div>
+      ) : null}
       {childComments && childComments?.length > 0 && (
         <>
           <div className={`${areChildrenHidden ? "hidden" : ""} flex`}>
@@ -54,7 +72,7 @@ export function Comment({
             </div>
           </div>
           <button
-            className={`btn mt-1 ${!areChildrenHidden ? "hidden" : ""}`}
+            className={`btn btn-primary mt-1 ${!areChildrenHidden ? "hidden" : ""}`}
             onClick={() => setAreChildrenHidden(false)}
           >
             Show Replies

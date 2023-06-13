@@ -1,6 +1,8 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 
+/**@TODO make this my landing page */
+
 const Home: NextPage = () => {
   return (
     <>
@@ -12,7 +14,7 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main></main>
+      <main className="h-full"> my page</main>
     </>
   );
 };
