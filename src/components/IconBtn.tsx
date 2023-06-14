@@ -10,7 +10,6 @@ type Props = {
 
 export default function IconBtn({
   Icon,
-  isActive,
   color,
   children,
   onClick,

@@ -17,14 +17,15 @@ export const Navbar = () => {
     <div className="navbar bg-primary">
       <div className="flex-1">
         {PAGES.map((page, index) => (
-          <div
-            className={`btn-ghost btn text-xl normal-case ${
-              page.href === here ? "text-white" : "text-gray-400"
-            }`}
-            key={index}
-          >
-            <Link href={`/${page.href}`}>{page.name}</Link>
-          </div>
+          <Link key={index} href={`/${page.href}`}>
+            <div
+              className={`btn-ghost btn text-xl normal-case ${
+                page.href === here ? "text-white" : "text-gray-400"
+              }`}
+            >
+              {page.name}
+            </div>
+          </Link>
         ))}
       </div>
       <div className="flex-none gap-2">

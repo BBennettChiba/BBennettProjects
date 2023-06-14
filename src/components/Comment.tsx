@@ -1,11 +1,13 @@
 import { FaEdit, FaHeart, FaReply, FaTrash } from "react-icons/fa";
-import type { CommentFromByIdQuery as Comment } from "~/server/api/root";
+import type {
+  CommentFromByIdQuery as Comment,
+} from "~/server/api/root";
 import IconBtn from "./IconBtn";
-import { useContext, useState } from "react";
-import { CommentsContext } from "~/pages/posts/[id]";
+import { useState } from "react";
 import { CommentsList } from "./CommentsList";
 import CommentForm from "./CommentForm";
-import { useRouter } from "next/router";
+import { usePost } from "~/context/PostContext";
+
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
   dateStyle: "medium",
   timeStyle: "short",
@@ -14,17 +16,30 @@ const dateFormatter = new Intl.DateTimeFormat(undefined, {
 type Props = Comment;
 
 /**@TODO functionality to buttons e.g. like, edit, delete */
+/**@TODO move logic into another hook */
 
-export function Comment({ createdAt, id: commentId, message, user }: Props) {
-  const router = useRouter();
-  const { id } = router.query;
-  if (typeof id !== "string") throw new Error("id must be a string");
+export function Comment({ createdAt, id, message, user }: Props) {
 
-  const comments = useContext(CommentsContext);
+  const {  editComment, createComment } = usePost();
+
   const [areChildrenHidden, setAreChildrenHidden] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
-  if (!comments) return null;
-  const childComments = comments.get(commentId);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const { commentsByParentId } = usePost();
+  const childComments = commentsByParentId.get(id);
+
+  function handleCreateSubmit(message: string) {
+    createComment({ message, parentId: id });
+    /**@todo check for errors , make it async*/
+    setIsEditing(false);
+  }
+
+  function handleEditSubmit(message: string) {
+    editComment({ message, id });
+    /**@todo check for errors  make async*/
+    setIsEditing(false);
+  }
 
   return (
     <>
@@ -33,7 +48,11 @@ export function Comment({ createdAt, id: commentId, message, user }: Props) {
           <span className="font-bold">{user.name}</span>
           <span className="date">{dateFormatter.format(createdAt)}</span>
         </div>
-        <div className="mx-2 whitespace-pre-wrap">{message}</div>
+        {isEditing ? (
+          <CommentForm error={""} autoFocus handleSubmit={handleEditSubmit} />
+        ) : (
+          <div className="mx-2 whitespace-pre-wrap">{message}</div>
+        )}
         <div className="mt-2 flex gap-2">
           <IconBtn aria-label="Like" Icon={FaHeart}>
             2
@@ -45,18 +64,19 @@ export function Comment({ createdAt, id: commentId, message, user }: Props) {
             aria-label={isReplying ? "Cancel Reply" : "Replying"}
             color={isReplying ? "red-600" : ""}
           />
-          <IconBtn Icon={FaEdit} />
+          <IconBtn
+            Icon={FaEdit}
+            onClick={() => setIsEditing((prev) => !prev)}
+            isActive={isEditing}
+            aria-label={isEditing ? "Cancel Edit" : "Editing"}
+            color={isEditing ? "red-600" : ""}
+          />
           <IconBtn Icon={FaTrash} color="red" />
         </div>
       </div>
       {isReplying ? (
         <div className="ml-4 mt-1">
-          <CommentForm
-            autoFocus
-            postId={id}
-            parentId={commentId}
-            close={() => setIsReplying(false)}
-          />
+          <CommentForm autoFocus handleSubmit={handleCreateSubmit} error={""} />
         </div>
       ) : null}
       {childComments && childComments?.length > 0 && (
@@ -72,7 +92,9 @@ export function Comment({ createdAt, id: commentId, message, user }: Props) {
             </div>
           </div>
           <button
-            className={`btn btn-primary mt-1 ${!areChildrenHidden ? "hidden" : ""}`}
+            className={`btn-primary btn mt-1 ${
+              !areChildrenHidden ? "hidden" : ""
+            }`}
             onClick={() => setAreChildrenHidden(false)}
           >
             Show Replies

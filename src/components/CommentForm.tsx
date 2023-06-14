@@ -1,54 +1,27 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { type FormEvent, useState } from "react";
-import { api } from "~/utils/api";
-import { type PostByIdQueryOutput } from "~/server/api/root";
+import { useState } from "react";
 
 type Props = {
-  postId: string;
-  parentId: string | null;
   autoFocus?: boolean;
-  close?: () => void;
+  handleSubmit: (message: string) => void;
+  error?: string;
 };
 
 export default function CommentForm({
-  postId,
-  parentId,
   autoFocus = false,
-  close,
+  handleSubmit,
+  error,
 }: Props) {
   const loading = false;
   const [message, setMessage] = useState("");
-  const client = useQueryClient();
-
-  const { mutate, error } = api.comment.create.useMutation({
-    onSuccess: (data) => {
-      client.setQueryData<NonNullable<PostByIdQueryOutput>>(
-        [
-          ["post", "byId"],
-          {
-            input: {
-              id: postId,
-            },
-            type: "query",
-          },
-        ],
-        (oldData) => {
-          if (!oldData) throw new Error("no Old Data");
-          const oldComments = oldData.comments;
-          return { ...oldData, comments: [data, ...oldComments] };
-        }
-      );
-      if (close) close();
-    },
-  });
-
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    mutate({ message, postId, parentId });
-  }
 
   return (
-    <form onSubmit={handleSubmit} autoFocus={autoFocus}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit(message);
+      }}
+      autoFocus={autoFocus}
+    >
       <div className="min-h-20 flex gap-2">
         <textarea
           className="min-h-full flex-grow resize-y rounded-lg border-2 border-solid border-purple-700 p-2 focus:border-purple-300 focus:outline-none"
