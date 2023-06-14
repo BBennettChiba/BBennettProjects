@@ -6,9 +6,7 @@ import {
 } from "~/server/api/trpc";
 
 export const postRouter = createTRPCRouter({
-  getPosts: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.post.findMany();
-  }),
+  getPosts: publicProcedure.query(({ ctx }) => ctx.prisma.post.findMany()),
 
   byId: publicProcedure
     .input(z.object({ id: z.string() }))
@@ -54,4 +52,5 @@ export const postRouter = createTRPCRouter({
         },
       })
     ),
+  /** @TODO Delete functionality */
 });

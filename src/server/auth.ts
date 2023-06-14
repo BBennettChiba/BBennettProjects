@@ -49,8 +49,8 @@ export const authOptions: NextAuthOptions = {
   // @TODO add more providers
   providers: [
     DiscordProvider({
-    clientId: env.DISCORD_CLIENT_ID,
-    clientSecret: env.DISCORD_CLIENT_SECRET,
+      clientId: env.DISCORD_CLIENT_ID,
+      clientSecret: env.DISCORD_CLIENT_SECRET,
     }),
     /**
      * ...add more providers here.
@@ -72,6 +72,4 @@ export const authOptions: NextAuthOptions = {
 export const getServerAuthSession = (ctx: {
   req: GetServerSidePropsContext["req"];
   res: GetServerSidePropsContext["res"];
-}) => {
-  return getServerSession(ctx.req, ctx.res, authOptions);
-};
+}) => getServerSession(ctx.req, ctx.res, authOptions);

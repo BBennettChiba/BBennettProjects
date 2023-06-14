@@ -1,8 +1,8 @@
-import { useState } from "react";
-import CodeMirror from "@uiw/react-codemirror";
 import { markdownLanguage, markdown } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
+import CodeMirror from "@uiw/react-codemirror";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 type Props = {
   onSave: (post: { title: string; body: string }) => void;

@@ -1,7 +1,7 @@
-import NoteEditor from "~/components/NoteEditor";
-import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import NoteEditor from "~/components/NoteEditor";
+import { api } from "~/utils/api";
 
 export default function New() {
   const { data: session, status } = useSession();

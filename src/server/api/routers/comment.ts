@@ -67,8 +67,8 @@ export const commentRouter = createTRPCRouter({
       });
     }),
 
-  byPostId: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.prisma.comment.findMany({
+  byPostId: publicProcedure.input(z.string()).query(({ ctx, input }) =>
+    ctx.prisma.comment.findMany({
       where: { postId: input },
 
       select: {
@@ -87,6 +87,6 @@ export const commentRouter = createTRPCRouter({
       orderBy: {
         createdAt: "desc",
       },
-    });
-  }),
+    })
+  ),
 });

@@ -1,8 +1,8 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { type ReactNode, createContext, useContext, useMemo } from "react";
+import type { CommentFromByIdQuery as Comment } from "src/server/api/root";
 import { type PostByIdQueryOutput } from "~/server/api/root";
 import { api } from "~/utils/api";
-import type { CommentFromByIdQuery as Comment } from "src/server/api/root";
-import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
   children: ReactNode;
@@ -34,10 +34,10 @@ const PostContext = createContext<Context>({} as Context);
 
 export const usePost = () => useContext<Context>(PostContext);
 
-export const PostContextProvider = ({ children, id }: Props) => {
-  const { data: post, status } = api.post.byId.useQuery({ id });
+export const PostContextProvider = ({ children, id: postId }: Props) => {
+  const { data: post, status } = api.post.byId.useQuery({ id: postId });
   const client = useQueryClient();
-  const queryKey = [["post", "byId", { input: { id }, type: "query" }]];
+  const queryKey = [["post", "byId"], { input: { id: postId }, type: "query" }];
 
   const commentsByParentId = useMemo(() => {
     if (!post?.comments) return new Map<string | null, Comment[]>();
@@ -75,7 +75,7 @@ export const PostContextProvider = ({ children, id }: Props) => {
         (oldData) => {
           if (!oldData) throw new Error("no Old Data");
           const newComments = [...oldData.comments];
-          const commentIndex = newComments.findIndex((c) => c.id === id);
+          const commentIndex = newComments.findIndex((c) => c.id === data.id);
           newComments[commentIndex] = data;
           return { ...oldData, comments: newComments };
         }
@@ -83,17 +83,18 @@ export const PostContextProvider = ({ children, id }: Props) => {
     },
   });
 
+  // I need the original comment id
   const {
     mutate: deleteMutate,
     //error: deleteError
   } = api.comment.delete.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
       client.setQueryData<NonNullable<PostByIdQueryOutput>>(
         queryKey,
         (oldData) => {
           if (!oldData) throw new Error("no Old Data");
           const newComments = [...oldData.comments];
-          const commentIndex = newComments.findIndex((c) => c.id === id);
+          const commentIndex = newComments.findIndex((c) => c.id === data.id);
           newComments.splice(commentIndex, 1);
           return {
             ...oldData,
@@ -110,7 +111,7 @@ export const PostContextProvider = ({ children, id }: Props) => {
     editMutate({ message, id });
 
   const createComment = ({ parentId, message }: CreateCommentArg) =>
-    creationMutate({ parentId, message, postId: id });
+    creationMutate({ parentId, message, postId });
 
   if (status === "loading") return <div>loading</div>;
   if (status === "error") return <div>error</div>;

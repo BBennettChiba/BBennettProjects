@@ -1,7 +1,7 @@
+import { commentRouter } from "./routers/comment";
+import type { inferRouterOutputs } from "@trpc/server";
 import { postRouter } from "~/server/api/routers/post";
 import { createTRPCRouter } from "~/server/api/trpc";
-import type { inferRouterOutputs } from "@trpc/server";
-import { commentRouter } from "./routers/comment";
 
 /**
  * This is the primary router for your server.
@@ -20,8 +20,7 @@ type RouterOutput = inferRouterOutputs<AppRouter>;
 
 export type PostByIdQueryOutput = RouterOutput["post"]["byId"];
 
-export type CommentsFromByIdQuery = NonNullable<PostByIdQueryOutput>["comments"];
+export type CommentsFromByIdQuery =
+  NonNullable<PostByIdQueryOutput>["comments"];
 
 export type CommentFromByIdQuery = CommentsFromByIdQuery[number];
-
-

@@ -29,7 +29,7 @@ export default function SpongeMock() {
           value={originalText}
           onChange={(e) => setOriginalText(e.target.value)}
           className="m-3.5 h-32 w-96 cursor-text resize whitespace-pre-wrap break-words border border-neutral-500 bg-white p-1 text-[0.83rem] text-black"
-        ></textarea>
+        />
 
         <h3 className="my-5 text-[1.17rem] font-bold">
           Click your mocking text below to copy to your clipboard
@@ -39,7 +39,7 @@ export default function SpongeMock() {
           readOnly
           value={mockedText}
           className="m-3.5 h-32 w-96 cursor-text resize whitespace-pre-wrap break-words border border-neutral-500 bg-white p-1 text-[0.83rem] text-black"
-        ></textarea>
+        />
       </div>
       <button
         className="btn-primary btn"

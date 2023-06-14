@@ -1,26 +1,28 @@
-import { FaEdit, FaHeart, FaReply, FaTrash } from "react-icons/fa";
-import type {
-  CommentFromByIdQuery as Comment,
-} from "~/server/api/root";
-import IconBtn from "./IconBtn";
 import { useState } from "react";
-import { CommentsList } from "./CommentsList";
+import { FaEdit, FaHeart, FaReply, FaTrash } from "react-icons/fa";
 import CommentForm from "./CommentForm";
+import { CommentsList } from "./CommentsList";
+import IconBtn from "./IconBtn";
 import { usePost } from "~/context/PostContext";
+import { type CommentFromByIdQuery } from "~/server/api/root";
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
   dateStyle: "medium",
   timeStyle: "short",
 });
 
-type Props = Comment;
+type Props = CommentFromByIdQuery;
 
 /**@TODO functionality to buttons e.g. like, edit, delete */
 /**@TODO move logic into another hook */
 
-export function Comment({ createdAt, id, message, user }: Props) {
-
-  const {  editComment, createComment } = usePost();
+export const Comment = ({
+  createdAt,
+  id,
+  message: commentMessage,
+  user,
+}: Props) => {
+  const { editComment, createComment, deleteComment } = usePost();
 
   const [areChildrenHidden, setAreChildrenHidden] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
@@ -29,17 +31,17 @@ export function Comment({ createdAt, id, message, user }: Props) {
   const { commentsByParentId } = usePost();
   const childComments = commentsByParentId.get(id);
 
-  function handleCreateSubmit(message: string) {
+  const handleCreateSubmit = (message: string) => {
     createComment({ message, parentId: id });
     /**@todo check for errors , make it async*/
     setIsEditing(false);
-  }
+  };
 
-  function handleEditSubmit(message: string) {
+  const handleEditSubmit = (message: string) => {
     editComment({ message, id });
     /**@todo check for errors  make async*/
     setIsEditing(false);
-  }
+  };
 
   return (
     <>
@@ -51,7 +53,7 @@ export function Comment({ createdAt, id, message, user }: Props) {
         {isEditing ? (
           <CommentForm error={""} autoFocus handleSubmit={handleEditSubmit} />
         ) : (
-          <div className="mx-2 whitespace-pre-wrap">{message}</div>
+          <div className="mx-2 whitespace-pre-wrap">{commentMessage}</div>
         )}
         <div className="mt-2 flex gap-2">
           <IconBtn aria-label="Like" Icon={FaHeart}>
@@ -71,7 +73,11 @@ export function Comment({ createdAt, id, message, user }: Props) {
             aria-label={isEditing ? "Cancel Edit" : "Editing"}
             color={isEditing ? "red-600" : ""}
           />
-          <IconBtn Icon={FaTrash} color="red" />
+          <IconBtn
+            Icon={FaTrash}
+            color="red"
+            onClick={() => deleteComment(id)}
+          />
         </div>
       </div>
       {isReplying ? (
@@ -79,7 +85,7 @@ export function Comment({ createdAt, id, message, user }: Props) {
           <CommentForm autoFocus handleSubmit={handleCreateSubmit} error={""} />
         </div>
       ) : null}
-      {childComments && childComments?.length > 0 && (
+      {childComments && childComments.length > 0 && (
         <>
           <div className={`${areChildrenHidden ? "hidden" : ""} flex`}>
             <button
@@ -103,4 +109,4 @@ export function Comment({ createdAt, id, message, user }: Props) {
       )}
     </>
   );
-}
+};

@@ -38,12 +38,10 @@ type CreateContextOptions = {
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-export const createInnerTRPCContext = (opts: CreateContextOptions) => {
-  return {
-    session: opts.session,
-    prisma,
-  };
-};
+export const createInnerTRPCContext = (opts: CreateContextOptions) => ({
+  session: opts.session,
+  prisma,
+});
 
 /**
  * This is the actual context you will use in your router. It will be used to process every request
@@ -109,7 +107,8 @@ export const publicProcedure = t.procedure;
 
 /** Reusable middleware that enforces users are logged in before running the procedure. */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user) {
+  /**@check, linter asked me to remove  "|| !ctx.session.user" for being "always falsy"*/
+  if (!ctx.session) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
@@ -132,9 +131,8 @@ export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
 
 export const createContext = async (opts: CreateNextContextOptions) => {
   const session = await getSession({ req: opts.req });
- 
+
   return {
     session,
   };
 };
- 

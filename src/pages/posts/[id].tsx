@@ -1,19 +1,20 @@
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createServerSideHelpers } from "@trpc/react-query/server";
+import superjson from "superjson";
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
 } from "next";
-import { appRouter } from "src/server/api/root";
-import superjson from "superjson";
 import { CommentsList } from "src/components/CommentsList";
-import { createInnerTRPCContext } from "~/server/api/trpc";
+import { appRouter } from "src/server/api/root";
 import CommentForm from "~/components/CommentForm";
 import { PostContent } from "~/components/PostContent";
 import { PostContextProvider, usePost } from "~/context/PostContext";
+import { createInnerTRPCContext } from "~/server/api/trpc";
 
-export async function getServerSideProps(
+export const getServerSideProps = async (
   context: GetServerSidePropsContext<{ id: string }>
-) {
+) => {
   const helpers = createServerSideHelpers({
     router: appRouter,
     ctx: createInnerTRPCContext({ session: null }),
@@ -29,11 +30,11 @@ export async function getServerSideProps(
       id,
     },
   };
-}
+};
 
-function PostViewPage() {
+const PostViewPage = () => {
   /**@todo make it so only logged in users can access certain parts like create new post and whatnot */
-  const { rootComments, createComment, deleteComment } = usePost();
+  const { rootComments, createComment } = usePost();
 
   return (
     <div className="container mx-auto px-4 pb-10 pt-5">
@@ -55,7 +56,7 @@ function PostViewPage() {
       </section>
     </div>
   );
-}
+};
 
 export default function PostViewPageWithContext({
   id,
@@ -63,6 +64,7 @@ export default function PostViewPageWithContext({
   return (
     <PostContextProvider id={id}>
       <PostViewPage />
+      <ReactQueryDevtools initialIsOpen={true} />
     </PostContextProvider>
   );
 }

@@ -1,10 +1,10 @@
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import Link from "next/link";
 import React from "react";
-import { createInnerTRPCContext } from "~/server/api/trpc";
-import { api } from "~/utils/api";
 import superjson from "superjson";
 import { appRouter } from "~/server/api/root";
+import { createInnerTRPCContext } from "~/server/api/trpc";
+import { api } from "~/utils/api";
 
 export default function Posts() {
   const { data: posts, isLoading, error } = api.post.getPosts.useQuery();
@@ -18,7 +18,7 @@ export default function Posts() {
       </button>
       <div className="grid grid-cols-4 gap-2">
         <ul className="menu rounded-box bg-base-100 p-2">
-          {posts && posts.length > 0
+          {posts.length > 0
             ? posts.map((post) => (
                 <li key={post.id}>
                   <Link href={`posts/${post.id}`} className="text-lg">
@@ -33,7 +33,7 @@ export default function Posts() {
   );
 }
 
-export async function getServerSideProps() {
+export const getServerSideProps = async () => {
   const helpers = createServerSideHelpers({
     router: appRouter,
     ctx: createInnerTRPCContext({ session: null }),
@@ -47,4 +47,4 @@ export async function getServerSideProps() {
       trpcState: helpers.dehydrate(),
     },
   };
-}
+};

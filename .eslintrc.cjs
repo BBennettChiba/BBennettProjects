@@ -29,6 +29,35 @@ const config = {
       },
     ],
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    "func-style": ["error", "expression"],
+    "import/order": [
+      "error",
+      {
+        groups: [
+          "builtin",
+          "external",
+          "parent",
+          "sibling",
+          "index",
+          "object",
+          "type",
+        ],
+        pathGroups: [
+          {
+            pattern: "@/**/**",
+            group: "parent",
+            position: "before",
+          },
+        ],
+        alphabetize: { order: "asc" },
+      },
+    ],
+    "react/self-closing-comp": ["error", { component: true, html: true }],
+    "arrow-body-style": ["error", "as-needed"],
+    "@typescript-eslint/no-unnecessary-condition": "error",
+    complexity: ["error", 20],
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "error",
   },
 };
 
