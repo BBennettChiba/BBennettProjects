@@ -33,7 +33,7 @@ export async function getServerSideProps(
 
 function PostViewPage() {
   /**@todo make it so only logged in users can access certain parts like create new post and whatnot */
-  const { rootComments, createComment } = usePost();
+  const { rootComments, createComment, deleteComment } = usePost();
 
   return (
     <div className="container mx-auto px-4 pb-10 pt-5">

@@ -56,13 +56,8 @@ export const commentRouter = createTRPCRouter({
       });
     }),
   delete: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const { id } = input;
+    .input(z.string())
+    .mutation(async ({ ctx, input: id }) => {
       const comment = await ctx.prisma.comment.findUnique({ where: { id } });
       if (!comment) throw new TRPCError({ code: "NOT_FOUND" });
       if (comment.userId !== ctx.session.user.id)

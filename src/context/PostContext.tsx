@@ -23,7 +23,12 @@ type Context = {
     message: string;
   }) => void;
   editComment: ({ id, message }: { id: string; message: string }) => void;
+  deleteComment: (id: string) => void;
 };
+
+type CreateCommentArg = Parameters<Context["createComment"]>[0];
+type EditCommentArg = Parameters<Context["editComment"]>[0];
+type DeleteCommentArg = Parameters<Context["deleteComment"]>[0];
 
 const PostContext = createContext<Context>({} as Context);
 
@@ -78,16 +83,34 @@ export const PostContextProvider = ({ children, id }: Props) => {
     },
   });
 
-  const editComment = ({ id, message }: { id: string; message: string }) =>
+  const {
+    mutate: deleteMutate,
+    //error: deleteError
+  } = api.comment.delete.useMutation({
+    onSuccess: () => {
+      client.setQueryData<NonNullable<PostByIdQueryOutput>>(
+        queryKey,
+        (oldData) => {
+          if (!oldData) throw new Error("no Old Data");
+          const newComments = [...oldData.comments];
+          const commentIndex = newComments.findIndex((c) => c.id === id);
+          newComments.splice(commentIndex, 1);
+          return {
+            ...oldData,
+            comments: newComments,
+          };
+        }
+      );
+    },
+  });
+
+  const deleteComment = (id: DeleteCommentArg) => deleteMutate(id);
+
+  const editComment = ({ id, message }: EditCommentArg) =>
     editMutate({ message, id });
 
-  const createComment = ({
-    parentId,
-    message,
-  }: {
-    parentId: string | null;
-    message: string;
-  }) => creationMutate({ parentId, message, postId: id });
+  const createComment = ({ parentId, message }: CreateCommentArg) =>
+    creationMutate({ parentId, message, postId: id });
 
   if (status === "loading") return <div>loading</div>;
   if (status === "error") return <div>error</div>;
@@ -101,6 +124,7 @@ export const PostContextProvider = ({ children, id }: Props) => {
         rootComments: commentsByParentId.get(null) || [],
         createComment,
         editComment,
+        deleteComment,
       }}
     >
       {children}
