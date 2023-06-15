@@ -34,7 +34,8 @@ export const getServerSideProps = async (
 
 const PostViewPage = () => {
   /**@todo make it so only logged in users can access certain parts like create new post and whatnot */
-  const { rootComments, createComment } = usePost();
+  const { rootComments, createCommentMutation, post } = usePost();
+  const { mutate, status, error } = createCommentMutation;
 
   return (
     <div className="container mx-auto px-4 pb-10 pt-5">
@@ -47,8 +48,10 @@ const PostViewPage = () => {
       <section>
         <CommentForm
           handleSubmit={(message: string) =>
-            createComment({ message, parentId: null })
+            mutate({ message, parentId: null, postId: post.id })
           }
+          loading={status === "loading"}
+          error={error?.message}
         />
         <div className="mt-4">
           <CommentsList comments={rootComments} />

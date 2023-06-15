@@ -6,7 +6,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 const PAGES = [
   { name: "Home", href: "" },
   { name: "Posts", href: "posts" },
-  { name: "SpongeMock", href: "SpongeMock" },
+  { name: "SpongeMock", href: "spongeMock" },
 ];
 
 export const Navbar = () => {

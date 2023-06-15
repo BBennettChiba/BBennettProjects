@@ -15,20 +15,11 @@ type Context = {
   post: NonNullable<PostByIdQueryOutput>;
   commentsByParentId: CommentsByParentId;
   rootComments: Comment[];
-  createComment: ({
-    parentId,
-    message,
-  }: {
-    parentId: string | null;
-    message: string;
-  }) => void;
-  editComment: ({ id, message }: { id: string; message: string }) => void;
-  deleteComment: (id: string) => void;
+  commentDeleteMutation: ReturnType<typeof api.comment.delete.useMutation>;
+  createCommentMutation: ReturnType<typeof api.comment.create.useMutation>;
+  editCommentMutation: ReturnType<typeof api.comment.edit.useMutation>;
+  toggleLikeMutation: ReturnType<typeof api.like.toggle.useMutation>;
 };
-
-type CreateCommentArg = Parameters<Context["createComment"]>[0];
-type EditCommentArg = Parameters<Context["editComment"]>[0];
-type DeleteCommentArg = Parameters<Context["deleteComment"]>[0];
 
 const PostContext = createContext<Context>({} as Context);
 
@@ -49,10 +40,7 @@ export const PostContextProvider = ({ children, id: postId }: Props) => {
     }, new Map<string | null, Comment[]>());
   }, [post?.comments]);
 
-  const {
-    mutate: creationMutate,
-    // error: creationError
-  } = api.comment.create.useMutation({
+  const createCommentMutation = api.comment.create.useMutation({
     onSuccess: (data) => {
       client.setQueryData<NonNullable<PostByIdQueryOutput>>(
         queryKey,
@@ -65,10 +53,7 @@ export const PostContextProvider = ({ children, id: postId }: Props) => {
     },
   });
 
-  const {
-    mutate: editMutate,
-    // error: editError
-  } = api.comment.edit.useMutation({
+  const editCommentMutation = api.comment.edit.useMutation({
     onSuccess: (data) => {
       client.setQueryData<NonNullable<PostByIdQueryOutput>>(
         queryKey,
@@ -83,19 +68,41 @@ export const PostContextProvider = ({ children, id: postId }: Props) => {
     },
   });
 
-  // I need the original comment id
-  const {
-    mutate: deleteMutate,
-    //error: deleteError
-  } = api.comment.delete.useMutation({
+  const deleteCommentMutation = api.comment.delete.useMutation({
     onSuccess: (data) => {
       client.setQueryData<NonNullable<PostByIdQueryOutput>>(
         queryKey,
         (oldData) => {
           if (!oldData) throw new Error("no Old Data");
+          return {
+            ...oldData,
+            comments: oldData.comments.filter((c) => c.id !== data.id),
+          };
+        }
+      );
+    },
+  });
+
+  const toggleLikeMutation = api.like.toggle.useMutation({
+    onSuccess: (action) => {
+      client.setQueryData<NonNullable<PostByIdQueryOutput>>(
+        queryKey,
+        (oldData) => {
+          if (!oldData) throw new Error("no Old Data");
           const newComments = [...oldData.comments];
-          const commentIndex = newComments.findIndex((c) => c.id === data.id);
-          newComments.splice(commentIndex, 1);
+          const theComment = newComments.find(
+            (c) => c.id === toggleLikeMutation.variables
+          );
+          if (!theComment) throw new Error("comment not found");
+          theComment.likedByMe = !theComment.likedByMe;
+          theComment.likedByMe = action === "created" ? true : false;
+          if (action === "created") {
+            theComment.likedByMe = true;
+            theComment.likeCount = theComment.likeCount + 1;
+          } else {
+            theComment.likedByMe = false;
+            theComment.likeCount = theComment.likeCount - 1;
+          }
           return {
             ...oldData,
             comments: newComments,
@@ -105,17 +112,8 @@ export const PostContextProvider = ({ children, id: postId }: Props) => {
     },
   });
 
-  const deleteComment = (id: DeleteCommentArg) => deleteMutate(id);
-
-  const editComment = ({ id, message }: EditCommentArg) =>
-    editMutate({ message, id });
-
-  const createComment = ({ parentId, message }: CreateCommentArg) =>
-    creationMutate({ parentId, message, postId });
-
   if (status === "loading") return <div>loading</div>;
   if (status === "error") return <div>error</div>;
-  if (!post) throw new Error("Post not found");
 
   return (
     <PostContext.Provider
@@ -123,9 +121,10 @@ export const PostContextProvider = ({ children, id: postId }: Props) => {
         post,
         commentsByParentId,
         rootComments: commentsByParentId.get(null) || [],
-        createComment,
-        editComment,
-        deleteComment,
+        createCommentMutation,
+        editCommentMutation,
+        commentDeleteMutation: deleteCommentMutation,
+        toggleLikeMutation,
       }}
     >
       {children}

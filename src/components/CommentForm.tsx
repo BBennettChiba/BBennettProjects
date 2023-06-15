@@ -4,14 +4,18 @@ type Props = {
   autoFocus?: boolean;
   handleSubmit: (message: string) => void;
   error?: string;
+  initialValue?: string;
+  loading: boolean;
 };
 
 export default function CommentForm({
   autoFocus = false,
   handleSubmit,
   error,
+  initialValue,
+  loading,
 }: Props) {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(initialValue || "");
 
   return (
     <form
@@ -28,11 +32,14 @@ export default function CommentForm({
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button className="btn-primary btn h-20" disabled={!message.trim()}>
-          Post
+        <button
+          className="btn-primary btn h-20"
+          disabled={loading || !message.trim()}
+        >
+          {loading ? "Loading" : "Post"}
         </button>
       </div>
-      <div className="text-red-600">{error ? "error" : ""}</div>
+      <div className="text-red-600">{error}</div>
     </form>
   );
 }

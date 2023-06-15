@@ -1,5 +1,6 @@
+import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { FaEdit, FaHeart, FaReply, FaTrash } from "react-icons/fa";
+import { FaEdit, FaHeart, FaRegHeart, FaReply, FaTrash } from "react-icons/fa";
 import CommentForm from "./CommentForm";
 import { CommentsList } from "./CommentsList";
 import IconBtn from "./IconBtn";
@@ -13,16 +14,40 @@ const dateFormatter = new Intl.DateTimeFormat(undefined, {
 
 type Props = CommentFromByIdQuery;
 
-/**@TODO functionality to buttons e.g. like, edit, delete */
-/**@TODO move logic into another hook */
-
 export const Comment = ({
   createdAt,
   id,
   message: commentMessage,
   user,
+  likeCount,
+  likedByMe,
 }: Props) => {
-  const { editComment, createComment, deleteComment } = usePost();
+  const { data } = useSession();
+  const currentUser = data ? data.user : null;
+
+  const {
+    editCommentMutation: {
+      variables: editVariables,
+      mutate: editMutate,
+      error: editError,
+      isLoading: editIsLoading,
+      isError: editIsError,
+    },
+    createCommentMutation: {
+      mutate: createMutate,
+      error: createError,
+      isLoading: createIsLoading,
+    },
+    commentDeleteMutation: {
+      variables: deleteId,
+      mutate: deleteMutate,
+      error: deleteError,
+      isLoading: deleteIsLoading,
+      isError: deleteIsError,
+    },
+    toggleLikeMutation: { mutate: toggleLikeMutate },
+    post,
+  } = usePost();
 
   const [areChildrenHidden, setAreChildrenHidden] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
@@ -32,17 +57,26 @@ export const Comment = ({
   const childComments = commentsByParentId.get(id);
 
   const handleCreateSubmit = (message: string) => {
-    createComment({ message, parentId: id });
-    /**@todo check for errors , make it async*/
-    setIsEditing(false);
+    createMutate(
+      { message, parentId: id, postId: post.id },
+      { onSettled: () => setIsReplying(false) }
+    );
   };
 
   const handleEditSubmit = (message: string) => {
-    editComment({ message, id });
-    /**@todo check for errors  make async*/
-    setIsEditing(false);
+    editMutate({ message, id }, { onSettled: () => setIsEditing(false) });
   };
 
+  const isThisComment = (variable: string | { id: string } | undefined) =>
+    !variable
+      ? false
+      : typeof variable === "string"
+      ? variable === id
+      : variable.id === id;
+
+  const toggleLike = () => {
+    toggleLikeMutate(id);
+  };
   return (
     <>
       <div className="rounded-lg border border-solid border-blue-300 p-2">
@@ -51,13 +85,23 @@ export const Comment = ({
           <span className="date">{dateFormatter.format(createdAt)}</span>
         </div>
         {isEditing ? (
-          <CommentForm error={""} autoFocus handleSubmit={handleEditSubmit} />
+          <CommentForm
+            error={editError?.message}
+            autoFocus
+            initialValue={commentMessage}
+            handleSubmit={handleEditSubmit}
+            loading={editIsLoading}
+          />
         ) : (
           <div className="mx-2 whitespace-pre-wrap">{commentMessage}</div>
         )}
         <div className="mt-2 flex gap-2">
-          <IconBtn aria-label="Like" Icon={FaHeart}>
-            2
+          <IconBtn
+            aria-label={likedByMe ? "Unlike" : "Like"}
+            Icon={likedByMe ? FaHeart : FaRegHeart}
+            onClick={toggleLike}
+          >
+            {likeCount}
           </IconBtn>
           <IconBtn
             Icon={FaReply}
@@ -66,23 +110,39 @@ export const Comment = ({
             aria-label={isReplying ? "Cancel Reply" : "Replying"}
             color={isReplying ? "red-600" : ""}
           />
-          <IconBtn
-            Icon={FaEdit}
-            onClick={() => setIsEditing((prev) => !prev)}
-            isActive={isEditing}
-            aria-label={isEditing ? "Cancel Edit" : "Editing"}
-            color={isEditing ? "red-600" : ""}
-          />
-          <IconBtn
-            Icon={FaTrash}
-            color="red"
-            onClick={() => deleteComment(id)}
-          />
+          {currentUser && currentUser.id === user.id ? (
+            <>
+              <IconBtn
+                Icon={FaEdit}
+                onClick={() => setIsEditing((prev) => !prev)}
+                isActive={isEditing}
+                aria-label={isEditing ? "Cancel Edit" : "Editing"}
+                color={isEditing ? "red-600" : ""}
+              />
+              <IconBtn
+                Icon={FaTrash}
+                color="red"
+                disabled={deleteIsLoading}
+                onClick={() => confirm("You sure?") && deleteMutate(id)}
+              />
+            </>
+          ) : null}
         </div>
+        {deleteIsError && isThisComment(deleteId) ? (
+          <div className="mt-1 text-red-600">{deleteError?.message}</div>
+        ) : null}
+        {editIsError && isThisComment(editVariables) ? (
+          <div className="mt-1 text-red-600">{editError?.message}</div>
+        ) : null}
       </div>
       {isReplying ? (
         <div className="ml-4 mt-1">
-          <CommentForm autoFocus handleSubmit={handleCreateSubmit} error={""} />
+          <CommentForm
+            autoFocus
+            handleSubmit={handleCreateSubmit}
+            error={createError?.message}
+            loading={createIsLoading}
+          />
         </div>
       ) : null}
       {childComments && childComments.length > 0 && (
