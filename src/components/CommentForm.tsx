@@ -1,5 +1,5 @@
 import { useState } from "react";
-/**@TODO add loading */
+
 type Props = {
   autoFocus?: boolean;
   handleSubmit: (message: string) => void;

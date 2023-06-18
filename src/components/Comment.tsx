@@ -1,9 +1,7 @@
-import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { FaEdit, FaHeart, FaRegHeart, FaReply, FaTrash } from "react-icons/fa";
+import Buttons from "./Buttons";
 import CommentForm from "./CommentForm";
 import { CommentsList } from "./CommentsList";
-import IconBtn from "./IconBtn";
 import { usePost } from "~/context/PostContext";
 import { type CommentFromByIdQuery } from "~/server/api/root";
 
@@ -22,30 +20,18 @@ export const Comment = ({
   likeCount,
   likedByMe,
 }: Props) => {
-  const { data } = useSession();
-  const currentUser = data ? data.user : null;
 
   const {
     editCommentMutation: {
-      variables: editVariables,
       mutate: editMutate,
       error: editError,
       isLoading: editIsLoading,
-      isError: editIsError,
     },
     createCommentMutation: {
       mutate: createMutate,
       error: createError,
       isLoading: createIsLoading,
     },
-    commentDeleteMutation: {
-      variables: deleteId,
-      mutate: deleteMutate,
-      error: deleteError,
-      isLoading: deleteIsLoading,
-      isError: deleteIsError,
-    },
-    toggleLikeMutation: { mutate: toggleLikeMutate },
     post,
   } = usePost();
 
@@ -67,16 +53,6 @@ export const Comment = ({
     editMutate({ message, id }, { onSettled: () => setIsEditing(false) });
   };
 
-  const isThisComment = (variable: string | { id: string } | undefined) =>
-    !variable
-      ? false
-      : typeof variable === "string"
-      ? variable === id
-      : variable.id === id;
-
-  const toggleLike = () => {
-    toggleLikeMutate(id);
-  };
   return (
     <>
       <div className="rounded-lg border border-solid border-blue-300 p-2">
@@ -95,45 +71,16 @@ export const Comment = ({
         ) : (
           <div className="mx-2 whitespace-pre-wrap">{commentMessage}</div>
         )}
-        <div className="mt-2 flex gap-2">
-          <IconBtn
-            aria-label={likedByMe ? "Unlike" : "Like"}
-            Icon={likedByMe ? FaHeart : FaRegHeart}
-            onClick={toggleLike}
-          >
-            {likeCount}
-          </IconBtn>
-          <IconBtn
-            Icon={FaReply}
-            onClick={() => setIsReplying((prev) => !prev)}
-            isActive={isReplying}
-            aria-label={isReplying ? "Cancel Reply" : "Replying"}
-            color={isReplying ? "red-600" : ""}
-          />
-          {currentUser && currentUser.id === user.id ? (
-            <>
-              <IconBtn
-                Icon={FaEdit}
-                onClick={() => setIsEditing((prev) => !prev)}
-                isActive={isEditing}
-                aria-label={isEditing ? "Cancel Edit" : "Editing"}
-                color={isEditing ? "red-600" : ""}
-              />
-              <IconBtn
-                Icon={FaTrash}
-                color="red"
-                disabled={deleteIsLoading}
-                onClick={() => confirm("You sure?") && deleteMutate(id)}
-              />
-            </>
-          ) : null}
-        </div>
-        {deleteIsError && isThisComment(deleteId) ? (
-          <div className="mt-1 text-red-600">{deleteError?.message}</div>
-        ) : null}
-        {editIsError && isThisComment(editVariables) ? (
-          <div className="mt-1 text-red-600">{editError?.message}</div>
-        ) : null}
+        <Buttons
+          likeCount={likeCount}
+          likedByMe={likedByMe}
+          id={id}
+          isReplying={isReplying}
+          setIsReplying={setIsReplying}
+          user={user}
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
+        />
       </div>
       {isReplying ? (
         <div className="ml-4 mt-1">

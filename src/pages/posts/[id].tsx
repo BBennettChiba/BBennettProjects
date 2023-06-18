@@ -39,11 +39,7 @@ const PostViewPage = () => {
 
   return (
     <div className="container mx-auto px-4 pb-10 pt-5">
-      <PostContent
-        onDelete={() => {
-          null;
-        }}
-      />
+      <PostContent />
       <h3 className="mb-2">Comments</h3>
       <section>
         <CommentForm

@@ -1,14 +1,11 @@
 import ReactMarkdown from "react-markdown";
 import { usePost } from "~/context/PostContext";
 
-type Props = {
-  onDelete: () => void;
-};
-
 /**@Todo edit state, delete button fix */
-
-export const PostContent = ({ onDelete }: Props) => {
+  /**@todo add ability to delete */
+export const PostContent = () => {
   const { post } = usePost();
+  const onDelete = () => console.log("delete");
   return (
     <div className="card mt-5 border border-gray-200 bg-base-100 shadow-xl">
       <div className="card-body m-0 p-3">
