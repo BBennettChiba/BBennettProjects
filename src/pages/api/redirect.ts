@@ -1,5 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextApiHandler } from "next";
 
-export default function handler(req: NextRequest, res: NextResponse) {
-  return NextResponse.redirect("https://nextjs.org/docs");
-}
+export const handler: NextApiHandler = (req, res) =>
+  res.redirect(307, "https://www.youtube.com/");

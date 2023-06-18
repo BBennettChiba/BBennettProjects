@@ -43,6 +43,7 @@ export const postRouter = createTRPCRouter({
           },
         })
         .then(async (post) => {
+          /**@TODO investigate why this error occurs */
           if (!post)
             throw new TRPCError({
               code: "NOT_FOUND",
@@ -87,11 +88,37 @@ export const postRouter = createTRPCRouter({
         session: { user },
       },
     }) => {
-      const post = await prisma.comment.findUnique({ where: { id } });
+      const post = await prisma.post.findUnique({ where: { id } });
       if (!post) throw new TRPCError({ code: "NOT_FOUND" });
       if (post.userId !== user.id)
         throw new TRPCError({ code: "UNAUTHORIZED" });
-      return prisma.comment.delete({ where: { id } });
+      return prisma.post.delete({ where: { id } });
     }
   ),
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string().optional(),
+        body: z.string().optional(),
+      })
+    )
+    .mutation(
+      async ({
+        input: { id: postId, title, body },
+        ctx: {
+          prisma,
+          session: { user },
+        },
+      }) => {
+        const post = await prisma.post.findUnique({ where: { id: postId } });
+        if (!post) throw new TRPCError({ code: "NOT_FOUND" });
+        if (post.userId !== user.id)
+          throw new TRPCError({ code: "UNAUTHORIZED" });
+        return prisma.post.update({
+          data: { title, body },
+          where: { id: postId },
+        });
+      }
+    ),
 });

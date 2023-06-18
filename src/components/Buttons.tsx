@@ -24,7 +24,6 @@ export default function Buttons({
   isEditing,
   setIsEditing,
 }: Props) {
-
   const { data } = useSession();
   const currentUser = data ? data.user : null;
 
@@ -76,7 +75,7 @@ export default function Buttons({
         </IconBtn>
         {liked && (
           <FaHeart
-            className="fa animate absolute left-0 top-0 my-auto flex items-center p-1 text-3xl text-pink-300"
+            className="absolute left-0 top-0 my-auto flex animate-float items-center p-1 text-3xl text-pink-300"
             onAnimationEnd={() => setLiked(false)}
           />
         )}

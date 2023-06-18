@@ -19,6 +19,8 @@ type Context = {
   createCommentMutation: ReturnType<typeof api.comment.create.useMutation>;
   editCommentMutation: ReturnType<typeof api.comment.edit.useMutation>;
   toggleLikeMutation: ReturnType<typeof api.like.toggle.useMutation>;
+  deletePostMutation: ReturnType<typeof api.post.delete.useMutation>;
+  updatePostMutation: ReturnType<typeof api.post.update.useMutation>;
 };
 
 const PostContext = createContext<Context>({} as Context);
@@ -112,6 +114,26 @@ export const PostContextProvider = ({ children, id: postId }: Props) => {
     },
   });
 
+  const deletePostMutation = api.post.delete.useMutation({
+    onSuccess: () => {
+      client.removeQueries(queryKey);
+    },
+  });
+
+  const updatePostMutation = api.post.update.useMutation({
+    onSuccess: (data) => {
+      client.setQueryData<NonNullable<PostByIdQueryOutput>>(
+        queryKey,
+        (oldData) => {
+          if (!oldData) throw new Error("no Old Data");
+          oldData.title = data.title;
+          oldData.body = data.body;
+          return oldData;
+        }
+      );
+    },
+  });
+
   if (status === "loading") return <div>loading</div>;
   if (status === "error") return <div>error</div>;
 
@@ -125,6 +147,8 @@ export const PostContextProvider = ({ children, id: postId }: Props) => {
         editCommentMutation,
         commentDeleteMutation: deleteCommentMutation,
         toggleLikeMutation,
+        deletePostMutation,
+        updatePostMutation,
       }}
     >
       {children}

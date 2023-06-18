@@ -1,16 +1,16 @@
 import { markdownLanguage, markdown } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
 import CodeMirror from "@uiw/react-codemirror";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
 type Props = {
   onSave: (post: { title: string; body: string }) => void;
+  onCancel: () => void;
+  initialValues?: { title: string; body: string };
 };
-export default function NoteEditor({ onSave }: Props) {
-  const router = useRouter();
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
+export default function NoteEditor({ onSave, onCancel, initialValues }: Props) {
+  const [title, setTitle] = useState(initialValues?.title ?? "");
+  const [body, setBody] = useState(initialValues?.body ?? "");
   return (
     <div className="card mt-5 border border-gray-200 bg-base-100 shadow-xl">
       <div className="card-body">
@@ -36,14 +36,11 @@ export default function NoteEditor({ onSave }: Props) {
           ]}
         />
         <div className="card-actions justify-end">
-          <button
-            className="btn-secondary btn w-20"
-            onClick={() => router.back()}
-          >
+          <button className="btn-secondary btn-sm btn" onClick={onCancel}>
             Cancel
           </button>
           <button
-            className="btn-accent btn w-20"
+            className="btn-accent btn-sm btn"
             onClick={() => {
               onSave({ title, body });
               setBody("");
