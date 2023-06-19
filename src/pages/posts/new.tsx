@@ -23,10 +23,12 @@ export default function New() {
 
   return (
     <div className="container mx-auto p-4">
-      <NoteEditor
-        onSave={({ body, title }) => mutate({ body, title })}
-        onCancel={() => router.back()}
-      />
+      <div className="card mt-5 border border-gray-200 bg-base-100 shadow-xl">
+        <NoteEditor
+          onSave={({ body, title }) => mutate({ body, title })}
+          onCancel={() => router.back()}
+        />
+      </div>
     </div>
   );
 }
