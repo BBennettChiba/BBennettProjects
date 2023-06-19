@@ -1,3 +1,4 @@
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useState } from "react";
 import Buttons from "./Buttons";
 import CommentForm from "./CommentForm";
@@ -20,6 +21,8 @@ export const Comment = ({
   likeCount,
   likedByMe,
 }: Props) => {
+  const [editParent] = useAutoAnimate();
+  const [replyParent] = useAutoAnimate();
 
   const {
     editCommentMutation: {
@@ -60,38 +63,42 @@ export const Comment = ({
           <span className="font-bold">{user.name}</span>
           <span className="date">{dateFormatter.format(createdAt)}</span>
         </div>
-        {isEditing ? (
-          <CommentForm
-            error={editError?.message}
-            autoFocus
-            initialValue={commentMessage}
-            handleSubmit={handleEditSubmit}
-            loading={editIsLoading}
-          />
-        ) : (
-          <div className="mx-2 whitespace-pre-wrap">{commentMessage}</div>
-        )}
-        <Buttons
-          likeCount={likeCount}
-          likedByMe={likedByMe}
-          id={id}
-          isReplying={isReplying}
-          setIsReplying={setIsReplying}
-          user={user}
-          isEditing={isEditing}
-          setIsEditing={setIsEditing}
-        />
-      </div>
-      {isReplying ? (
-        <div className="ml-4 mt-1">
-          <CommentForm
-            autoFocus
-            handleSubmit={handleCreateSubmit}
-            error={createError?.message}
-            loading={createIsLoading}
+        <div ref={editParent}>
+          {isEditing ? (
+            <CommentForm
+              error={editError?.message}
+              autoFocus
+              initialValue={commentMessage}
+              handleSubmit={handleEditSubmit}
+              loading={editIsLoading}
+            />
+          ) : (
+            <div className="mx-2 whitespace-pre-wrap">{commentMessage}</div>
+          )}
+          <Buttons
+            likeCount={likeCount}
+            likedByMe={likedByMe}
+            id={id}
+            isReplying={isReplying}
+            setIsReplying={setIsReplying}
+            user={user}
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
           />
         </div>
-      ) : null}
+      </div>
+      <div ref={replyParent}>
+        {isReplying ? (
+          <div className="ml-4 mt-1">
+            <CommentForm
+              autoFocus
+              handleSubmit={handleCreateSubmit}
+              error={createError?.message}
+              loading={createIsLoading}
+            />
+          </div>
+        ) : null}
+      </div>
       {childComments && childComments.length > 0 && (
         <>
           <div className={`${areChildrenHidden ? "hidden" : ""} flex`}>

@@ -1,5 +1,6 @@
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createServerSideHelpers } from "@trpc/react-query/server";
+import { useSession } from "next-auth/react";
 import superjson from "superjson";
 import type {
   GetServerSidePropsContext,
@@ -33,7 +34,6 @@ export const getServerSideProps = async (
 };
 
 const PostViewPage = () => {
-  /**@todo make it so only logged in users can access certain parts like create new post and whatnot */
   const { rootComments, createCommentMutation, post } = usePost();
   const { mutate, status, error } = createCommentMutation;
 

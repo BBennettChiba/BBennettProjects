@@ -16,6 +16,7 @@ export const postRouter = createTRPCRouter({
         .findUnique({
           where: { id: input.id },
           select: {
+            user: { select: { id: true, name: true } },
             id: true,
             title: true,
             body: true,
