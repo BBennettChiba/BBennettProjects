@@ -47,7 +47,7 @@ export default function SpongeMock() {
           void navigator.clipboard.writeText(mockedText);
         }}
       >
-        Copy text to clipboard
+        Copy
       </button>
     </div>
   );

@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-async function seed() {
+const seed = async () => {
   await prisma.user.deleteMany();
   await prisma.post.deleteMany();
   await prisma.comment.deleteMany();
@@ -48,5 +48,5 @@ async function seed() {
       postId: post1.id,
     },
   });
-}
+};
 seed().catch((e) => console.error(e));

@@ -7,7 +7,7 @@ const PAGES = [
   { name: "Home", href: "" },
   { name: "Posts", href: "posts" },
   { name: "SpongeMock", href: "spongeMock" },
-  { name: "Redirect", href: "redirect" },
+  { name: "URL Shortener", href: "urlShortener" },
 ];
 
 export const Navbar = () => {

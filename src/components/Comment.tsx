@@ -23,6 +23,7 @@ export const Comment = ({
 }: Props) => {
   const [editParent] = useAutoAnimate();
   const [replyParent] = useAutoAnimate();
+  const [childrenParent] = useAutoAnimate();
 
   const {
     editCommentMutation: {
@@ -100,26 +101,27 @@ export const Comment = ({
         ) : null}
       </div>
       {childComments && childComments.length > 0 && (
-        <>
-          <div className={`${areChildrenHidden ? "hidden" : ""} flex`}>
+        <div ref={childrenParent}>
+          {areChildrenHidden ? (
             <button
-              aria-label="hide replies"
-              className="background-none relative mt-2 w-4 -translate-x-2/4 cursor-pointer border-none p-0 outline-none before:absolute before:inset-y-0 before:left-2/4 before:w-px before:bg-[hsl(235,50%,74%)] before:transition-[background-color] before:duration-100 before:ease-[ease-in-out] before:content-[''] hover:before:bg-purple-600 focus-visible:before:bg-purple-600"
-              onClick={() => setAreChildrenHidden(true)}
-            />
-            <div className="flex-grow pl-2">
-              <CommentsList comments={childComments} />
+              className="btn-primary btn mt-1"
+              onClick={() => setAreChildrenHidden(false)}
+            >
+              Show Replies
+            </button>
+          ) : (
+            <div className="flex">
+              <button
+                aria-label="hide replies"
+                className="background-none relative mt-2 w-4 -translate-x-2/4 cursor-pointer border-none p-0 outline-none before:absolute before:inset-y-0 before:left-2/4 before:w-px before:bg-[hsl(235,50%,74%)] before:transition-[background-color] before:duration-100 before:ease-[ease-in-out] before:content-[''] hover:before:bg-purple-600 focus-visible:before:bg-purple-600"
+                onClick={() => setAreChildrenHidden(true)}
+              />
+              <div className="flex-grow pl-2">
+                <CommentsList comments={childComments} />
+              </div>
             </div>
-          </div>
-          <button
-            className={`btn-primary btn mt-1 ${
-              !areChildrenHidden ? "hidden" : ""
-            }`}
-            onClick={() => setAreChildrenHidden(false)}
-          >
-            Show Replies
-          </button>
-        </>
+          )}
+        </div>
       )}
     </>
   );

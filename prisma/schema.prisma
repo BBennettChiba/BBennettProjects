@@ -53,6 +53,7 @@ model User {
     Comments      Comment[]
     Likes         Like[]
     Post          Post[]
+    Link          Link[]
 }
 
 model VerificationToken {
@@ -96,4 +97,19 @@ model Like {
     commentId String
 
     @@id([userId, commentId])
+}
+
+model Link {
+    id        String    @id
+    url       String
+    expiresAt DateTime?
+
+    password String?
+
+    user   User?   @relation(fields: [userId], references: [id])
+    userId String?
+
+    clicks    Int      @default(0)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }

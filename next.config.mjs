@@ -21,5 +21,15 @@ const config = {
   images: {
     domains: ["cdn.discordapp.com"],
   },
+  rewrites: async () => ({
+    beforeFiles: [],
+    afterFiles: [
+      {
+        source: "/:key",
+        destination: "/api/:key",
+      },
+    ],
+    fallback: [],
+  }),
 };
 export default config;

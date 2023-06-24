@@ -1,6 +1,4 @@
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createServerSideHelpers } from "@trpc/react-query/server";
-import { useSession } from "next-auth/react";
 import superjson from "superjson";
 import type {
   GetServerSidePropsContext,
@@ -63,7 +61,6 @@ export default function PostViewPageWithContext({
   return (
     <PostContextProvider id={id}>
       <PostViewPage />
-      <ReactQueryDevtools initialIsOpen={true} />
     </PostContextProvider>
   );
 }
