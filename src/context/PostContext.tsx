@@ -30,7 +30,7 @@ export const usePost = () => useContext<Context>(PostContext);
 export const PostContextProvider = ({ children, id: postId }: Props) => {
   const { data: post, status } = api.post.byId.useQuery(postId);
   const client = useQueryClient();
-  const queryKey = [["post", "byId"], { input: { id: postId }, type: "query" }];
+  const queryKey = [["post", "byId"], { input: postId, type: "query" }];
 
   const commentsByParentId = useMemo(() => {
     if (!post?.comments) return new Map<string | null, Comment[]>();
