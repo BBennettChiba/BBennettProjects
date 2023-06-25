@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { z } from "zod";
+import { type } from "arktype";
 import {
   createTRPCRouter,
   publicProcedure,
@@ -9,11 +9,11 @@ import {
 export const commentRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
-      z.object({
-        postId: z.string(),
-        parentId: z.string().nullable(),
-        message: z.string().nonempty(),
-      })
+      type({
+        postId: "string",
+        "parentId?": "string | null",
+        message: "string>0",
+      }).assert
     )
     .mutation(async ({ ctx, input }) => {
       const { postId, parentId, message } = input;
@@ -37,12 +37,7 @@ export const commentRouter = createTRPCRouter({
         }));
     }),
   edit: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        message: z.string(),
-      })
-    )
+    .input(type({ id: "string", message: "string" }).assert)
     .mutation(async ({ ctx, input }) => {
       const { id } = input;
       const comment = await ctx.prisma.comment.findUnique({ where: { id } });
@@ -88,7 +83,7 @@ export const commentRouter = createTRPCRouter({
         });
     }),
   delete: protectedProcedure
-    .input(z.string())
+    .input(type("string").assert)
     .mutation(async ({ ctx, input: id }) => {
       const comment = await ctx.prisma.comment.findUnique({ where: { id } });
       if (!comment) throw new TRPCError({ code: "NOT_FOUND" });
@@ -99,26 +94,28 @@ export const commentRouter = createTRPCRouter({
       });
     }),
 
-  byPostId: publicProcedure.input(z.string()).query(({ ctx, input }) =>
-    ctx.prisma.comment.findMany({
-      where: { postId: input },
+  byPostId: publicProcedure
+    .input(type("string").assert)
+    .query(({ ctx, input }) =>
+      ctx.prisma.comment.findMany({
+        where: { postId: input },
 
-      select: {
-        id: true,
-        createdAt: true,
-        updatedAt: true,
-        message: true,
-        parentId: true,
-        user: {
-          select: {
-            id: true,
-            name: true,
+        select: {
+          id: true,
+          createdAt: true,
+          updatedAt: true,
+          message: true,
+          parentId: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+            },
           },
         },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    })
-  ),
+        orderBy: {
+          createdAt: "desc",
+        },
+      })
+    ),
 });

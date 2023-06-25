@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { z } from "zod";
+import { type } from "arktype";
 import {
   createTRPCRouter,
   publicProcedure,
@@ -10,11 +10,11 @@ export const postRouter = createTRPCRouter({
   getPosts: publicProcedure.query(({ ctx }) => ctx.prisma.post.findMany()),
 
   byId: publicProcedure
-    .input(z.object({ id: z.string() }))
-    .query(({ ctx, input }) =>
+    .input(type("string").assert)
+    .query(({ ctx, input: postId }) =>
       ctx.prisma.post
         .findUnique({
-          where: { id: input.id },
+          where: { id: postId },
           select: {
             user: { select: { id: true, name: true } },
             id: true,
@@ -71,7 +71,7 @@ export const postRouter = createTRPCRouter({
     ),
 
   create: protectedProcedure
-    .input(z.object({ body: z.string(), title: z.string() }))
+    .input(type({ body: "string", title: "string" }).assert)
     .mutation(({ ctx, input }) =>
       ctx.prisma.post.create({
         data: {
@@ -81,7 +81,7 @@ export const postRouter = createTRPCRouter({
         },
       })
     ),
-  delete: protectedProcedure.input(z.string()).mutation(
+  delete: protectedProcedure.input(type("string").assert).mutation(
     async ({
       input: id,
       ctx: {
@@ -97,13 +97,7 @@ export const postRouter = createTRPCRouter({
     }
   ),
   update: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        title: z.string().optional(),
-        body: z.string().optional(),
-      })
-    )
+    .input(type({ id: "string", "title?": "string", "body?": "string" }).assert)
     .mutation(
       async ({
         input: { id: postId, title, body },

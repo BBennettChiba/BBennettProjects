@@ -1,8 +1,8 @@
-import { z } from "zod";
+import { type } from "arktype";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const likeRouter = createTRPCRouter({
-  toggle: protectedProcedure.input(z.string()).mutation(
+  toggle: protectedProcedure.input(type("string").assert).mutation(
     async ({
       ctx: {
         prisma,

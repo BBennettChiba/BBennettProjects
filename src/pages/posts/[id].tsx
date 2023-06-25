@@ -21,7 +21,7 @@ export const getServerSideProps = async (
   });
   const id = context.params?.id as string;
 
-  await helpers.post.byId.prefetch({ id });
+  await helpers.post.byId.prefetch(id);
 
   return {
     props: {

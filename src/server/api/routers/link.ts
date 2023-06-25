@@ -1,17 +1,22 @@
-import { z } from "zod";
+import { type } from "arktype";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { makeId } from "~/utils/server";
 
 export const linkRouter = createTRPCRouter({
   create: publicProcedure
-    .input(z.object({ url: z.string() }))
+    .input(
+      type({
+        url: /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/,
+      }).assert
+    )
     .mutation(async ({ ctx: { prisma }, input: { url } }) => {
       const id = makeId();
       return prisma.link.create({ data: { id, url } });
     }),
   get: publicProcedure
-    .input(z.string())
+    .input(type("string").assert)
     .query(async ({ ctx: { prisma }, input: id }) =>
       prisma.link.findUnique({ where: { id } })
     ),
 });
+

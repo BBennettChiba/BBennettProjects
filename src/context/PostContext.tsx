@@ -28,7 +28,7 @@ const PostContext = createContext<Context>({} as Context);
 export const usePost = () => useContext<Context>(PostContext);
 
 export const PostContextProvider = ({ children, id: postId }: Props) => {
-  const { data: post, status } = api.post.byId.useQuery({ id: postId });
+  const { data: post, status } = api.post.byId.useQuery(postId);
   const client = useQueryClient();
   const queryKey = [["post", "byId"], { input: { id: postId }, type: "query" }];
 
