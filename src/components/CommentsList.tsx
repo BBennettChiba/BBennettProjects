@@ -6,11 +6,12 @@ type Props = {
 };
 
 export const CommentsList = ({ comments }: Props) => {
-  const [parent] = useAutoAnimate();
+  const [top] = useAutoAnimate();
+  const [nested] = useAutoAnimate();
   return (
-    <div ref={parent}>
+    <div ref={top}>
       {comments.map((comment) => (
-        <div key={comment.id} className="mx-0 my-2 last:mb-0">
+        <div ref={nested} key={comment.id} className="mx-0 my-2 last:mb-0">
           <Comment {...comment} />
         </div>
       ))}

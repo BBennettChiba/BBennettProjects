@@ -12,5 +12,3 @@ const handler: NextApiHandler = async (req, res) => {
 };
 
 export default handler;
-
-/**@TODO write server logic for redirect */

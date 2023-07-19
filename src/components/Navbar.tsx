@@ -15,7 +15,7 @@ export const Navbar = () => {
   const router = useRouter();
   const here = router.asPath.split("/")[1]?.trim();
   return (
-    <div className="navbar bg-primary">
+    <header className="navbar bg-primary">
       <div className="flex-1">
         {PAGES.map((page, index) => (
           <Link key={index} href={`/${page.href}`}>
@@ -72,6 +72,6 @@ export const Navbar = () => {
           </ul>
         </div>
       </div>
-    </div>
+    </header>
   );
 };

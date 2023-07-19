@@ -65,4 +65,3 @@ export default function UrlShortener() {
   );
 }
 
-/**@TODO write client logic for redirect */
