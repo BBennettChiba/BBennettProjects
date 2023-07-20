@@ -20,35 +20,33 @@ export default function SpongeMock() {
   }, [originalText]);
 
   return (
-    <div className="container mx-auto px-4">
-      <div className="text-gray-400">
-        <h3 className="my-5 text-[1.17rem] font-bold">
-          Type / paste your text here
-        </h3>
+    <div className="container mx-auto flex-1 px-4">
+      <div className="text-md h-full py-10 text-gray-400 md:text-3xl">
+        <h3 className="m-3 font-bold">Type / paste your text here</h3>
         <textarea
           value={originalText}
           onChange={(e) => setOriginalText(e.target.value)}
-          className="m-3.5 h-32 w-96 cursor-text resize whitespace-pre-wrap break-words border border-neutral-500 bg-white p-1 text-[0.83rem] text-black"
+          className="h-1/3 w-full cursor-text resize whitespace-pre-wrap break-words rounded-md border border-neutral-500 bg-white p-1 text-sm text-black"
         />
 
-        <h3 className="my-5 text-[1.17rem] font-bold">
+        <h3 className="m-3 font-bold">
           Click your mocking text below to copy to your clipboard
         </h3>
 
         <textarea
           readOnly
           value={mockedText}
-          className="m-3.5 h-32 w-96 cursor-text resize whitespace-pre-wrap break-words border border-neutral-500 bg-white p-1 text-[0.83rem] text-black"
+          className="h-1/3 w-full cursor-text resize whitespace-pre-wrap break-words rounded-md border border-neutral-500 bg-white p-1 text-sm text-black"
         />
+        <button
+          className="btn-primary btn"
+          onClick={() => {
+            void navigator.clipboard.writeText(mockedText);
+          }}
+        >
+          Copy
+        </button>
       </div>
-      <button
-        className="btn-primary btn"
-        onClick={() => {
-          void navigator.clipboard.writeText(mockedText);
-        }}
-      >
-        Copy
-      </button>
     </div>
   );
 }

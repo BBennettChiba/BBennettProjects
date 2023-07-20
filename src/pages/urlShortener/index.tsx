@@ -39,10 +39,10 @@ export default function UrlShortener() {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              className="absolute right-[26.00rem] my-2 ml-3 h-6 w-5 truncate align-middle  text-gray-400"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="absolute left-1 my-2 ml-3 h-6 w-5 truncate align-middle  text-gray-400"
             >
               <path d="M9 17H7A5 5 0 0 1 7 7h2" />
               <path d="M15 7h2a5 5 0 1 1 0 10h-2" />
@@ -52,10 +52,10 @@ export default function UrlShortener() {
               value={url}
               type="url"
               placeholder="Shorten your link"
-              className="h-10 w-[28.00rem] cursor-text rounded-md border border-gray-200 bg-white py-2 pl-10 pr-12 text-[0.88rem]"
+              className="h-10 cursor-text rounded-md border border-gray-200 bg-white py-2 pl-10 pr-12 text-[0.88rem]"
               onChange={(e) => setUrl(e.target.value)}
             />
-            <button className="absolute left-[25.13rem] my-1.5 mr-1.5 flex h-7 w-10 cursor-pointer items-center justify-center rounded border border-gray-200 text-center text-[0.88rem] font-medium text-gray-400">
+            <button className="absolute right-1 my-1.5 mr-1.5 flex h-7 w-10 cursor-pointer items-center justify-center rounded border border-gray-200 text-center text-[0.88rem] font-medium text-gray-400">
               <p>↵</p>
             </button>
           </div>

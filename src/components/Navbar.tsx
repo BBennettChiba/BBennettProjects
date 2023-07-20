@@ -1,35 +1,27 @@
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { type Dispatch, type SetStateAction } from "react";
 
-const PAGES = [
-  { name: "Home", href: "" },
-  { name: "Posts", href: "posts" },
-  { name: "SpongeMock", href: "spongeMock" },
-  { name: "URL Shortener", href: "urlShortener" },
-];
+type Props = { setIsChecked: Dispatch<SetStateAction<boolean>> };
 
-export const Navbar = () => {
+export const Navbar = ({ setIsChecked }: Props) => {
   const { data: sessionData, status } = useSession();
-  const router = useRouter();
-  const here = router.asPath.split("/")[1]?.trim();
   return (
     <header className="navbar bg-primary">
-      <div className="flex-1">
-        {PAGES.map((page, index) => (
-          <Link key={index} href={`/${page.href}`}>
-            <div
-              className={`btn-ghost btn text-xl normal-case ${
-                page.href === here ? "text-white" : "text-gray-400"
-              }`}
-            >
-              {page.name}
-            </div>
-          </Link>
-        ))}
+      <div className="navbar-start ml-2">
+        <label
+          htmlFor="my-drawer"
+          className="drawer-button"
+          onClick={() => setIsChecked((v) => !v)}
+        >
+          <div className="space-y-2">
+            <div className="h-0.5 w-8 bg-white" />
+            <div className="h-0.5 w-8 bg-white" />
+            <div className="h-0.5 w-8 bg-white" />
+          </div>
+        </label>
       </div>
-      <div className="flex-none gap-2">
+      <div className="navbar-end">
         <div className="dropdown-end dropdown z-10">
           {status === "authenticated" ? (
             <label tabIndex={0} className="btn-ghost btn-circle avatar btn">
