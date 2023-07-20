@@ -22,7 +22,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           type="checkbox"
           className="drawer-toggle"
           checked={isChecked}
-          readOnlstroke-wy
+          readOnly
         />
         <div className="drawer-content flex flex-col">
           <Navbar setIsChecked={setIsChecked} />

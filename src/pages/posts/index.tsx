@@ -23,7 +23,7 @@ export default function Posts() {
   if (error) return <h1 className="text-red-600">Something went wrong</h1>;
 
   return (
-    <div className="container m-auto px-12 pt-5">
+    <div className="container mx-auto px-12 pt-6">
       <Link href="posts/new">
         <button
           className="btn-primary btn-lg w-32 rounded-lg"

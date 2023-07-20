@@ -11,7 +11,7 @@ export const Navbar = ({ setIsChecked }: Props) => {
       <div className="navbar-start ml-2">
         <label
           htmlFor="my-drawer"
-          className="drawer-button"
+          className="drawer-button cursor-pointer"
           onClick={() => setIsChecked((v) => !v)}
         >
           <div className="space-y-2">

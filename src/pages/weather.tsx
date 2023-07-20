@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { type IconType } from "react-icons";
 import {
   FaCloud,
@@ -12,6 +13,7 @@ import { IoIosThunderstorm } from "react-icons/io";
 import { api } from "~/utils/api";
 
 const DAY_FORMATTER = new Intl.DateTimeFormat(undefined, { weekday: "long" });
+const HOUR_FORMATTER = new Intl.DateTimeFormat(undefined, { hour: "numeric" });
 const ICON_MAP: Map<number, IconType> = new Map();
 
 const map = (values: number[], icon: IconType) => {
@@ -29,11 +31,28 @@ map([71, 73, 75, 77, 85, 86], FaSnowflake);
 map([95, 96, 99], IoIosThunderstorm);
 
 export default function Weather() {
-  const { data } = api.weather.get.useQuery({
-    latitude: 35.6762,
-    longitude: 139.6503,
-    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-  });
+  const [location, setLocation] = useState<null | {
+    latitude: number;
+    longitude: number;
+  }>(null);
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(({ coords }) => {
+        const { latitude, longitude } = coords;
+        setLocation({ latitude, longitude });
+      });
+    }
+  }, []);
+
+  const { data } = api.weather.get.useQuery(
+    {
+      latitude: location?.latitude || 0,
+      longitude: location?.longitude || 0,
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    },
+    { enabled: !!location }
+  );
 
   const { current, hourly, daily } = data || {};
 
@@ -77,17 +96,17 @@ export default function Weather() {
   ];
 
   return (
-    <div className="container m-auto">
+    <div className="container mx-auto">
       <div className="m-4 md:mx-32 md:mt-20 ">
         <div className="flex rounded-lg bg-base-300 p-4 md:p-10">
-          <div className="m-2 flex flex-col md:flex-row w-1/2 items-center justify-center border-r">
-            <FaSun size={100} />
-            <div className="ml-5 text-6xl">
-              <span>{current?.currentTemp || 0}</span>&deg;
+          <div className="m-2 flex w-1/2 flex-col items-center justify-around border-r">
+            <div className="md:text-md mx-5 text-6xl">
+              <span>{current?.currentTemp}</span>&deg;
             </div>
+            <FaSun size={100} />
           </div>
           <div className="divider-vertical" />
-          <div className="grid w-1/2 grid-cols-[repeat(auto-fit,3rem)] justify-between gap-2 text-3xl px-6">
+          <div className="grid w-1/2 grid-cols-[repeat(auto-fit,3rem)] justify-center gap-6 text-3xl">
             {currentInfo.map((h, i) => (
               <div key={i} className="flex flex-col justify-center">
                 {h}
@@ -108,85 +127,45 @@ export default function Weather() {
                 <div>{maxTemp}&deg;</div>
               </div>
             );
-          }) || <></>}
+          })}
         </section>
         <table className="w-full border-spacing-0 text-center">
           <tbody>
-            <tr className="odd:bg-base-300 even:bg-base-200">
-              <td className="px-2 py-1">
-                <div>Thursday</div>
-                <div>3 pm</div>
-              </td>
-              <td>
-                <FaCloud size={30} />
-              </td>
-              <td>
-                <div>TEMP</div>
-                <div>30&deg;</div>
-              </td>
-              <td>
-                <div>FL TEMP</div>
-                <div>30&deg;</div>
-              </td>
-              <td>
-                <div>WIND</div>
-                <div>30kph</div>
-              </td>
-              <td>
-                <div>PRECIP</div>
-                <div>0cm</div>
-              </td>
-            </tr>
-            <tr className="odd:bg-base-300 even:bg-base-200">
-              <td>
-                <div>Thursday</div>
-                <div>3 pm</div>
-              </td>
-              <td>
-                <FaCloud size={30} />
-              </td>
-              <td>
-                <div>TEMP</div>
-                <div>30&deg;</div>
-              </td>
-              <td>
-                <div>FL TEMP</div>
-                <div>30&deg;</div>
-              </td>
-              <td>
-                <div>WIND</div>
-                <div>30kph</div>
-              </td>
-              <td>
-                <div>PRECIP</div>
-                <div>0cm</div>
-              </td>
-            </tr>
-            <tr className="odd:bg-base-300 even:bg-base-200">
-              <td>
-                <div>Thursday</div>
-                <div>3 pm</div>
-              </td>
-              <td>
-                <FaCloud size={30} />
-              </td>
-              <td>
-                <div>TEMP</div>
-                <div>30&deg;</div>
-              </td>
-              <td>
-                <div>FL TEMP</div>
-                <div>30&deg;</div>
-              </td>
-              <td>
-                <div>WIND</div>
-                <div>30kph</div>
-              </td>
-              <td>
-                <div>PRECIP</div>
-                <div>0cm</div>
-              </td>
-            </tr>
+            {hourly?.map(
+              (
+                { timestamp, temp, feelsLike, iconCode, windSpeed, precip },
+                i
+              ) => {
+                const Icon = ICON_MAP.get(iconCode || 0) || FaSun;
+                return (
+                  <tr key={i} className="odd:bg-base-300 even:bg-base-200">
+                    <td className="px-2 py-1">
+                      <div>{DAY_FORMATTER.format(timestamp)}</div>
+                      <div>{HOUR_FORMATTER.format(timestamp)}</div>
+                    </td>
+                    <td>
+                      <Icon size={30} />
+                    </td>
+                    <td>
+                      <div>TEMP</div>
+                      <div>{temp}&deg;</div>
+                    </td>
+                    <td>
+                      <div>FL TEMP</div>
+                      <div>{feelsLike}&deg;</div>
+                    </td>
+                    <td>
+                      <div>WIND</div>
+                      <div>{windSpeed}kph</div>
+                    </td>
+                    <td>
+                      <div>PRECIP</div>
+                      <div>{precip}cm</div>
+                    </td>
+                  </tr>
+                );
+              }
+            )}
           </tbody>
         </table>
       </div>

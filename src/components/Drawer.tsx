@@ -8,6 +8,7 @@ const PAGES = [
   { name: "SpongeMock", href: "spongeMock" },
   { name: "URL Shortener", href: "urlShortener" },
   { name: "Weather", href: "weather" },
+  { name: "Rate Me", href: "rateMe" },
 ];
 
 type Props = {
@@ -19,7 +20,11 @@ export default function Drawer({ setIsChecked }: Props) {
   const here = router.asPath.split("/")[1]?.trim();
   return (
     <div className="drawer-side">
-      <label htmlFor="my-drawer" className="drawer-overlay" />
+      <label
+        htmlFor="my-drawer"
+        className="drawer-overlay"
+        onClick={() => setIsChecked(false)}
+      />
       <ul className="menu h-full w-60 bg-base-200 p-4 text-base-content">
         {PAGES.map((page, index) => (
           <li key={index} onClick={() => setIsChecked(false)}>
