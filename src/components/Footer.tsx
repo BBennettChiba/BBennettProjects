@@ -3,16 +3,16 @@ import IconBtn from "./IconBtn";
 
 export default function Footer() {
   return (
-    <footer className="footer footer-center mt-auto rounded bg-base-200 text-base-content p-5">
+    <footer className="footer footer-center mt-auto rounded bg-base-200 p-5 text-base-content">
       <div>
         <div className="grid grid-flow-col gap-4">
-          <a>
+          <a href="mailto:brysoncbennett@gmail.com">
             <IconBtn Icon={FaEnvelope} />
           </a>
-          <a>
+          <a href="https://www.linkedin.com/in/bryson-bennett/">
             <IconBtn Icon={FaLinkedin} />
           </a>
-          <a>
+          <a href="https://github.com/BBennettChiba">
             <IconBtn Icon={FaGithub} />
           </a>
         </div>

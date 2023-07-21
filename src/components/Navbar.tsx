@@ -1,11 +1,17 @@
 import Image from "next/image";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { type Dispatch, type SetStateAction } from "react";
+import { type Dispatch, type SetStateAction, useRef } from "react";
+import RateMe from "./RateMe";
 
 type Props = { setIsChecked: Dispatch<SetStateAction<boolean>> };
 
 export const Navbar = ({ setIsChecked }: Props) => {
   const { data: sessionData, status } = useSession();
+  const dialog = useRef<HTMLDialogElement>(null);
+
+  const toggleModal = () =>
+    dialog.current?.open ? dialog.current.close() : dialog.current?.showModal();
+
   return (
     <header className="navbar bg-primary">
       <div className="navbar-start ml-2">
@@ -24,7 +30,7 @@ export const Navbar = ({ setIsChecked }: Props) => {
       <div className="navbar-end">
         <div className="dropdown-end dropdown z-10">
           {status === "authenticated" ? (
-            <label tabIndex={0} className="btn-ghost btn-circle avatar btn">
+            <label tabIndex={0} className="avatar btn btn-circle btn-ghost">
               <div className="w-10 rounded-full">
                 <Image
                   src={sessionData.user.image ?? ""}
@@ -36,20 +42,25 @@ export const Navbar = ({ setIsChecked }: Props) => {
             </label>
           ) : null}{" "}
           {status === "unauthenticated" ? (
-            <button className="btn-ghost rounded-btn btn">Sign in</button>
+            <button className="btn btn-ghost rounded-btn">Sign in</button>
           ) : null}
           {status === "loading" ? (
             <span className="loading loading-ring loading-lg" />
           ) : null}
           <ul
             tabIndex={0}
-            className="dropdown-content menu rounded-box menu-sm mt-3 w-52 bg-base-100 p-2 shadow"
+            className="menu dropdown-content rounded-box menu-sm mt-3 w-52 bg-base-100 p-2 shadow"
           >
             <li>
               <a className="justify-between">
                 Profile
                 <span className="badge">New</span>
               </a>
+            </li>
+            <li>
+              <button onClick={() => toggleModal()} className="justify-between">
+                rate my website
+              </button>
             </li>
             <li>
               <a
@@ -64,6 +75,9 @@ export const Navbar = ({ setIsChecked }: Props) => {
           </ul>
         </div>
       </div>
+      <dialog ref={dialog} className="modal modal-bottom md:modal-middle">
+        <RateMe toggleModal={toggleModal} />
+      </dialog>
     </header>
   );
 };
