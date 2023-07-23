@@ -30,6 +30,11 @@ map([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82], FaCloudShowersHeavy);
 map([71, 73, 75, 77, 85, 86], FaSnowflake);
 map([95, 96, 99], IoIosThunderstorm);
 
+/**
+ *
+ * @TODO add scaffolding for before data loads
+ */
+
 export default function Weather() {
   const [location, setLocation] = useState<null | {
     latitude: number;

@@ -2,7 +2,9 @@ import { useRouter } from "next/router";
 import { type FormEvent, useState } from "react";
 import { api } from "~/utils/api";
 
-/**@TODO maybe use capcha */
+/**
+ * @TODO display all links current user has made
+ * @TODO maybe use capcha */
 
 export default function UrlShortener() {
   const router = useRouter();
@@ -64,4 +66,3 @@ export default function UrlShortener() {
     </div>
   );
 }
-

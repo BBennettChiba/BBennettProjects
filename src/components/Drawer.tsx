@@ -8,6 +8,7 @@ const PAGES = [
   { name: "SpongeMock", href: "spongeMock" },
   { name: "URL Shortener", href: "urlShortener" },
   { name: "Weather", href: "weather" },
+  { name: "Leet Clone", href: "codeChallenge" },
 ];
 
 type Props = {

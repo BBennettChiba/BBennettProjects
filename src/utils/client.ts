@@ -16,3 +16,7 @@ export const getAbsoluteUrl = (): string => {
   }
   return `${protocol}localhost:3000`;
 };
+
+export const raise = (message: string): never => {
+  throw new Error(message);
+};

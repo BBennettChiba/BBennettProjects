@@ -10,7 +10,9 @@ import { api } from "~/utils/api";
 import { getAbsoluteUrl } from "~/utils/client";
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
-
+/**
+ * @TODO make this prettier and supply more information 
+ */
 export default function URL({ id }: Props) {
   const { data } = api.link.get.useQuery(id);
   if (!data) throw new Error("Error finding data");

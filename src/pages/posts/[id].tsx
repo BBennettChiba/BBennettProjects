@@ -1,4 +1,3 @@
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import superjson from "superjson";
 import type {
@@ -62,7 +61,6 @@ export default function PostViewPageWithContext({
   return (
     <PostContextProvider id={id}>
       <PostViewPage />
-      <ReactQueryDevtools initialIsOpen={true} />
     </PostContextProvider>
   );
 }

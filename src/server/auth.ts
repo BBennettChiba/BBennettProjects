@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions = {
     }),
   },
   adapter: PrismaAdapter(prisma),
-  // @TODO add more providers
+  // @TODO add github provider
   providers: [
     DiscordProvider({
       clientId: env.DISCORD_CLIENT_ID,
