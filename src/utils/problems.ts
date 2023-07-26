@@ -4,12 +4,16 @@ export type Results = {
   success: boolean;
   testResults: {
     success: boolean;
-    input: unknown;
+    input: { args: unknown[]; answer: unknown };
     output: unknown;
   }[];
+  argNames: string[];
 };
 
-type Test = { nums: number[]; target: number; answer: [number, number] };
+type Test = {
+  args: [nums: number[], target: number];
+  answer: [number, number];
+};
 
 /**@TODO add ability for users to write their own checks */
 const twoSumHandler = (
@@ -20,11 +24,18 @@ const twoSumHandler = (
   const results: Results = {
     success: true,
     testResults: [],
+    argNames: ["nums", "target"],
   };
   for (const test of tests) {
-    const { nums, target, answer } = test;
+    const { args, answer } = test;
+    const [nums, target] = args;
     const output = fn(nums, target);
-    const testResult = { success: false, input: test, output };
+    const testResult = {
+      success: false,
+      input: test,
+      output,
+      expected: answer,
+    };
     try {
       ass.deepStrictEqual(output, answer);
       testResult.success = true;
@@ -44,24 +55,28 @@ export const twoSum = {
     `You may assume that each input would have exactly one solution, and you may not use thesame element twice.`,
     `You can return the answer in any order`,
   ],
+  argNames: ["nums", "target"],
   examples: [
     {
       id: 1,
-      test: { nums: [2, 7, 11, 16], target: 9, answer: [0, 1] } as Test,
+      test: {
+        args: [[2, 7, 11, 16], 9],
+        answer: [0, 1],
+      } as Test,
       inputText: "nums = [2, 7, 11, 16], target = 9",
       outputText: "[0, 1]",
       explanation: "Because nums[0] + nums[1] == 9, we return [0, 1].",
     },
     {
       id: 2,
-      test: { nums: [3, 2, 4], target: 6, answer: [1, 2] } as Test,
+      test: { args: [[3, 2, 4], 6], answer: [1, 2] } as Test,
       inputText: "nums = [3,2,4], target = 6",
       outputText: "[1,2]",
       explanation: "Because nums[1] + nums[2] == 6, we return [1, 2].",
     },
     {
       id: 3,
-      test: { nums: [3, 3], target: 6, answer: [0, 1] } as Test,
+      test: { args: [[3, 3], 6], answer: [0, 1] } as Test,
       inputText: " nums = [3,3], target = 6",
       outputText: "[0,1]",
     },

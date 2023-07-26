@@ -17,7 +17,7 @@ type Props = {
 
 type View = "ts" | "js";
 
-type Test = { nums: number[]; target: number; answer: [number, number] };
+type Test = { args: [number[], number]; answer: [number, number] };
 
 export default function CodeEditor({ problem }: Props) {
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -37,8 +37,8 @@ export default function CodeEditor({ problem }: Props) {
       `return ${problem.handlerFunction}`
     )();
     const result = handler(func, assert, tests);
-    console.log(result);
     setSuccess(result.success);
+    return result;
   };
 
   return (
