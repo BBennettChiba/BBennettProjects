@@ -54,8 +54,10 @@ export default function RateMe({ toggleModal }: Props) {
                   name="rating-2"
                   className="mask mask-star hover:scale-110"
                   onClick={() => setRating(1)}
+                  readOnly
                 />
                 <input
+                readOnly
                   checked={rating === 2}
                   type="radio"
                   name="rating-2"
@@ -63,6 +65,7 @@ export default function RateMe({ toggleModal }: Props) {
                   onClick={() => setRating(2)}
                 />
                 <input
+                readOnly
                   checked={rating === 3}
                   type="radio"
                   name="rating-2"
@@ -70,6 +73,7 @@ export default function RateMe({ toggleModal }: Props) {
                   onClick={() => setRating(3)}
                 />
                 <input
+                readOnly
                   checked={rating === 4}
                   type="radio"
                   name="rating-2"
@@ -77,6 +81,7 @@ export default function RateMe({ toggleModal }: Props) {
                   onClick={() => setRating(4)}
                 />
                 <input
+                readOnly
                   checked={rating === 5}
                   type="radio"
                   name="rating-2"

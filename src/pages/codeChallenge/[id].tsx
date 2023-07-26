@@ -1,51 +1,50 @@
+import { createServerSideHelpers } from "@trpc/react-query/server";
 import {
   type GetServerSidePropsContext,
   type InferGetServerSidePropsType,
 } from "next";
 import Split from "react-split";
-import { problems } from "../../utils/problems";
+import superjson from "superjson";
 import CodeEditor from "~/components/codeChallenge/CodeEditor";
 import Description from "~/components/codeChallenge/Description";
+import { appRouter } from "~/server/api/root";
+import { createInnerTRPCContext } from "~/server/api/trpc";
+import { api } from "~/utils/api";
 import { raise } from "~/utils/client";
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export default function Problem({ problem }: Props) {
+export default function Problem({ id }: Props) {
+  const { data: problem } = api.problem.get.useQuery(id);
+  if (!problem) return raise("Problem not found");
+
   return (
     <Split
-      //   sizes={[50, 50]}
       className="flex h-[calc(100vh-8rem)]"
       gutterSize={10}
       gutterAlign="center"
-      //   snapOffset={30}
-      //   dragInterval={1}
-      //   cursor="col-resize"
     >
       <Description problem={problem} />
-      <CodeEditor />
+      <CodeEditor problem={problem} />
     </Split>
   );
 }
 
-export const getServerSideProps = (
+export const getServerSideProps = async (
   context: GetServerSidePropsContext<{ id: string }>
 ) => {
-  //   const helpers = createServerSideHelpers({
-  //     router: appRouter,
-  //     ctx: createInnerTRPCContext({ session: null }),
-  //     transformer: superjson,
-  //   });
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: createInnerTRPCContext({ session: null }),
+    transformer: superjson,
+  });
   const id = context.params?.id as string;
-  const problem =
-    problems.find((p) => p.id === id) ?? raise("problem not found");
-  problem.handlerFunction = problem.handlerFunction.toString();
-
-  //   await helpers.post.byId.prefetch(id);
+  await helpers.problem.get.prefetch(id);
 
   return {
     props: {
-      //   trpcState: helpers.dehydrate(),
-      problem,
+      trpcState: helpers.dehydrate(),
+      id,
     },
   };
 };

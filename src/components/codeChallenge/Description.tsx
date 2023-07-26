@@ -1,36 +1,22 @@
 import React from "react";
-import {
-  FaCheckCircle,
-  FaThumbsUp,
-  FaThumbsDown,
-  FaStar,
-} from "react-icons/fa";
-import { type Problem } from "~/utils/problems";
+import { FaCheckCircle } from "react-icons/fa";
+import { type Problem } from "~/server/api/root";
 
-type Props = { problem: Problem };
+type Props = { problem: NonNullable<Problem> };
 
 export default function Description({ problem }: Props) {
   return (
-    <div className="flex flex-col overflow-auto bg-slate-600">
+    <div className="flex flex-col overflow-auto">
       <div className="flex flex-1 flex-col">
-        <div className="tabs">
+        <div className="tabs bg-base-300">
           <a className="tab tab-active tab-lifted tab-lg">Description</a>
         </div>
-        <div className="flex-1 space-y-4 bg-base-100 p-4">
+        <div className="max-w-[45vw] flex-1 space-y-4 bg-base-100 p-4">
           <h1 className="text-2xl">{problem.title}</h1>
           <div className="flex space-x-4 text-xs">
             <div className="badge badge-success">easy</div>
             <div>
               <FaCheckCircle size={20} />
-            </div>
-            <div>
-              <FaThumbsUp size={20} />
-            </div>
-            <div>
-              <FaThumbsDown size={20} />
-            </div>
-            <div>
-              <FaStar size={20} />
             </div>
           </div>
           <div className="space-y-2">

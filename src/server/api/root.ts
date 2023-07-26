@@ -1,6 +1,7 @@
 import { commentRouter } from "./routers/comment";
 import { likeRouter } from "./routers/like";
 import { linkRouter } from "./routers/link";
+import { problemRouter } from "./routers/problem";
 import { weatherRouter } from "./routers/weather";
 import type { inferRouterOutputs } from "@trpc/server";
 import { postRouter } from "~/server/api/routers/post";
@@ -17,6 +18,7 @@ export const appRouter = createTRPCRouter({
   like: likeRouter,
   link: linkRouter,
   weather: weatherRouter,
+  problem: problemRouter,
 });
 
 // export type definition of API
@@ -25,6 +27,8 @@ export type AppRouter = typeof appRouter;
 type RouterOutput = inferRouterOutputs<AppRouter>;
 
 export type PostByIdQueryOutput = RouterOutput["post"]["byId"];
+
+export type Problem = RouterOutput["problem"]["get"];
 
 export type CommentsFromByIdQuery =
   NonNullable<PostByIdQueryOutput>["comments"];
