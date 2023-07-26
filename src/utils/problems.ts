@@ -15,14 +15,8 @@ type Test = { nums: number[]; target: number; answer: [number, number] };
 const twoSumHandler = (
   fn: (nums: number[], target: number) => [number, number],
   ass: typeof assert,
-  userTest?: Test[]
+  tests: Test[]
 ) => {
-  const tests: Test[] = [
-    { nums: [2, 7, 11, 15], target: 9, answer: [0, 1] },
-    { nums: [3, 2, 4], target: 6, answer: [1, 2] },
-    { nums: [3, 3], target: 6, answer: [0, 1] },
-  ];
-  if (userTest) tests.concat(userTest);
   const results: Results = {
     success: true,
     testResults: [],
@@ -53,18 +47,21 @@ export const twoSum = {
   examples: [
     {
       id: 1,
-      inputText: "nums = [2,7,11,15], target = 9",
-      outputText: "[0,1]",
+      test: { nums: [2, 7, 11, 16], target: 9, answer: [0, 1] } as Test,
+      inputText: "nums = [2, 7, 11, 16], target = 9",
+      outputText: "[0, 1]",
       explanation: "Because nums[0] + nums[1] == 9, we return [0, 1].",
     },
     {
       id: 2,
+      test: { nums: [3, 2, 4], target: 6, answer: [1, 2] } as Test,
       inputText: "nums = [3,2,4], target = 6",
       outputText: "[1,2]",
       explanation: "Because nums[1] + nums[2] == 6, we return [1, 2].",
     },
     {
       id: 3,
+      test: { nums: [3, 3], target: 6, answer: [0, 1] } as Test,
       inputText: " nums = [3,3], target = 6",
       outputText: "[0,1]",
     },

@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { type Problem } from "~/server/api/root";
 
 type Props = {
   problem: NonNullable<Problem>;
   run: () => void;
 };
-export default function newFunction({ problem, run }: Props) {
-  const selected = 1;
+export default function Console({ problem, run }: Props) {
+  const [selected, setSelected] = useState(0);
+
   return (
     <div className="h-full w-full overflow-auto break-words text-sm text-white">
       <div className="tabs flex-nowrap">
@@ -22,6 +24,7 @@ export default function newFunction({ problem, run }: Props) {
             <div className="flex flex-wrap items-center gap-2">
               {problem.examples.map((e, i) => (
                 <button
+                  onClick={() => setSelected(i)}
                   key={i}
                   className={`flex cursor-pointer items-center rounded-lg px-4 py-1 text-center font-medium hover:bg-slate-600 ${
                     selected === i ? "bg-slate-600" : ""
@@ -51,24 +54,36 @@ export default function newFunction({ problem, run }: Props) {
               </button>
             </div>
           </div>
-          <div className="mt-4">
-            <div>
-              <div className="flex flex-col">
-                <div className="text-xs font-medium">nums =</div>
-                <div className="mt-2 cursor-text rounded-lg border border-solid px-3 py-3">
-                  <div>{problem.examples[0]?.inputText}</div>
+          {problem.examples.map((example, i) => (
+            <div key={i} className={`${selected === i ? "" : "hidden"}`}>
+              <div className="mt-4">
+                <div>
+                  <div className="flex flex-col">
+                    <div className="text-xs font-medium">nums =</div>
+                    <div className="mt-2 cursor-text rounded-lg border border-solid px-3 py-3">
+                      <div>{JSON.stringify(example.test.nums)}</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <div className="flex flex-col">
+                    <div className="text-xs font-medium ">target =</div>
+                    <div className="mt-2 cursor-text rounded-lg border border-solid  px-3 py-3">
+                      <div>{JSON.stringify(example.test.target)}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4">
+                <div className="flex flex-col">
+                  <div className="text-xs font-medium ">expected output =</div>
+                  <div className="mt-2 cursor-text rounded-lg border border-solid  px-3 py-3">
+                    <div>{JSON.stringify(example.test.answer)}</div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="mt-4">
-              <div className="flex flex-col">
-                <div className="text-xs font-medium ">target =</div>
-                <div className="mt-2 cursor-text rounded-lg border border-solid  px-3 py-3">
-                  <div>6</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>

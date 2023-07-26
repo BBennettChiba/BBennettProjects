@@ -17,12 +17,15 @@ type Props = {
 
 type View = "ts" | "js";
 
+type Test = { nums: number[]; target: number; answer: [number, number] };
+
 export default function CodeEditor({ problem }: Props) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [codeView, setCodeView] = useState<View>("ts");
   const [tsCode, setTsCode] = useState(problem.starterCode);
   const jsCode = transpile(tsCode, { target: 2 });
   const [success, setSuccess] = useState(false);
+  const tests: Test[] = problem.examples.map((ex) => ex.test);
 
   const handleRun = () => {
     // eslint-disable-next-line @typescript-eslint/no-implied-eval
@@ -33,7 +36,9 @@ export default function CodeEditor({ problem }: Props) {
     const handler: (...args: unknown[]) => Results = new Function(
       `return ${problem.handlerFunction}`
     )();
-    setSuccess(handler(func, assert).success);
+    const result = handler(func, assert, tests);
+    console.log(result);
+    setSuccess(result.success);
   };
 
   return (
@@ -89,4 +94,3 @@ export default function CodeEditor({ problem }: Props) {
     </Split>
   );
 }
-     
