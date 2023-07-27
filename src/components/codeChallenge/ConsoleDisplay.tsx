@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Case } from "./Case";
+import { raise } from "~/utils/client";
 import { type Results, type Problem } from "~/utils/problems";
 
 type ProblemProps = {
@@ -13,9 +15,16 @@ type ResultsProps = {
 
 type Props = ProblemProps | ResultsProps;
 
+const isSuccessful = (arr: { success: boolean }[], index: number) => {
+  const obj = arr[index];
+  if (!obj) return raise("Invalid index");
+  return obj.success;
+};
+
 export default function ConsoleDisplay(props: Props) {
   const isProblem = props.type === "problem";
   const [selected, setSelected] = useState(0);
+
   const argNames = isProblem ? props.problem.argNames : props.results.argNames;
 
   const testResults = isProblem ? null : props.results.testResults;
@@ -23,26 +32,67 @@ export default function ConsoleDisplay(props: Props) {
   const cases = isProblem
     ? props.problem.examples.map((e) => e.test)
     : props.results.testResults.map((r) => r.input);
+
+  const [testCases, setTestCases] = useState(cases);
+
   const outputs = isProblem
     ? null
     : props.results.testResults.map((r) => r.output);
+
+  const handleSelect = (i: number) => {
+    if (i === selected && i > cases.length - 1) {
+      setTestCases(testCases.filter((_, ind) => i !== ind));
+      return setSelected(i - 1);
+    }
+    setSelected(i);
+  };
+
+  const addNewTestCase = () => {
+    setTestCases([
+      ...testCases,
+      {
+        args: [...testCases[0]!.args],
+        answer: testCases[0]!.answer,
+      },
+    ]);
+    setSelected(testCases.length);
+  };
+
+  const setArg = (
+    parsedValue: unknown,
+    argIndex: number,
+    caseIndex: number
+  ) => {
+    setTestCases((t) => {
+      const testCasesCopy = [...t];
+      testCasesCopy[caseIndex]!.args[argIndex] = parsedValue;
+      return testCasesCopy;
+    });
+  };
+
   return (
     <div className="mx-5 my-4 flex flex-col">
       {!isProblem ? <Result success={props.results.success} /> : null}
       <div className="flex items-start justify-between gap-4">
         <div className="flex flex-wrap items-center gap-2">
-          {cases.map((_, i) => (
+          {testCases.map((_, i) => (
             <button
-              onClick={() => setSelected(i)}
+              onClick={() => handleSelect(i)}
               key={i}
-              className={`flex cursor-pointer items-center rounded-lg px-4 py-1 text-center font-medium hover:bg-slate-600 ${
-                selected === i ? "bg-slate-600" : ""
-              } outline outline-1 outline-slate-600 hover:outline-none`}
+              className={`
+                ${
+                  selected === i && i > cases.length - 1
+                    ? "hover:bg-red-500"
+                    : "hover:bg-slate-600"
+                }
+                flex cursor-pointer items-center rounded-lg px-4 py-1 text-center font-medium ${
+                  selected === i ? "bg-slate-600" : ""
+                }  outline outline-1 outline-slate-600 hover:outline-none`}
             >
               {testResults ? (
                 <div
                   className={`h-1 w-1 rounded-full ${
-                    testResults[i]!.success ? "bg-green-500" : "bg-red-500"
+                    isSuccessful(testResults, i) ? "bg-green-500" : "bg-red-500"
                   } mr-1`}
                 />
               ) : null}
@@ -52,7 +102,7 @@ export default function ConsoleDisplay(props: Props) {
           {isProblem ? (
             <button
               className="flex h-4 w-4 cursor-pointer items-center justify-center rounded"
-              onClick={() => console.log("add")}
+              onClick={addNewTestCase}
             >
               <svg
                 fill="currentColor"
@@ -72,71 +122,22 @@ export default function ConsoleDisplay(props: Props) {
           ) : null}
         </div>
       </div>
-      {cases.map((c, i) => (
-        <div key={i} className={`${selected === i ? "" : "hidden"}`}>
-          <div className="mt-4 text-xs font-medium">
-            <div className="text-xs font-medium">Input</div>
-            <div className="ml-4 mt-2 rounded-md bg-slate-700 p-2">
-              {c.args.map((arg, j) => (
-                <div key={j} className="flex flex-col">
-                  <div className="pt-2 text-xs font-medium">
-                    {argNames[j]} =
-                  </div>
-                  <div className="mt-2 cursor-text rounded-lg border border-solid px-3 py-3">
-                    <div>{JSON.stringify(arg)}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="mt-4">
-            <div className="text-xs font-medium ">Expected output =</div>
-            <div className="flex flex-col">
-              <div className="mt-2 cursor-text rounded-lg border border-solid  bg-slate-700 px-3 py-3">
-                <div>{JSON.stringify(c.answer)}</div>
-              </div>
-            </div>
-          </div>
-          {!isProblem ? (
-            <div className="mt-4">
-              <div className="text-xs font-medium">Actual Output</div>
-              <div className="flex flex-col">
-                <div className="mt-2 cursor-text rounded-lg border border-solid  bg-slate-700 px-3 py-3">
-                  <div>{JSON.stringify(outputs[i])}</div>
-                </div>
-              </div>
-            </div>
-          ) : null}
-        </div>
+      {testCases.map((c, i) => (
+        <Case
+          key={i}
+          visible={selected === i}
+          cas={c}
+          argNames={argNames}
+          disabled={i < cases.length}
+          output={outputs ? outputs[i] : null}
+          setArg={(parsedValue: unknown, argIndex: number) =>
+            setArg(parsedValue, argIndex, i)
+          }
+        />
       ))}
     </div>
   );
 }
-
-/*<div className="text-white gap-[0.5rem] flex flex-wrap text-sm break-words bg-zinc-800">
-  <div>
-    <div className="bg-white/[0.1] cursor-pointer font-medium py-1 px-4 rounded-lg">
-      <div className="items-center flex">
-        <div className="ml-1.5">Case 1</div>
-      </div>
-    </div>
-  </div>
-  <div>
-    <div className="text-gray-100/[0.6] cursor-pointer font-medium py-1 px-4 rounded-lg">
-      <div className="items-center flex">
-        <div className="ml-1.5">Case 2</div>
-      </div>
-    </div>
-  </div>
-  <div>
-    <div className="text-gray-100/[0.6] cursor-pointer font-medium py-1 px-4 rounded-lg">
-      <div className="items-center flex">
-        <div className="ml-1.5">Case 3</div>
-      </div>
-    </div>
-  </div>
-</div>
-*/
 
 const Result = ({ success }: { success: boolean }) => (
   <div className="mb-2 flex items-center text-white">
