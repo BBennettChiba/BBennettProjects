@@ -1,16 +1,13 @@
 import { useState } from "react";
-import ConsoleDisplay from "./ConsoleDisplay";
-import { type Problem } from "~/server/api/root";
+import ResultDisplay from "./ResultDisplay";
+import TestCasesDisplay from "./TestCasesDisplay";
+import { useProblem } from "~/context/ProblemContext";
 import { type Results } from "~/utils/problems";
-
-type Props = {
-  problem: NonNullable<Problem>;
-  run: () => Results;
-};
 
 type Display = "test cases" | "results";
 
-export default function Console({ problem, run }: Props) {
+export default function Console() {
+  const { problem, runCode, tests } = useProblem();
   const [display, setDisplay] = useState<Display>("test cases");
   const [results, setResults] = useState<null | Results>(null);
 
@@ -35,7 +32,7 @@ export default function Console({ problem, run }: Props) {
         </a>
 
         <button
-          onClick={() => setResults(run())}
+          onClick={() => setResults(runCode(tests))}
           className="btn btn-accent btn-xs ml-auto mr-3"
         >
           run
@@ -43,17 +40,17 @@ export default function Console({ problem, run }: Props) {
       </div>
       <div className="flex flex-1 flex-col">
         {display === "test cases" ? (
-          <ConsoleDisplay problem={problem} type="problem" />
+          <TestCasesDisplay />
         ) : (
-          <div className="flex flex-1 flex-col">
+          <>
             {results ? (
-              <ConsoleDisplay results={results} type="results" />
+              <ResultDisplay results={results} />
             ) : (
               <div className="flex h-full flex-1 items-center justify-center">
                 <div>Please Run</div>
               </div>
             )}
-          </div>
+          </>
         )}
       </div>
     </div>

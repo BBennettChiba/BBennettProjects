@@ -3,7 +3,7 @@ type Props = {
   value: unknown;
 };
 
-export default function Label({
+export default function DisabledLabel({
   name,
   value,
 }: Props) {

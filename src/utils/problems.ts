@@ -10,14 +10,14 @@ export type Results = {
   argNames: string[];
 };
 
-type Test = {
-  args: [nums: number[], target: number];
-  answer: [number, number];
+export type Test = {
+  args: unknown[];
+  answer: unknown;
 };
 
 /**@TODO add ability for users to write their own checks */
 const twoSumHandler = (
-  fn: (nums: number[], target: number) => [number, number],
+  fn: (...args: unknown[]) => unknown,
   ass: typeof assert,
   tests: Test[]
 ) => {

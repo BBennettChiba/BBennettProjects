@@ -7,7 +7,7 @@ type Props = {
   changeTestCase?: ({ parsedValue }: { parsedValue: unknown }) => void;
 };
 
-export default function Arg({
+export default function EnabledLabel({
   name,
   value,
   changeTestCase = () => null,
@@ -24,6 +24,7 @@ export default function Arg({
     let parsedValue: unknown;
     try {
       parsedValue = JSON.parse(stateValue);
+      console.log(parsedValue);
       if (typeof parsedValue !== typeOfArg) {
         alert("invalid type");
         return setStateValue(argAsString);

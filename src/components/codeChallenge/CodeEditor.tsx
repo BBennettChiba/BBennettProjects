@@ -1,4 +1,3 @@
-import assert from "assert";
 import { javascript } from "@codemirror/lang-javascript";
 import ReactCodeMirror from "@uiw/react-codemirror";
 import { useState } from "react";
@@ -6,37 +5,15 @@ import { AiOutlineFullscreen, AiOutlineFullscreenExit } from "react-icons/ai";
 import { FaCog } from "react-icons/fa";
 import { FaRetweet } from "react-icons/fa";
 import Split from "react-split";
-import { transpile } from "typescript";
 import Console from "./Console";
 import { useProblem } from "~/context/ProblemContext";
-import { type Results } from "~/utils/problems";
 
 type View = "ts" | "js";
 
-type Test = { args: [number[], number]; answer: [number, number] };
-
 export default function CodeEditor() {
-  const { problem } = useProblem();
+  const { problem, tsCode, setTSCode, jsCode } = useProblem();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [codeView, setCodeView] = useState<View>("ts");
-  const [tsCode, setTsCode] = useState(problem.starterCode);
-  const jsCode = transpile(tsCode, { target: 2 });
-  const [success, setSuccess] = useState(false);
-  const tests: Test[] = problem.examples.map((ex) => ex.test);
-
-  const handleRun = () => {
-    // eslint-disable-next-line @typescript-eslint/no-implied-eval
-    const func: unknown = new Function(
-      `${jsCode}return ${problem.starterFunctionName};`
-    )();
-    // eslint-disable-next-line @typescript-eslint/no-implied-eval, @typescript-eslint/no-unsafe-assignment
-    const handler: (...args: unknown[]) => Results = new Function(
-      `return ${problem.handlerFunction}`
-    )();
-    const result = handler(func, assert, tests);
-    setSuccess(result.success);
-    return result;
-  };
 
   return (
     <Split
@@ -84,10 +61,10 @@ export default function CodeEditor() {
           extensions={[javascript({ typescript: true })]}
           className="flex-1 overflow-auto"
           height="100%"
-          onChange={(v) => setTsCode(v)}
+          onChange={(v) => setTSCode(v)}
         />
       </div>
-      <Console run={handleRun} problem={problem} />
+      <Console />
     </Split>
   );
 }

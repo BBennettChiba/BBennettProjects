@@ -1,10 +1,16 @@
 import DisabledLabel from "./DisabledLabel";
 import EnabledLabel from "./EnabledLabel";
+import { type Test } from "~/utils/problems";
 
 type BaseProps = {
-  cas: { args: unknown[]; answer: unknown };
+  test: Test;
   argNames: string[];
   isVisible: boolean;
+};
+
+type TestProps = BaseProps & {
+  type: "test";
+  disabled: boolean;
   changeTestCase: ({
     parsedValue,
     argIndex,
@@ -12,23 +18,24 @@ type BaseProps = {
     parsedValue: unknown;
     argIndex?: number;
   }) => void;
-  disabled: boolean;
 };
-
-type TestProps = BaseProps & { type: "test" };
-type ResultProps = BaseProps & { type: "result"; output: unknown };
+type ResultProps = BaseProps & {
+  type: "result";
+  disabled: true;
+  output: unknown;
+};
 
 type Props = TestProps | ResultProps;
 
 export const Case = (props: Props) => {
-  const { type, cas, argNames, isVisible, changeTestCase, disabled } = props;
+  const { type, test, argNames, isVisible, disabled } = props;
   const output = type === "result" ? props.output : undefined;
   return (
     <div className={`${isVisible ? "" : "hidden"}`}>
       <div className="mt-4 text-xs font-medium">
         <div className="text-xs font-medium">Input</div>
         <div className="ml-4 mt-2 rounded-md bg-slate-700 p-2">
-          {cas.args.map((arg, argIndex) =>
+          {test.args.map((arg, argIndex) =>
             disabled ? (
               <DisabledLabel key={argIndex} value={arg} />
             ) : (
@@ -36,8 +43,8 @@ export const Case = (props: Props) => {
                 key={argIndex}
                 name={argNames[argIndex]}
                 value={arg}
-                changeTestCase={(parsedValue: unknown) =>
-                  changeTestCase({ parsedValue, argIndex })
+                changeTestCase={({ parsedValue }: { parsedValue: unknown }) =>
+                  props.changeTestCase({ parsedValue, argIndex })
                 }
               />
             )
@@ -47,12 +54,12 @@ export const Case = (props: Props) => {
       <div className="mt-4">
         <div className="text-xs font-medium ">Expected output =</div>
         {disabled ? (
-          <DisabledLabel value={cas.answer} />
+          <DisabledLabel value={test.answer} />
         ) : (
           <EnabledLabel
-            value={cas.answer}
+            value={test.answer}
             changeTestCase={({ parsedValue }: { parsedValue: unknown }) =>
-              changeTestCase({ parsedValue })
+              props.changeTestCase({ parsedValue })
             }
           />
         )}
