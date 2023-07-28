@@ -1,53 +1,51 @@
 import { useState } from "react";
 
 type Props = {
-  name: string;
-  arg: unknown;
-  setArg: (value: unknown) => void;
-  disabled: boolean
+  name?: string;
+  value: unknown;
+
+  changeTestCase?: ({ parsedValue }: { parsedValue: unknown }) => void;
 };
 
 export default function Arg({
   name,
-  disabled,
-  arg,
-  setArg,
+  value,
+  changeTestCase = () => null,
 }: Props) {
-  const argAsString = JSON.stringify(arg);
-  const [value, setValue] = useState(argAsString);
-  const typeOfArg = typeof arg;
+  const argAsString = JSON.stringify(value);
+  const [stateValue, setStateValue] = useState(argAsString);
+  const typeOfArg = typeof value;
 
   const handleEdit = (content: string) => {
-    setValue(content);
+    setStateValue(content);
   };
 
   const checkIfSerializable = () => {
     let parsedValue: unknown;
     try {
-      parsedValue = JSON.parse(value);
+      parsedValue = JSON.parse(stateValue);
       if (typeof parsedValue !== typeOfArg) {
         alert("invalid type");
-        return setValue(argAsString);
+        return setStateValue(argAsString);
       }
     } catch (e) {
       console.log(e);
       alert("not serializable");
-      return setValue(argAsString);
+      return setStateValue(argAsString);
     }
-    setArg(parsedValue);
+    changeTestCase({ parsedValue });
   };
 
   return (
     <div className="flex flex-col">
-      <div className="pt-2 text-xs font-medium">{name} =</div>
+      {name ? <div className="pt-2 text-xs font-medium">{name} =</div> : null}
       <div className="mt-2 h-8 cursor-text rounded-lg border border-solid">
         <input
           type="text"
           className="h-full w-full appearance-none bg-inherit p-2"
           onChange={(e) => handleEdit(e.target.value)}
           onBlur={checkIfSerializable}
-          value={value}
-          disabled={disabled}
+          value={stateValue}
         />
       </div>
     </div>

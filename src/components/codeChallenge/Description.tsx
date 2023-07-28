@@ -1,10 +1,9 @@
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
-import { type Problem } from "~/server/api/root";
+import { useProblem } from "~/context/ProblemContext";
 
-type Props = { problem: NonNullable<Problem> };
-
-export default function Description({ problem }: Props) {
+export default function Description() {
+  const { problem } = useProblem();
   return (
     <div className="flex flex-col overflow-auto">
       <div className="flex flex-1 flex-col">

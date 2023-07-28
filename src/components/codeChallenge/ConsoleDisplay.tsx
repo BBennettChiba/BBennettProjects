@@ -58,14 +58,20 @@ export default function ConsoleDisplay(props: Props) {
     setSelected(testCases.length);
   };
 
-  const setArg = (
-    parsedValue: unknown,
-    argIndex: number,
-    caseIndex: number
-  ) => {
+  const changeTestCase = ({
+    parsedValue,
+    caseIndex,
+    argIndex,
+  }: {
+    parsedValue: unknown;
+    argIndex?: number;
+    caseIndex: number;
+  }) => {
+    const isArg = !!argIndex;
     setTestCases((t) => {
       const testCasesCopy = [...t];
-      testCasesCopy[caseIndex]!.args[argIndex] = parsedValue;
+      if (isArg) testCasesCopy[caseIndex]!.args[argIndex] = parsedValue;
+      else testCasesCopy[caseIndex]!.answer = parsedValue;
       return testCasesCopy;
     });
   };
@@ -122,16 +128,17 @@ export default function ConsoleDisplay(props: Props) {
           ) : null}
         </div>
       </div>
-      {testCases.map((c, i) => (
+      {testCases.map((cas, caseIndex) => (
         <Case
-          key={i}
-          visible={selected === i}
-          cas={c}
+          key={caseIndex}
+          type={isProblem ? "test" : "result"}
+          isVisible={selected === caseIndex}
+          cas={cas}
           argNames={argNames}
-          disabled={i < cases.length}
-          output={outputs ? outputs[i] : null}
-          setArg={(parsedValue: unknown, argIndex: number) =>
-            setArg(parsedValue, argIndex, i)
+          disabled={!isProblem || caseIndex < cases.length}
+          output={outputs ? outputs[caseIndex] : undefined}
+          changeTestCase={(parsedValue: unknown, argIndex?: number) =>
+            changeTestCase({ parsedValue, argIndex, caseIndex })
           }
         />
       ))}

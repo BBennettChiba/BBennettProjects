@@ -1,54 +1,68 @@
-import Arg from "./Arg";
+import DisabledLabel from "./DisabledLabel";
+import EnabledLabel from "./EnabledLabel";
 
-type Props = {
+type BaseProps = {
   cas: { args: unknown[]; answer: unknown };
   argNames: string[];
-  output: unknown | null;
-  visible: boolean;
-  setArg: (parsedValue: unknown, argIndex: number) => void;
+  isVisible: boolean;
+  changeTestCase: ({
+    parsedValue,
+    argIndex,
+  }: {
+    parsedValue: unknown;
+    argIndex?: number;
+  }) => void;
   disabled: boolean;
 };
 
-export const Case = ({
-  cas,
-  argNames,
-  output,
-  visible,
-  setArg,
-  disabled,
-}: Props) => (
-  <div className={`${visible ? "" : "hidden"}`}>
-    <div className="mt-4 text-xs font-medium">
-      <div className="text-xs font-medium">Input</div>
-      <div className="ml-4 mt-2 rounded-md bg-slate-700 p-2">
-        {cas.args.map((arg, j) => (
-          <Arg
-            key={j}
-            name={argNames[j]!}
-            arg={arg}
-            setArg={(parsedValue: unknown) => setArg(parsedValue, j)}
-            disabled={disabled}
-          />
-        ))}
-      </div>
-    </div>
-    <div className="mt-4">
-      <div className="text-xs font-medium ">Expected output =</div>
-      <div className="flex flex-col">
-        <div className="mt-2 cursor-text rounded-lg border border-solid  bg-slate-700 px-3 py-3">
-          <div>{JSON.stringify(cas.answer)}</div>
+type TestProps = BaseProps & { type: "test" };
+type ResultProps = BaseProps & { type: "result"; output: unknown };
+
+type Props = TestProps | ResultProps;
+
+export const Case = (props: Props) => {
+  const { type, cas, argNames, isVisible, changeTestCase, disabled } = props;
+  const output = type === "result" ? props.output : undefined;
+  return (
+    <div className={`${isVisible ? "" : "hidden"}`}>
+      <div className="mt-4 text-xs font-medium">
+        <div className="text-xs font-medium">Input</div>
+        <div className="ml-4 mt-2 rounded-md bg-slate-700 p-2">
+          {cas.args.map((arg, argIndex) =>
+            disabled ? (
+              <DisabledLabel key={argIndex} value={arg} />
+            ) : (
+              <EnabledLabel
+                key={argIndex}
+                name={argNames[argIndex]}
+                value={arg}
+                changeTestCase={(parsedValue: unknown) =>
+                  changeTestCase({ parsedValue, argIndex })
+                }
+              />
+            )
+          )}
         </div>
       </div>
-    </div>
-    {output ? (
       <div className="mt-4">
-        <div className="text-xs font-medium">Actual Output</div>
-        <div className="flex flex-col">
-          <div className="mt-2 cursor-text rounded-lg border border-solid  bg-slate-700 px-3 py-3">
-            <div>{JSON.stringify(output)}</div>
-          </div>
-        </div>
+        <div className="text-xs font-medium ">Expected output =</div>
+        {disabled ? (
+          <DisabledLabel value={cas.answer} />
+        ) : (
+          <EnabledLabel
+            value={cas.answer}
+            changeTestCase={({ parsedValue }: { parsedValue: unknown }) =>
+              changeTestCase({ parsedValue })
+            }
+          />
+        )}
       </div>
-    ) : null}
-  </div>
-);
+      {type === "result" ? (
+        <div className="mt-4">
+          <div className="text-xs font-medium">Actual Output</div>
+          <DisabledLabel value={output || "undefined"} />
+        </div>
+      ) : null}
+    </div>
+  );
+};

@@ -7,28 +7,22 @@ import Split from "react-split";
 import superjson from "superjson";
 import CodeEditor from "~/components/codeChallenge/CodeEditor";
 import Description from "~/components/codeChallenge/Description";
+import { ProblemContextProvider } from "~/context/ProblemContext";
 import { appRouter } from "~/server/api/root";
 import { createInnerTRPCContext } from "~/server/api/trpc";
-import { api } from "~/utils/api";
-import { raise } from "~/utils/client";
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export default function Problem({ id }: Props) {
-  const { data: problem } = api.problem.get.useQuery(id);
-  if (!problem) return raise("Problem not found");
-
-  return (
-    <Split
-      className="flex h-[calc(100vh-8rem)]"
-      gutterSize={10}
-      gutterAlign="center"
-    >
-      <Description problem={problem} />
-      <CodeEditor problem={problem} />
-    </Split>
-  );
-}
+const Problem = () => (
+  <Split
+    className="flex h-[calc(100vh-8rem)]"
+    gutterSize={10}
+    gutterAlign="center"
+  >
+    <Description />
+    <CodeEditor />
+  </Split>
+);
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext<{ id: string }>
@@ -48,3 +42,10 @@ export const getServerSideProps = async (
     },
   };
 };
+export default function ProblemWithContext({ id }: Props) {
+  return (
+    <ProblemContextProvider id={id}>
+      <Problem />
+    </ProblemContextProvider>
+  );
+}

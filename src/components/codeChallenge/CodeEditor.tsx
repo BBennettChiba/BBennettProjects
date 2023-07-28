@@ -8,18 +8,15 @@ import { FaRetweet } from "react-icons/fa";
 import Split from "react-split";
 import { transpile } from "typescript";
 import Console from "./Console";
-import { type Problem } from "~/server/api/root";
+import { useProblem } from "~/context/ProblemContext";
 import { type Results } from "~/utils/problems";
-
-type Props = {
-  problem: NonNullable<Problem>;
-};
 
 type View = "ts" | "js";
 
 type Test = { args: [number[], number]; answer: [number, number] };
 
-export default function CodeEditor({ problem }: Props) {
+export default function CodeEditor() {
+  const { problem } = useProblem();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [codeView, setCodeView] = useState<View>("ts");
   const [tsCode, setTsCode] = useState(problem.starterCode);

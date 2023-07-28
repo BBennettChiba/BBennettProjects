@@ -133,23 +133,24 @@ export const PostContextProvider = ({ children, id: postId }: Props) => {
       );
     },
   });
-
+  
+  post
   if (status === "loading") return <div>loading</div>;
   if (status === "error") return <div>error</div>;
-
+  
   return (
     <PostContext.Provider
-      value={{
-        post,
-        commentsByParentId,
-        rootComments: commentsByParentId.get(null) || [],
-        createCommentMutation,
-        editCommentMutation,
-        commentDeleteMutation: deleteCommentMutation,
-        toggleLikeMutation,
-        deletePostMutation,
-        updatePostMutation,
-      }}
+    value={{
+      post,
+      commentsByParentId,
+      rootComments: commentsByParentId.get(null) || [],
+      createCommentMutation,
+      editCommentMutation,
+      commentDeleteMutation: deleteCommentMutation,
+      toggleLikeMutation,
+      deletePostMutation,
+      updatePostMutation,
+    }}
     >
       {children}
     </PostContext.Provider>
