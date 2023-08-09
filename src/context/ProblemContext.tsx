@@ -1,4 +1,5 @@
 import assert from "assert";
+import debounce from "lodash.debounce";
 import {
   type ReactNode,
   createContext,
@@ -7,8 +8,10 @@ import {
   type Dispatch,
   type SetStateAction,
   useEffect,
+  useMemo,
+  useRef,
 } from "react";
-import { transpile } from "typescript";
+import { virtualTS } from "../utils/client";
 import { api } from "~/utils/api";
 import { type Problem } from "~/utils/problems";
 import { type Results } from "~/utils/problems";
@@ -37,7 +40,27 @@ export const useProblem = () => useContext<Context>(ProblemContext);
 export const ProblemContextProvider = ({ children, id: problemId }: Props) => {
   const { data: problem, status } = api.problem.get.useQuery(problemId);
   const [tsCode, setTSCode] = useState("");
-  const jsCode = transpile(tsCode, { target: 2 });
+  const [jsCode, setJsCode] = useState("");
+  const tsEnv = useRef<Awaited<typeof virtualTS>["env"] | null>(null);
+
+  const debounced = useMemo(
+    () =>
+      debounce(() => {
+        console.log(
+          " in env ",
+          tsEnv.current?.languageService.getEmitOutput("index.ts")
+            .outputFiles[0]?.text
+        );
+        setJsCode(
+          tsEnv.current?.languageService.getEmitOutput("index.ts")
+            .outputFiles[0]?.text || ""
+        );
+      }, 500),
+    []
+  );
+
+  debounced();
+
   const [tests, setTests] = useState<Test[]>([{ args: [], answer: null }]);
 
   useEffect(() => {
@@ -46,8 +69,22 @@ export const ProblemContextProvider = ({ children, id: problemId }: Props) => {
     setTests(problem.examples.map((e) => e.test));
   }, [problem]);
 
-  // const client = useQueryClient();
-  // const queryKey = [["problem", "get"], { input: problemId, type: "query" }];
+  useEffect(() => {
+    virtualTS
+      .then(({ env }) => (tsEnv.current = env))
+      .catch((e) => console.log(e));
+  }, []);
+
+  useEffect(() => {
+    if (!tsEnv.current) return;
+    const env = tsEnv.current;
+    const sourceFile = env.getSourceFile("index.ts");
+    if (!sourceFile) {
+      console.log("no source file");
+      return;
+    }
+    env.updateFile("index.ts", tsCode);
+  }, [tsCode]);
 
   if (status === "error") return <div>error</div>;
   if (status === "loading") return <div>loading</div>;

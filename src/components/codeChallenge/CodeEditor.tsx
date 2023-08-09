@@ -11,7 +11,7 @@ import { useProblem } from "~/context/ProblemContext";
 type View = "ts" | "js";
 
 export default function CodeEditor() {
-  const { problem, tsCode, setTSCode, jsCode } = useProblem();
+  const { tsCode, setTSCode, jsCode } = useProblem();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [codeView, setCodeView] = useState<View>("ts");
 
@@ -45,7 +45,7 @@ export default function CodeEditor() {
           <button className="h-full">
             <FaCog className="hover:scale-125" size={20} />
           </button>
-          <button className="pr-4">
+          <button className="pr-4" onClick={() => setIsFullscreen((f) => !f)}>
             {isFullscreen ? (
               <AiOutlineFullscreenExit size={20} className="hover:scale-125" />
             ) : (

@@ -4,7 +4,7 @@ import { raise } from "~/utils/client";
 import { type Results } from "~/utils/problems";
 
 type Props = {
-  results: Results;
+  results: Results | null;
 };
 
 const isSuccessful = (arr: { success: boolean }[], index: number) => {
@@ -16,13 +16,18 @@ const isSuccessful = (arr: { success: boolean }[], index: number) => {
 export default function ResultDisplay({ results }: Props) {
   const [selected, setSelected] = useState(0);
 
-  const argNames = results.argNames;
-
-  const testResults = results.testResults;
-
+  const testResults = results?.testResults || [];
   const cases = testResults.map((r) => r.input);
-
   const [testCases, setTestCases] = useState(cases);
+
+  if (!results)
+    return (
+      <div className="flex h-full flex-1 items-center justify-center">
+        <div>Please Run</div>
+      </div>
+    );
+
+  const argNames = results.argNames;
 
   const outputs = testResults.map((r) => r.output);
 

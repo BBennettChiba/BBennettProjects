@@ -18,8 +18,9 @@
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"]
-    }
+      "~/*": ["./src/*"],
+    },
+    "moduleDetection": "auto"
   },
   "include": [
     ".eslintrc.cjs",

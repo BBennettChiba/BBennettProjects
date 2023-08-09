@@ -24,7 +24,6 @@ export default function EnabledLabel({
     let parsedValue: unknown;
     try {
       parsedValue = JSON.parse(stateValue);
-      console.log(parsedValue);
       if (typeof parsedValue !== typeOfArg) {
         alert("invalid type");
         return setStateValue(argAsString);

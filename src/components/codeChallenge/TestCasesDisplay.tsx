@@ -4,7 +4,6 @@ import { useProblem } from "~/context/ProblemContext";
 
 export default function ConsoleDisplay() {
   const { problem, tests, setTests } = useProblem();
-  console.log(tests);
 
   const [selected, setSelected] = useState(0);
 
@@ -38,8 +37,7 @@ export default function ConsoleDisplay() {
     argIndex?: number;
     caseIndex: number;
   }) => {
-    const isArg = !!argIndex;
-    console.log(parsedValue, caseIndex, argIndex, isArg);
+    const isArg = argIndex !== undefined;
     setTests((t) => {
       const testCasesCopy = [...t];
       if (isArg) testCasesCopy[caseIndex]!.args[argIndex] = parsedValue;

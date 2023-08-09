@@ -1,9 +1,61 @@
+import {
+  createSystem,
+  createVirtualTypeScriptEnvironment,
+  // createVirtualCompilerHost,
+  createDefaultMapFromCDN,
+} from "@typescript/vfs";
+import ts from "typescript";
+
+const start = async () => {
+  const shouldCache = true;
+  // This caches the lib files in the site's localStorage
+  const fsMap = await createDefaultMapFromCDN(
+    compilerOpts,
+    ts.version,
+    shouldCache,
+    ts
+  );
+
+  fsMap.set("index.ts", "const hello = 'hi'");
+  return fsMap;
+};
+
+const compilerOpts = {
+  target: 3,
+};
+
+export const virtualTS = start().then((fsMap) => {
+  const system = createSystem(fsMap);
+
+  // const host = createVirtualCompilerHost(system, compilerOpts, ts);
+
+  // const program = ts.createProgram({
+  //   rootNames: [...fsMap.keys()],
+  //   options: compilerOpts,
+  //   host: host.compilerHost,
+  // });
+
+  // This will update the fsMap with new files
+  // for the .d.ts and .js files
+  // program.emit();
+
+  const env = createVirtualTypeScriptEnvironment(
+    system,
+    ["index.ts"],
+    ts,
+    compilerOpts
+  );
+  return { env };
+});
+
 export const IS_SERVER = typeof window === "undefined";
+
 export const getProtocol = () => {
   const isProd = process.env.VERCEL_ENV === "production";
   if (isProd) return "https://";
   return "http://";
 };
+
 export const getAbsoluteUrl = (): string => {
   //get absolute url in client/browser
   if (!IS_SERVER) {

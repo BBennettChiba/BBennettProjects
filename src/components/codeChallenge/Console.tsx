@@ -7,7 +7,7 @@ import { type Results } from "~/utils/problems";
 type Display = "test cases" | "results";
 
 export default function Console() {
-  const { problem, runCode, tests } = useProblem();
+  const { runCode, tests } = useProblem();
   const [display, setDisplay] = useState<Display>("test cases");
   const [results, setResults] = useState<null | Results>(null);
 
@@ -32,7 +32,10 @@ export default function Console() {
         </a>
 
         <button
-          onClick={() => setResults(runCode(tests))}
+          onClick={() => {
+            setResults(runCode(tests));
+            setDisplay("results");
+          }}
           className="btn btn-accent btn-xs ml-auto mr-3"
         >
           run
