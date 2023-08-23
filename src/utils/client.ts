@@ -1,3 +1,4 @@
+import { isServer } from "@tanstack/react-query";
 import {
   createSystem,
   createVirtualTypeScriptEnvironment,
@@ -7,6 +8,7 @@ import {
 import ts from "typescript";
 
 const start = async () => {
+  if (isServer) return null;
   const shouldCache = true;
   // This caches the lib files in the site's localStorage
   const fsMap = await createDefaultMapFromCDN(
@@ -25,6 +27,7 @@ const compilerOpts = {
 };
 
 export const virtualTS = start().then((fsMap) => {
+  if (!fsMap) return null;
   const system = createSystem(fsMap);
 
   // const host = createVirtualCompilerHost(system, compilerOpts, ts);

@@ -1,47 +1,63 @@
+import Image from "next/image";
 import { useEffect, useState } from "react";
+
+const sources = ["/me.jpg", "/fountain.jpg", "/vatican.jpg"] as const;
 
 export default function AboutMe() {
   const [current, setCurrent] = useState(0);
-  const sources = ["/me.jpg", "/fountain.jpg", "/vatican.jpg"];
   useEffect(() => {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       const next = current >= sources.length - 1 ? 0 : current + 1;
       setCurrent(next);
     }, 5000);
+    return () => clearTimeout(timeout);
   }, [current]);
 
   return (
-    <div className="h-screen snap-start bg-red-500">
-      <div>
-        <div>
-          <img src={sources[current]} alt="me" />
+    <div className="h-screen snap-start bg-rose-600">
+      <div className="flex h-full">
+        <div className="flex flex-1 items-center justify-center overflow-y-auto overflow-x-hidden ">
+          <div
+            className="flex items-end overflow-y-auto overflow-x-hidden rounded-full border-[5px] border-black bg-white"
+            style={{
+              borderStyle: "ridge",
+            }}
+          >
+            <Image
+              height={320}
+              width={320}
+              className="overflow-hidden"
+              src={sources[current] || "/me.jpg"}
+              alt="me travelling"
+            />
+          </div>
         </div>
-      </div>
-      <div>
-        <h1 style={{ fontSize: "6vw", width: "100%", overflow: "hidden" }}>
-          About me
-        </h1>
-        <div style={{ fontSize: "20px" }}>
-          <br />
-          <br />
-          <br />
-          <p>
-            I&apos;m a fullstack developer living in Chiba Japan. Reading books
-            in English and Japanese is my main joy in life. I&apos;m particular
-            to Malazan Book of the Fallen, Lord of the Rings, Hyperion, Haruki
-            Murakami and other SFF classics. With some friends, I talk about
-            books on my main hobby my&nbsp;
-            <a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjHhKTOusbwAhWNFIgKHbIBBZYQFjAAegQIBhAD&url=https%3A%2F%2Fopen.spotify.com%2Fshow%2F7y28T1qUAaZAM75F4Yd1iN&usg=AOvVaw0huy9OuTbDV1nrDIi1ahWi">
-              podcast
-            </a>
-            , I am also a gamer, particularly RPGs both Japanese and Western
-            like The Witcher and Nier. I have created a few games myself using
-            Unity and C# and plan to continue. I&apos;ve lived in Japan for 7
-            years I moved here after graduating from the University of Kansas
-            with a major in East Asian Languages and Culture. Go Jayhawks.
-            I&apos;m a fast efficient learner who likes the challenge and
-            problem solving that hacking requires.
-          </p>
+        <div className="flex h-full flex-1 flex-col items-center justify-center text-black">
+          <h1 className="text-7xl">About me</h1>
+          <div style={{ fontSize: "20px" }}>
+            <br />
+            <br />
+            <br />
+            <p>
+              I&apos;m a fullstack developer living in Chiba Japan. Reading
+              books in English and Japanese is my main joy in life. I&apos;m
+              particular to Malazan Book of the Fallen, Gene Wolfe, Hyperion,
+              Haruki Murakami and other SFF classics. With some friends, I talk
+              about books on my main hobby my&nbsp;
+              <a
+                className="text-blue-400"
+                href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjHhKTOusbwAhWNFIgKHbIBBZYQFjAAegQIBhAD&url=https%3A%2F%2Fopen.spotify.com%2Fshow%2F7y28T1qUAaZAM75F4Yd1iN&usg=AOvVaw0huy9OuTbDV1nrDIi1ahWi"
+              >
+                podcast
+              </a>
+              , I am also a gamer, particularly RPGs both Japanese and Western
+              like The Witcher and Nier. I&apos;ve lived in Japan for 10+ years
+              I moved here after graduating from the University of Kansas with a
+              major in East Asian Languages and Culture. Go Jayhawks. I&apos;m a
+              fast efficient learner who likes the challenge and problem solving
+              that software engineering requires.
+            </p>
+          </div>
         </div>
       </div>
     </div>
