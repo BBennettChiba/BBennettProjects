@@ -58,6 +58,7 @@ const config = {
     complexity: ["error", 20],
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": "error",
+    "@typescript-eslint/no-non-null-assertion": "off",
   },
 };
 

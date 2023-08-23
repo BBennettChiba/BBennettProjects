@@ -21,7 +21,7 @@ export default function Works() {
           <div className="flex flex-1">
             <div
               className={`flex h-full ${
-                current.video ? "w-full" : "w-3/4"
+                current.img ? "w-3/4" : "w-full"
               } flex-col`}
             >
               <h2 className="mt-6 text-3xl">{current.name}</h2>

@@ -25,9 +25,15 @@ import bookDetails from "/public/Book Details.jpg";
 import ownedBooks from "/public/Owned Books.jpg";
 import toRead from "/public/To Read.jpg";
 import { type StaticImageData } from "next/image";
+import trpc from "/public/trpc.svg";
+import prisma from "/public/prisma.png";
+import nextjs from "/public/nextjs.png";
+import tailwind from "/public/tailwind.png";
+import authjs from "/public/authjs.png";
+import Link from "next/link";
 
 const description = (info: Desc) => (
-  <p className="pt-4 text-xl leading-8">
+  <p className="whitespace-pre-wrap pt-4 text-xl leading-8">
     <span className="text-xl font-bold">{info.title}</span>
     <br />
     <br />
@@ -81,6 +87,72 @@ type Desc = {
 };
 
 const projects = [
+  {
+    name: "This Website",
+    description: (
+      <div className="whitespace-pre-wrap pt-4 text-xl leading-8">
+        <span className="text-xl font-bold">Full-Stack Solo-Project</span>
+        <br />
+        <br />
+        This app. If you click the hamburger menu at the top of the page you can
+        navigate to each project.
+        <br />
+        <ul className="list-disc space-y-4 pl-2">
+          <li>
+            <Link href="posts" className="text-blue-400">
+              Posts:
+            </Link>
+            A reddit-like post maker and comment system. Users must login with
+            Discord (plan to add other oauth credentials in future) to post and
+            write comments but they can see comments and posts without doing so.
+          </li>
+          <li>
+            <Link className="text-blue-400" href="spongeMock">
+              SpongeMock:
+            </Link>
+            Text mutator for MoCkInG YoUr EnEmIeS On ThE InTeRnEt. URL
+          </li>
+          <li>
+            <Link className="text-blue-400" href="urlShortener">
+              Shortener:
+            </Link>
+            A URL Shortener. Add a URL and click the button. You&apos;re sent to
+            a new page with the new shorter URL.
+          </li>
+          <li>
+            <Link className="text-blue-400" href="weather">
+              Weather:
+            </Link>
+            Uses an external weather API to give you your local weather
+            information. Just share location data.
+          </li>
+          <li>
+            <Link className="text-blue-400" href="codeChallenge">
+              Leet Clone:
+            </Link>
+            A Leet Code clone. I&apos;m most proud of this. Uses Typescript
+            Virtual File System. Can write your own tests and code. I hope to
+            add more challenges in the future. Now only TwoSum is available. Can
+            only use typescript to write code but you can see the transpiled
+            javascript if you click the arrows. Hope to add editor hints and
+            errors.
+          </li>
+        </ul>
+      </div>
+    ),
+    video: null,
+    front: "https://github.com/BBennettChiba/BBennettProjects",
+    img: null,
+    tech: [
+      typescript,
+      trpc as StaticImageData,
+      prisma,
+      nextjs,
+      tailwind,
+      authjs,
+      vercel,
+    ],
+  },
   {
     name: "YomiHomies",
     description: description(YHDes),
