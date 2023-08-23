@@ -45,15 +45,7 @@ export default function Console() {
         {display === "test cases" ? (
           <TestCasesDisplay />
         ) : (
-          <>
-            {results ? (
-              <ResultDisplay results={results} />
-            ) : (
-              <div className="flex h-full flex-1 items-center justify-center">
-                <div>Please Run</div>
-              </div>
-            )}
-          </>
+          <ResultDisplay results={results} />
         )}
       </div>
     </div>

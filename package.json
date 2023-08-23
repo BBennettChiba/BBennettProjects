@@ -13,10 +13,7 @@
     "db:push:prod": "dotenv -e .env.prod prisma db push",
     "db:seed": "dotenv -e .env.local prisma db seed",
     "vercel-build": "prisma generate && prisma migrate deploy && next build",
-    "db:studio": "dotenv -e.env.local prisma studio",
-    "test": "vitest",
-    "test:ci": "vitest run",
-    "coverage": "vitest run --coverage"
+    "db:studio": "dotenv -e.env.local prisma studio"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.1.9",
@@ -57,7 +54,6 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.9",
-    "@testing-library/react": "^14.0.0",
     "@types/eslint": "^8.37.0",
     "@types/node": "^18.16.0",
     "@types/prettier": "^2.7.2",
@@ -77,8 +73,7 @@
     "prisma": "^4.14.0",
     "pythagora": "^0.0.71",
     "tailwindcss": "^3.3.3",
-    "tsx": "^3.12.7",
-    "vitest": "^0.32.2"
+    "tsx": "^3.12.7"
   },
   "ct3aMetadata": {
     "initVersion": "7.13.1"

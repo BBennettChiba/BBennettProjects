@@ -45,17 +45,14 @@ export const ProblemContextProvider = ({ children, id: problemId }: Props) => {
 
   const debounced = useMemo(
     () =>
-      debounce(() => {
-        console.log(
-          " in env ",
-          tsEnv.current?.languageService.getEmitOutput("index.ts")
-            .outputFiles[0]?.text
-        );
-        setJsCode(
-          tsEnv.current?.languageService.getEmitOutput("index.ts")
-            .outputFiles[0]?.text || ""
-        );
-      }, 500),
+      debounce(
+        () =>
+          setJsCode(
+            tsEnv.current?.languageService.getEmitOutput("index.ts")
+              .outputFiles[0]?.text || ""
+          ),
+        500
+      ),
     []
   );
 
