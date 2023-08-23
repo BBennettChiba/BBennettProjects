@@ -24,10 +24,11 @@ import truckstop from "/public/truckStop.png";
 import bookDetails from "/public/Book Details.jpg";
 import ownedBooks from "/public/Owned Books.jpg";
 import toRead from "/public/To Read.jpg";
+import { type StaticImageData } from "next/image";
 
 const description = (info: Desc) => (
-  <p>
-    {info.title}
+  <p className="pt-4 text-xl leading-8">
+    <span className="text-xl font-bold">{info.title}</span>
     <br />
     <br />
     {info.data}
@@ -98,7 +99,7 @@ const projects = [
       amplify,
       appsync,
       cognito,
-      dynamodb,
+      dynamodb as StaticImageData,
       graphql,
       node,
       reactnative,
@@ -127,7 +128,15 @@ const projects = [
     video: null,
     front: "https://github.com/BBennettChiba/ReactNativeBookRecords",
     img: [bookDetails, ownedBooks, toRead],
-    tech: [amplify, appsync, cognito, dynamodb, graphql, node, reactnative],
+    tech: [
+      amplify,
+      appsync,
+      cognito,
+      dynamodb as StaticImageData,
+      graphql,
+      node,
+      reactnative,
+    ],
   },
   {
     name: "Emulators and Computer Science",
