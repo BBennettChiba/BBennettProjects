@@ -1,3 +1,30 @@
+import chat from "/public/Chat.png";
+import edit_profile from "/public/Edit Profile.jpg";
+import homies_page from "/public/Homies Page.jpg";
+import made_a_match from "/public/Made a Match.jpg";
+import profile_page from "/public/Profile Page.jpg";
+import swipe_page from "/public/Swipe page.jpg";
+import typescript from "/public/typescript.png";
+import amplify from "/public/amplify.png";
+import appsync from "/public/appsync.png";
+import cognito from "/public/cognito.png";
+import dynamodb from "/public/dynamodb.svg";
+import graphql from "/public/graphql.png";
+import node from "/public/node.png";
+import reactnative from "/public/reactnative.png";
+import garbagemonster from "/public/garbage monster.png";
+import heroku from "/public/heroku.png";
+import mymizu from "/public/mymizu.png";
+import postgres from "/public/postgres.png";
+import typeorm from "/public/typeorm.png";
+import vercel from "/public/vercel.png";
+import react from "/public/react.png";
+import vue from "/public/vue.png";
+import truckstop from "/public/truckStop.png";
+import bookDetails from "/public/Book Details.jpg";
+import ownedBooks from "/public/Owned Books.jpg";
+import toRead from "/public/To Read.jpg";
+
 const description = (info: Desc) => (
   <p>
     {info.title}
@@ -59,22 +86,22 @@ const projects = [
     video: null,
     front: "https://github.com/Book-Meet/YomiHomies",
     img: [
-      "/Chat.png",
-      "/Edit Profile.jpg",
-      "/Homies Page.jpg",
-      "/Made a Match.jpg",
-      "/Profile Page.jpg",
-      "/Swipe page.jpg",
+      chat,
+      edit_profile,
+      homies_page,
+      made_a_match,
+      profile_page,
+      swipe_page,
     ],
     tech: [
-      "/typescript.png",
-      "/amplify.png",
-      "/appsync.png",
-      "/cognito.png",
-      "/dynamodb.svg",
-      "/graphql.png",
-      "/node.png",
-      "/reactnative.png",
+      typescript,
+      amplify,
+      appsync,
+      cognito,
+      dynamodb,
+      graphql,
+      node,
+      reactnative,
     ],
   },
   {
@@ -83,46 +110,24 @@ const projects = [
     video: null,
     front: "https://github.com/Shinji-Nishikita/team-project-mymizu-front",
     back: "https://github.com/Shinji-Nishikita/team-project-mymizu-back",
-    img: ["/garbage monster.png"],
-    tech: [
-      "/heroku.png",
-      "/mymizu.png",
-      "/node.png",
-      "/postgres.png",
-      "/react.png",
-      "/typeorm.png",
-      "/vercel.png",
-    ],
+    img: [garbagemonster],
+    tech: [heroku, mymizu, node, postgres, react, typeorm, vercel],
   },
   {
     name: "Go React",
     description: description(GRDes),
     video: null,
     front: "https://github.com/BBennettChiba/go-react",
-    img: ["/truckStop.png"],
-    tech: [
-      "/vue.png",
-      "/node.png",
-      "/heroku.png",
-      "/typeorm.png",
-      "/postgres.png",
-    ],
+    img: [truckstop],
+    tech: [vue, node, heroku, typeorm, postgres],
   },
   {
     name: "React Native Book Records",
     description: description(RNBRDes),
     video: null,
     front: "https://github.com/BBennettChiba/ReactNativeBookRecords",
-    img: ["/Book Details.jpg", "/Owned Books.jpg", "/To Read.jpg"],
-    tech: [
-      "/amplify.png",
-      "/appsync.png",
-      "/cognito.png",
-      "/dynamodb.svg",
-      "/graphql.png",
-      "/node.png",
-      "/reactnative.png",
-    ],
+    img: [bookDetails, ownedBooks, toRead],
+    tech: [amplify, appsync, cognito, dynamodb, graphql, node, reactnative],
   },
   {
     name: "Emulators and Computer Science",

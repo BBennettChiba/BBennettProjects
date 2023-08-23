@@ -20,7 +20,7 @@ export default function Intro() {
   return (
     <div className="flex h-[calc(100vh-64px)] snap-start bg-white">
       <div className="m-auto w-1/2">
-        <div className="m-auto h-[50vh] w-[50vh] overflow-hidden rounded-full bg-red-500 object-cover">
+        <div className="m-auto h-[50vh] w-[50vh] overflow-hidden rounded-full bg-rose-600 object-cover">
           <Image
             src="/me.png"
             width={458}

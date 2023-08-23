@@ -1,0 +1,176 @@
+.box {
+  height: 80%;
+  width: 70%;
+  @media only screen and (max-width: 400px) {
+    height: 90%;
+    width: 90%;
+  }
+}
+
+.video {
+  flex-direction: column !important;
+}
+.choices {
+  cursor: pointer;
+  font-family: "Permanent Marker", cursive;
+  overflow: hidden;
+  width: 100%;
+  height: 10%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.project {
+  overflow: hidden;
+  border: solid grey;
+  width: 25%;
+  height: 90%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  font-size: 15px;
+  flex-direction: column;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+
+  @media only screen and (max-width: 400px) {
+    font-size: 9px;
+  }
+}
+.project:hover {
+  background-color: grey;
+}
+
+.vid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  width: 70%;
+  height: 70%;
+  @media only screen and (max-width: 400px) {
+    width: 100%;
+    height: 80%;
+  }
+}
+.vid > iframe {
+  @media only screen and (max-width: 400px) {
+    height: 50%;
+    width: 90%;
+  }
+  width: clamp(60%, 70%, 80%);
+  height: 100%;
+}
+
+.right > .img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  @media only screen and (max-width: 400px) {
+    width: 100%;
+  }
+}
+
+.arrow {
+  width: 11%;
+  font-size: 40px;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+.arrow:hover {
+  font-weight: 800;
+}
+
+.thisDiv {
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.thisDiv > .img {
+  width: 78%;
+  height: 78%;
+  object-fit: contain;
+  @media only screen and (max-width: 400px) {
+    width: 50%;
+    height: 80%;
+  }
+}
+
+.right {
+  width: 30%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  @media only screen and (max-width: 400px) {
+    width: 100%;
+    height: 60%;
+  }
+}
+.title {
+  font-family: "Permanent Marker", cursive;
+  overflow: hidden;
+  font-size: 30px;
+  @media only screen and (max-width: 400px) {
+    font-size: 15px;
+  }
+}
+.left > p {
+  font-family: "Texturina", serif;
+  font-size: 1.3vw;
+  align-self: center;
+  padding-bottom: 20px;
+  @media only screen and (max-width: 400px) {
+    font-size: 10.5px;
+  }
+}
+.left {
+  @media only screen and (max-width: 400px) {
+    //background-color: blue;
+    //flex-direction: column;
+    width: 100%;
+  }
+
+  //margin-left: 20px;
+  font-size: 15px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.techStack {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  width: 100%;
+
+  overflow: hidden;
+  @media only screen and (max-width: 400px) {
+    //justify-content: space-around;
+    margin-bottom: 0;
+  }
+}
+.techStack > h2 {
+  @media only screen and (max-width: 400px) {
+    font-size: 10px;
+  }
+  align-self: center;
+}
+
+.techStack > img {
+  padding-left: 5px;
+  padding-right: 5px;
+  height: 50px;
+  align-self: flex-end;
+  object-fit: contain;
+  @media only screen and (max-width: 400px) {
+    height: 20px;
+  }
+}
