@@ -41,7 +41,7 @@ export const ProblemContextProvider = ({ children, id: problemId }: Props) => {
   const { data: problem, status } = api.problem.get.useQuery(problemId);
   const [tsCode, setTSCode] = useState("");
   const [jsCode, setJsCode] = useState("");
-  const tsEnv = useRef<Awaited<typeof virtualTS>["env"] | null>(null);
+  const tsEnv = useRef<Awaited<typeof virtualTS> | null>(null);
 
   const debounced = useMemo(
     () =>
@@ -67,9 +67,7 @@ export const ProblemContextProvider = ({ children, id: problemId }: Props) => {
   }, [problem]);
 
   useEffect(() => {
-    virtualTS
-      .then(({ env }) => (tsEnv.current = env))
-      .catch((e) => console.log(e));
+    virtualTS.then((env) => (tsEnv.current = env)).catch((e) => console.log(e));
   }, []);
 
   useEffect(() => {

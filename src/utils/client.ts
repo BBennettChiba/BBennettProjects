@@ -48,7 +48,7 @@ export const virtualTS = start().then((fsMap) => {
     ts,
     compilerOpts
   );
-  return { env };
+  return env;
 });
 
 export const IS_SERVER = typeof window === "undefined";
