@@ -6,7 +6,6 @@ type Props = {
 };
 
 /**
- * @TODO fix cancel flicker on second page
  * @TODO add email functionality
  */
 
@@ -16,7 +15,7 @@ export default function RateMe({ toggleModal }: Props) {
 
   const toggle = () => {
     toggleModal();
-    setPage(0);
+    setTimeout(() => setPage(0), 100);
   };
 
   const submit = (e: MouseEvent<HTMLButtonElement>) => {
@@ -57,7 +56,7 @@ export default function RateMe({ toggleModal }: Props) {
                   readOnly
                 />
                 <input
-                readOnly
+                  readOnly
                   checked={rating === 2}
                   type="radio"
                   name="rating-2"
@@ -65,7 +64,7 @@ export default function RateMe({ toggleModal }: Props) {
                   onClick={() => setRating(2)}
                 />
                 <input
-                readOnly
+                  readOnly
                   checked={rating === 3}
                   type="radio"
                   name="rating-2"
@@ -73,7 +72,7 @@ export default function RateMe({ toggleModal }: Props) {
                   onClick={() => setRating(3)}
                 />
                 <input
-                readOnly
+                  readOnly
                   checked={rating === 4}
                   type="radio"
                   name="rating-2"
@@ -81,7 +80,7 @@ export default function RateMe({ toggleModal }: Props) {
                   onClick={() => setRating(4)}
                 />
                 <input
-                readOnly
+                  readOnly
                   checked={rating === 5}
                   type="radio"
                   name="rating-2"

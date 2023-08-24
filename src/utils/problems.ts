@@ -15,7 +15,6 @@ export type Test = {
   answer: unknown;
 };
 
-/**@TODO add ability for users to write their own checks */
 const twoSumHandler = (
   fn: (...args: unknown[]) => unknown,
   ass: typeof assert,

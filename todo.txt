@@ -1,0 +1,6 @@
+migrate to drizzle
+add problems to db
+add more providers
+add email functionality
+move to app router
+better non-user experience in posts

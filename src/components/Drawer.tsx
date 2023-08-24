@@ -44,4 +44,3 @@ export default function Drawer({ setIsChecked }: Props) {
   );
 }
 
-/**@todo fix tailwind drawer animation bug */

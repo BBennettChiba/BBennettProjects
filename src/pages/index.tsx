@@ -4,8 +4,6 @@ import AboutMe from "~/components/AboutMe";
 import Intro from "~/components/Intro";
 import Works from "~/components/Works";
 
-/**@TODO make this my landing page */
-
 const Home: NextPage = () => (
   <>
     <Head>
