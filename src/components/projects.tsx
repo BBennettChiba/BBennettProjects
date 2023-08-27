@@ -31,13 +31,82 @@ import nextjs from "/public/nextjs.png";
 import tailwind from "/public/tailwind.png";
 import authjs from "/public/authjs.png";
 import Link from "next/link";
+import { useState } from "react";
+
+const thisWebsiteContent = [
+  {
+    title: "Posts",
+    content: `A reddit-like post maker and comment system. Users must login with Discord (plan to add other oauth credentials in future) to post and write comments but they can see comments and posts without doing so.`,
+  },
+  {
+    title: "SpongeMock",
+    content: "Text mutator for MoCkInG YoUr EnEmIeS On ThE InTeRnEt. URL",
+  },
+
+  {
+    title: "Shortener",
+    content:
+      "A URL Shortener. Add a URL and click the button. You&apos;re sent to a new page with the new shorter URL",
+  },
+  {
+    title: "Weather",
+    content:
+      "Uses an external weather API to give you your local weather information. Just share location data.",
+  },
+  {
+    title: "Leet Clone",
+    content:
+      "A Leet Code clone. I&apos;m most proud of this. Uses Typescript Virtual File System. Can write your own tests and code. I hope to add more challenges in the future. Now only TwoSum is available. Can only use typescript to write code but you can see the transpiled javascript if you click the arrows. Hope to add editor hints and errors.",
+  },
+];
+
+const ThisWebsite = () => {
+  const [active, setActive] = useState(0);
+  return (
+    <div className="whitespace-pre-wrap pt-4 text-xl leading-8">
+      <span className="text-md font-bold lg:text-xl">
+        Full-Stack Solo-Project
+      </span>
+      <br />
+      <p className="text-sm lg:text-xl">
+        *This app*. If you click the hamburger menu at the top of the page you
+        can navigate to each project.
+      </p>
+      <div className="hidden lg:block">
+        {thisWebsiteContent.map(({ title, content }, i) => (
+          <div key={i} className="collapse-plus collapse">
+            <input type="radio" defaultChecked name="my-accordian-3" />
+            <div className="collapse-title max-h-10">{title}</div>
+            <div className="collapse-content text-sm">{content}</div>
+          </div>
+        ))}
+      </div>
+      <div className="lg:hidden">
+        <div className="tabs tabs-boxed justify-around">
+          {thisWebsiteContent.map(({ title }, i) => (
+            <a
+              onClick={() => setActive(i)}
+              key={i}
+              className={`tab tab-lg ${active === i ? "tab-active" : ""}`}
+            >
+              {title}
+            </a>
+          ))}
+        </div>
+        {thisWebsiteContent.map(({ content }, i) => (
+          <div key={i} className={`${active !== i ? "hidden" : ""}`}>
+            {content}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const description = (info: Desc) => (
-  <p className="whitespace-pre-wrap pt-4 text-xl leading-8">
-    <span className="text-xl font-bold">{info.title}</span>
-    <br />
-    <br />
-    {info.data}
+  <p className="text-md whitespace-pre-wrap pt-4 leading-8 lg:text-xl">
+    <span className="text-lg font-bold lg:text-xl">{info.title}</span>
+    <p className="text-md lg:text-lg">{info.data}</p>
     {info.publicDemo !== undefined && (
       <span>
         <br />
@@ -51,7 +120,7 @@ const description = (info: Desc) => (
 const YHDes = {
   title: "Position: Full Stack Engineer",
   data: ` YomiHomies is a SNS React Native App linking people by their interest in books. 
-It was created in 3 weeks in a mulicultural team of four. I setup the backend on AWS using the AWS system and Amplify, Appsync, DynamoDB, Cognito. 
+  It was created in 3 weeks in a mulicultural team of four. I setup the backend on AWS using the AWS system and Amplify, Appsync, DynamoDB, Cognito. 
 On the frontend I wrote the matching logic so users can find one another based on what books they enjoy. I also wrote the chat functionality 
 implementing Appsync technology like graphql subscriptions which allowed matched users to chat with one another.`,
   publicDemo: "https://www.youtube.com/watch?v=S9GBXQEosK4&t=534s",
@@ -89,57 +158,7 @@ type Desc = {
 const projects = [
   {
     name: "This Website",
-    description: (
-      <div className="whitespace-pre-wrap pt-4 text-xl leading-8">
-        <span className="text-xl font-bold">Full-Stack Solo-Project</span>
-        <br />
-        <br />
-        This app. If you click the hamburger menu at the top of the page you can
-        navigate to each project.
-        <br />
-        <ul className="list-disc space-y-4 pl-2">
-          <li>
-            <Link href="posts" className="text-blue-400">
-              Posts:
-            </Link>
-            A reddit-like post maker and comment system. Users must login with
-            Discord (plan to add other oauth credentials in future) to post and
-            write comments but they can see comments and posts without doing so.
-          </li>
-          <li>
-            <Link className="text-blue-400" href="spongeMock">
-              SpongeMock:
-            </Link>
-            Text mutator for MoCkInG YoUr EnEmIeS On ThE InTeRnEt. URL
-          </li>
-          <li>
-            <Link className="text-blue-400" href="urlShortener">
-              Shortener:
-            </Link>
-            A URL Shortener. Add a URL and click the button. You&apos;re sent to
-            a new page with the new shorter URL.
-          </li>
-          <li>
-            <Link className="text-blue-400" href="weather">
-              Weather:
-            </Link>
-            Uses an external weather API to give you your local weather
-            information. Just share location data.
-          </li>
-          <li>
-            <Link className="text-blue-400" href="codeChallenge">
-              Leet Clone:
-            </Link>
-            A Leet Code clone. I&apos;m most proud of this. Uses Typescript
-            Virtual File System. Can write your own tests and code. I hope to
-            add more challenges in the future. Now only TwoSum is available. Can
-            only use typescript to write code but you can see the transpiled
-            javascript if you click the arrows. Hope to add editor hints and
-            errors.
-          </li>
-        </ul>
-      </div>
-    ),
+    description: <ThisWebsite />,
     video: null,
     front: "https://github.com/BBennettChiba/BBennettProjects",
     img: null,

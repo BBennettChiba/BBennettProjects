@@ -8,10 +8,7 @@ const Home: NextPage = () => (
   <>
     <Head>
       <title>Bryson Bennett&aps;s Page</title>
-      <meta
-        name="an attempt at making a comment system similar to Reddit"
-        content="t3-stack"
-      />
+      <meta name="Resume for Bryson Bennett" content="idk" />
       <link rel="icon" href="/favicon.ico" />
     </Head>
     <div className="snap-y snap-mandatory">

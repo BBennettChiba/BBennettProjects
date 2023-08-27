@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import me from "/public/me.png";
 
 export default function Intro() {
   const [fullstack, setFullstack] = useState("");
@@ -18,19 +19,13 @@ export default function Intro() {
   }, []);
 
   return (
-    <div className="flex h-[calc(100vh-64px)] snap-start bg-white">
-      <div className="m-auto w-1/2">
-        <div className="m-auto h-[50vh] w-[50vh] overflow-hidden rounded-full bg-rose-600 object-cover">
-          <Image
-            src="/me.png"
-            width={458}
-            alt="Bryson"
-            height={545}
-            className="m-auto object-cover"
-          />
+    <div className="h-[calc(100dvh-64px)] snap-start bg-white p-8 sm:flex">
+      <div className="m-auto lg:w-1/2">
+        <div className="m-auto h-[40vh] w-[40vh] overflow-hidden rounded-full bg-rose-600 object-cover">
+          <Image src={me} alt="Bryson" className="m-auto object-contain" />
         </div>
       </div>
-      <div className="flex w-1/2 flex-col justify-center">
+      <div className="flex flex-col justify-center lg:w-1/2">
         <div>
           <h3 className="text-4xl">Hello,</h3>
           <h2 className="text-5xl">I&apos;m Bryson Bennett</h2>

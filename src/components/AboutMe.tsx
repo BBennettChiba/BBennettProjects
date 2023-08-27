@@ -18,25 +18,19 @@ export default function AboutMe() {
 
   return (
     <div className="h-screen snap-start bg-rose-600">
-      <div className="flex h-full">
-        <div className="flex w-2/5 items-center justify-center overflow-y-auto overflow-x-hidden ">
-          <div
-            className="flex max-h-[400px] items-end overflow-y-auto overflow-x-hidden rounded-full border-[5px] border-black bg-white object-cover"
-            style={{
-              borderStyle: "ridge",
-            }}
-          >
+      <div className="flex h-full flex-col lg:flex-row">
+        <div className="my-10 flex items-center justify-center lg:mx-10">
+          <div className="flex h-56 w-56 items-end  overflow-hidden rounded-full border-[5px] border-black bg-white lg:h-96 lg:w-96">
             <Image
-              width={400}
-              className="overflow-hidden"
+              className="object-cover"
               src={sources[current] || me}
               alt="me travelling"
             />
           </div>
         </div>
-        <div className="mx-20 flex h-full w-3/5 flex-col items-center justify-center text-black">
+        <div className="flex flex-col items-center justify-center text-black md:h-full lg:mx-20 lg:w-3/5">
           <h1 className="text-7xl">About me</h1>
-          <div style={{ fontSize: "20px" }}>
+          <div className="p-8 lg:text-xl">
             <br />
             <br />
             <br />

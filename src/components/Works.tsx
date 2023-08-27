@@ -14,17 +14,17 @@ export default function Works() {
   };
 
   return (
-    <div className="snap-startbg-base-300 h-screen">
-      <div className="flex h-full w-full">
-        <div className="m-auto flex h-3/4 w-4/5 flex-col overflow-hidden rounded-xl border border-white p-4">
-          <h1 className="text-5xl">My Projects</h1>
-          <div className="flex flex-1">
+    <div className="flex h-[calc(100dvh-44px)] snap-start bg-base-300">
+      <div className="flex flex-1 flex-col p-4 lg:px-60 lg:py-16">
+        <h1 className="pb-4 lg:text-5xl">My Projects</h1>
+        <div className="flex flex-1 flex-col justify-between overflow-hidden rounded-xl border border-white p-4">
+          <div className="h-full">
             <div
               className={`flex h-full ${
-                current.img ? "w-3/4" : "w-full"
-              } flex-col`}
+                current.img ? "lg:w-3/4" : "w-full"
+              } w-full flex-col`}
             >
-              <h2 className="mt-6 text-3xl">{current.name}</h2>
+              <h2 className="text-xl lg:text-3xl">{current.name}</h2>
               {current.description}
               {current.video ? (
                 <div className="w-full flex-1 justify-self-center p-3">
@@ -33,7 +33,7 @@ export default function Works() {
               ) : null}
             </div>
             {current.img ? (
-              <div className="w-1/4 p-2">
+              <div className="hidden w-1/4 p-2 lg:visible">
                 {current.img.length === 1 && (
                   <div className="w-11/12">
                     <Image
@@ -46,7 +46,7 @@ export default function Works() {
                 {current.img.length > 1 && (
                   <div className="flex h-full items-center justify-center">
                     <span
-                      className="w-1/12 cursor-pointer text-4xl hover:font-extrabold"
+                      className="w-1/12 cursor-pointer hover:font-extrabold lg:text-4xl"
                       style={{ opacity: image === 0 ? "30%" : "100%" }}
                       onClick={() => image !== 0 && handleSlide("left")}
                     >
@@ -60,7 +60,7 @@ export default function Works() {
                       />
                     </div>
                     <span
-                      className="w-1/12 cursor-pointer text-4xl hover:font-extrabold"
+                      className="w-1/12 cursor-pointer hover:font-extrabold lg:text-4xl"
                       style={{
                         opacity:
                           image < current.img.length - 1 ? "100%" : "30%",
@@ -77,11 +77,21 @@ export default function Works() {
             ) : null}
           </div>
           {current.tech && (
-            <div className="mb-3 flex items-center justify-between">
-              <div className="text-3xl">Tech Stack :</div>
-              {current.tech.map((a, i) => (
-                <Image height={70} key={i} src={a} alt={a.src} title={a.src} />
-              ))}
+            <div className="mb-3 flex items-center">
+              <div className="lg:text-3xl">Tech Stack</div>
+              <div className="flex w-full flex-wrap items-center justify-between">
+                {current.tech.map((a, i) => (
+                  <div className=" relative h-8 w-8 lg:h-20 lg:w-20" key={i}>
+                    <Image
+                      fill
+                      src={a}
+                      alt={a.src}
+                      title={a.src}
+                      className="object-contain"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           )}
           <div className="flex h-12 w-full border border-white">
@@ -96,7 +106,13 @@ export default function Works() {
                   current === a ? "bg-gray-500" : ""
                 }`}
               >
-                {a.name}
+                <span className="block lg:hidden">
+                  {a.name
+                    .split("")
+                    .filter((b) => b.toUpperCase() === b)
+                    .join("")}
+                </span>
+                <span className="hidden lg:block">{a.name}</span>
               </button>
             ))}
           </div>
