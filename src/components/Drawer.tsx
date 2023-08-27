@@ -27,7 +27,11 @@ export default function Drawer({ setIsChecked }: Props) {
       />
       <ul className="menu h-full w-60 bg-base-200 p-4 text-base-content">
         {PAGES.map((page, index) => (
-          <li key={index} onClick={() => setIsChecked(false)}>
+          <li
+            className="relative"
+            key={index}
+            onClick={() => setIsChecked(false)}
+          >
             <Link key={index} href={`/${page.href}`}>
               <div
                 className={`my-3 text-xl normal-case ${
@@ -37,10 +41,14 @@ export default function Drawer({ setIsChecked }: Props) {
                 {page.name}
               </div>
             </Link>
+            {page.name === "Leet Clone" ? (
+              <div className="absolute -bottom-2 text-center text-xl text-red-600 lg:hidden">
+                only for desktop
+              </div>
+            ) : null}
           </li>
         ))}
       </ul>
     </div>
   );
 }
-
