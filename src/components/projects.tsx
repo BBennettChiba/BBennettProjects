@@ -45,7 +45,7 @@ const thisWebsiteContent = [
   {
     title: "Shortener",
     content:
-      "A URL Shortener. Add a URL and click the button. You&apos;re sent to a new page with the new shorter URL",
+      "A URL Shortener. Add a URL and click the button. You're sent to a new page with the new shorter URL",
   },
   {
     title: "Weather",
@@ -81,12 +81,12 @@ const ThisWebsite = () => {
         ))}
       </div>
       <div className="lg:hidden">
-        <div className="tabs tabs-boxed justify-around">
+        <div className="tabs tabs-boxed justify-around bg-gray-600">
           {thisWebsiteContent.map(({ title }, i) => (
             <a
               onClick={() => setActive(i)}
               key={i}
-              className={`tab short:tab-sm tab-md ${active === i ? "tab-active" : ""}`}
+              className={`tab text-black short:tab-sm tab-md ${active === i ? "tab-active" : ""}`}
             >
               {title}
             </a>

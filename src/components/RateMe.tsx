@@ -7,6 +7,7 @@ type Props = {
 
 /**
  * @TODO add email functionality
+ * @TODO mobile friendly
  */
 
 export default function RateMe({ toggleModal }: Props) {

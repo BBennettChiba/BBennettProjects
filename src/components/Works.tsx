@@ -14,9 +14,9 @@ export default function Works() {
   };
 
   return (
-    <div className="flex h-[calc(100dvh-44px)] snap-start bg-base-300">
+    <div className="flex h-[calc(100dvh-44px)] snap-start bg-gray-400 text-black">
       <div className="flex flex-1 flex-col p-4 lg:px-60 lg:py-16">
-        <h1 className="pb-4 lg:text-5xl">My Projects</h1>
+        <h1 className="pb-4 lg:text-5xl text-2xl">My Projects</h1>
         <div className="flex flex-1 flex-col justify-between overflow-hidden rounded-xl border border-white p-4 short:p-2">
           <div className="flex h-full">
             <div
