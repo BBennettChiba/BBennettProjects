@@ -42,6 +42,9 @@ export default {
           },
         },
       },
+      screens: {
+        short: { raw: "(max-height: 700px)" },
+      },
     },
   },
   plugins: [require("@tailwindcss/typography"), require("daisyui")],

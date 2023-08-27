@@ -17,8 +17,8 @@ export default function Works() {
     <div className="flex h-[calc(100dvh-44px)] snap-start bg-base-300">
       <div className="flex flex-1 flex-col p-4 lg:px-60 lg:py-16">
         <h1 className="pb-4 lg:text-5xl">My Projects</h1>
-        <div className="flex flex-1 flex-col justify-between overflow-hidden rounded-xl border border-white p-4">
-          <div className="h-full">
+        <div className="flex flex-1 flex-col justify-between overflow-hidden rounded-xl border border-white p-4 short:p-2">
+          <div className="flex h-full">
             <div
               className={`flex h-full ${
                 current.img ? "lg:w-3/4" : "w-full"
@@ -33,7 +33,7 @@ export default function Works() {
               ) : null}
             </div>
             {current.img ? (
-              <div className="hidden w-1/4 p-2 lg:visible">
+              <div className="hidden w-1/4 p-2 lg:block">
                 {current.img.length === 1 && (
                   <div className="w-11/12">
                     <Image

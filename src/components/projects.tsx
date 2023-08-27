@@ -30,7 +30,6 @@ import prisma from "/public/prisma.png";
 import nextjs from "/public/nextjs.png";
 import tailwind from "/public/tailwind.png";
 import authjs from "/public/authjs.png";
-import Link from "next/link";
 import { useState } from "react";
 
 const thisWebsiteContent = [
@@ -56,7 +55,7 @@ const thisWebsiteContent = [
   {
     title: "Leet Clone",
     content:
-      "A Leet Code clone. I&apos;m most proud of this. Uses Typescript Virtual File System. Can write your own tests and code. I hope to add more challenges in the future. Now only TwoSum is available. Can only use typescript to write code but you can see the transpiled javascript if you click the arrows. Hope to add editor hints and errors.",
+      "A Leet Code clone. I'm most proud of this. Uses Typescript VFS. Users can write your own tests and code. I hope to add more challenges. Can only use typescript to write code but you can see the transpiled ECMAScript if you click the arrows. Hope to add editor features.",
   },
 ];
 
@@ -77,7 +76,7 @@ const ThisWebsite = () => {
           <div key={i} className="collapse-plus collapse">
             <input type="radio" defaultChecked name="my-accordian-3" />
             <div className="collapse-title max-h-10">{title}</div>
-            <div className="collapse-content text-sm">{content}</div>
+            <div className="collapse-content text-sm lg:text-lg">{content}</div>
           </div>
         ))}
       </div>
@@ -87,14 +86,17 @@ const ThisWebsite = () => {
             <a
               onClick={() => setActive(i)}
               key={i}
-              className={`tab tab-lg ${active === i ? "tab-active" : ""}`}
+              className={`tab short:tab-sm tab-md ${active === i ? "tab-active" : ""}`}
             >
               {title}
             </a>
           ))}
         </div>
         {thisWebsiteContent.map(({ content }, i) => (
-          <div key={i} className={`${active !== i ? "hidden" : ""}`}>
+          <div
+            key={i}
+            className={`text-md short:text-sm ${active !== i ? "hidden" : ""}`}
+          >
             {content}
           </div>
         ))}
@@ -104,12 +106,11 @@ const ThisWebsite = () => {
 };
 
 const description = (info: Desc) => (
-  <p className="text-md whitespace-pre-wrap pt-4 leading-8 lg:text-xl">
+  <p className="text-md whitespace-pre-wrap pt-4 leading-8 lg:text-xl short:pt-2">
     <span className="text-lg font-bold lg:text-xl">{info.title}</span>
-    <p className="text-md lg:text-lg">{info.data}</p>
+    <p className="text-md lg:text-lg short:text-sm">{info.data}</p>
     {info.publicDemo !== undefined && (
       <span>
-        <br />
         For a public demonstration of this app please{" "}
         <a href={info.publicDemo}>click here</a>
       </span>
@@ -120,9 +121,8 @@ const description = (info: Desc) => (
 const YHDes = {
   title: "Position: Full Stack Engineer",
   data: ` YomiHomies is a SNS React Native App linking people by their interest in books. 
-  It was created in 3 weeks in a mulicultural team of four. I setup the backend on AWS using the AWS system and Amplify, Appsync, DynamoDB, Cognito. 
-On the frontend I wrote the matching logic so users can find one another based on what books they enjoy. I also wrote the chat functionality 
-implementing Appsync technology like graphql subscriptions which allowed matched users to chat with one another.`,
+  It was created in 3 weeks in a mulicultural team of four. I created the backend on AWS using the AWS system and Amplify, Appsync, DynamoDB, Cognito. 
+On the frontend I wrote the matching logic so users can find one another based on what books they enjoy, and the chat functionality implementing Appsync technology like graphql subscriptions which allowed matched users to chat with one another.`,
   publicDemo: "https://www.youtube.com/watch?v=S9GBXQEosK4&t=534s",
 };
 const BMDes = {
