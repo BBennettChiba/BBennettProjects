@@ -3,9 +3,8 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { type Dispatch, type SetStateAction, useRef } from "react";
 import RateMe from "./RateMe";
 
-type Props = { setIsChecked: Dispatch<SetStateAction<boolean>> };
 
-export const Navbar = ({ setIsChecked }: Props) => {
+export const Navbar = () => {
   const { data: sessionData, status } = useSession();
   const dialog = useRef<HTMLDialogElement>(null);
 
@@ -18,7 +17,6 @@ export const Navbar = ({ setIsChecked }: Props) => {
         <label
           htmlFor="my-drawer"
           className="drawer-button cursor-pointer"
-          onClick={() => setIsChecked((v) => !v)}
         >
           <div className="space-y-2">
             <div className="h-0.5 w-8 bg-white" />

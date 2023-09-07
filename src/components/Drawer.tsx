@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { type Dispatch, type SetStateAction } from "react";
 
 const PAGES = [
   { name: "Home", href: "" },
@@ -11,27 +10,15 @@ const PAGES = [
   { name: "Leet Clone", href: "codeChallenge" },
 ];
 
-type Props = {
-  setIsChecked: Dispatch<SetStateAction<boolean>>;
-};
-
-export default function Drawer({ setIsChecked }: Props) {
+export default function Drawer() {
   const router = useRouter();
   const here = router.asPath.split("/")[1]?.trim();
   return (
     <div className="drawer-side">
-      <label
-        htmlFor="my-drawer"
-        className="drawer-overlay"
-        onClick={() => setIsChecked(false)}
-      />
+      <label htmlFor="my-drawer" className="drawer-overlay" />
       <ul className="menu h-full w-60 bg-base-200 p-4 text-base-content">
         {PAGES.map((page, index) => (
-          <li
-            className="relative"
-            key={index}
-            onClick={() => setIsChecked(false)}
-          >
+          <li className="relative" key={index}>
             <Link key={index} href={`/${page.href}`}>
               <div
                 className={`my-3 text-xl normal-case ${

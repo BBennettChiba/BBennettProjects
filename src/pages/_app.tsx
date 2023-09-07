@@ -11,28 +11,22 @@ import { api } from "~/utils/api";
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
-}) => {
-  const [isChecked, setIsChecked] = useState(false);
-
-  return (
+}) => (
     <SessionProvider session={session}>
       <div className="drawer h-screen">
         <input
           id="my-drawer"
           type="checkbox"
           className="drawer-toggle"
-          checked={isChecked}
-          readOnly
         />
         <div className="drawer-content flex flex-col">
-          <Navbar setIsChecked={setIsChecked} />
+          <Navbar />
           <Component {...pageProps} />
           <Footer />
         </div>
-        <Drawer setIsChecked={setIsChecked} />
+        <Drawer />
       </div>
     </SessionProvider>
   );
-};
 
 export default api.withTRPC(MyApp);
