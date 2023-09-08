@@ -30,7 +30,7 @@ export const Navbar = ({ setIsChecked }: Props) => {
         </label>
       </div>
       <div className="navbar-end mr-2">
-        <div className="dropdown-end dropdown z-10">
+        <div className="dropdown dropdown-end z-10">
           {status === "authenticated" ? (
             <label tabIndex={0} className="avatar btn btn-circle btn-ghost">
               <div className="w-10 rounded-full">

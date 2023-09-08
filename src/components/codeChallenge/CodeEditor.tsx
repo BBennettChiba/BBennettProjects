@@ -1,5 +1,7 @@
 import { javascript } from "@codemirror/lang-javascript";
+import { vim } from "@replit/codemirror-vim";
 import ReactCodeMirror from "@uiw/react-codemirror";
+import { basicSetup } from "codemirror";
 import { useEffect, useState } from "react";
 import { AiOutlineFullscreen, AiOutlineFullscreenExit } from "react-icons/ai";
 import { FaCog } from "react-icons/fa";
@@ -14,6 +16,7 @@ export default function CodeEditor() {
   const { tsCode, setTSCode, jsCode } = useProblem();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [codeView, setCodeView] = useState<View>("ts");
+  const [vimMode, setVimMode] = useState(false);
 
   const handleFullScreen = () => {
     if (isFullscreen) {
@@ -45,6 +48,8 @@ export default function CodeEditor() {
     };
   }, [isFullscreen]);
 
+  const toggleVim = () => setVimMode((v) => !v);
+
   return (
     <Split
       sizes={[75, 25]}
@@ -72,9 +77,21 @@ export default function CodeEditor() {
               </div>
             </div>
           </div>
-          <button className="h-full">
-            <FaCog className="hover:scale-125" size={20} />
-          </button>
+          {/* <button className="h-full"> */}
+          <div className="dropdown">
+            <label tabIndex={0} className="btn m-1">
+              <FaCog className="hover:scale-125" size={20} />
+            </label>
+            <ul
+              tabIndex={0}
+              className="menu dropdown-content rounded-box z-[1] w-52 bg-base-100 p-2 shadow"
+            >
+              <li>
+                <a onClick={toggleVim}>vim mode</a>
+              </li>
+            </ul>
+          </div>
+          {/* </button> */}
           <button className="pr-4" onClick={handleFullScreen}>
             {isFullscreen ? (
               <AiOutlineFullscreenExit size={20} className="hover:scale-125" />
@@ -88,7 +105,10 @@ export default function CodeEditor() {
           readOnly={codeView === "js"}
           value={codeView === "js" ? jsCode : tsCode}
           // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-          extensions={[javascript({ typescript: true })]}
+          extensions={[
+            javascript({ typescript: true }),
+            vimMode ? vim() : basicSetup,
+          ]}
           className="flex-1 overflow-auto"
           height="100%"
           onChange={(v) => setTSCode(v)}
