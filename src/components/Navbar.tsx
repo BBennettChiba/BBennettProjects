@@ -46,7 +46,7 @@ export const Navbar = ({ setIsChecked }: Props) => {
           {status === "unauthenticated" ? (
             <button
               className={`solid btn btn-ghost rounded-btn ${
-                effect ? "animate-beat bg-[hsl(var(--bc)/0.4)]" : ""
+                effect ? "animate-beat bg-[hsl(var(--bc)/0.6)]" : ""
               }`}
               onAnimationEnd={() => setEffect(false)}
             >

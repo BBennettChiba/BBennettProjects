@@ -8,7 +8,9 @@ import { appRouter } from "~/server/api/root";
 import { createInnerTRPCContext } from "~/server/api/trpc";
 import { api } from "~/utils/api";
 
-/**@TODO arrow to sign-in button */
+/**
+ * @TODO fix long titles breaking mobile
+ */
 
 export default function Posts() {
   const { setEffect } = useSignInEffect();
@@ -28,7 +30,7 @@ export default function Posts() {
   if (error) return <h1 className="text-red-600">Something went wrong</h1>;
 
   return (
-    <div className="container mx-auto px-12 pt-6">
+    <div className="container mx-auto w-screen px-12 pt-6">
       <Link href="posts/new">
         <button
           className="btn-primary btn-lg w-32 rounded-lg"
@@ -37,19 +39,17 @@ export default function Posts() {
           {message}
         </button>
       </Link>
-      <div className="grid grid-cols-4 gap-2">
-        <ul className="menu rounded-box bg-base-100 p-2">
-          {posts.length > 0
-            ? posts.map((post) => (
-                <li key={post.id}>
-                  <Link href={`posts/${post.id}`} className="text-lg">
-                    {post.title}
-                  </Link>
-                </li>
-              ))
-            : null}
-        </ul>
-      </div>
+      <ul className="menu rounded-box w-full bg-base-100 p-2">
+        {posts.length > 0
+          ? posts.map((post) => (
+              <li key={post.id} className="w-full hover:bg-opacity-20">
+                <Link href={`posts/${post.id}`} className="text-lg inline-block">
+                  {post.title}
+                </Link>
+              </li>
+            ))
+          : null}
+      </ul>
     </div>
   );
 }

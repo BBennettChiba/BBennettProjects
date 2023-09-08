@@ -1,5 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { type ReactNode, createContext, useContext, useMemo } from "react";
+import { useSignInEffect } from "./SignInContext";
 import type { CommentFromByIdQuery as Comment } from "src/server/api/root";
 import { type PostByIdQueryOutput } from "~/server/api/root";
 import { api } from "~/utils/api";
@@ -28,6 +29,7 @@ const PostContext = createContext<Context>({} as Context);
 export const usePost = () => useContext<Context>(PostContext);
 
 export const PostContextProvider = ({ children, id: postId }: Props) => {
+  const { setEffect } = useSignInEffect();
   const { data: post, status } = api.post.byId.useQuery(postId);
   const client = useQueryClient();
   const queryKey = [["post", "byId"], { input: postId, type: "query" }];
@@ -42,6 +44,12 @@ export const PostContextProvider = ({ children, id: postId }: Props) => {
     }, new Map<string | null, Comment[]>());
   }, [post?.comments]);
 
+  const onError = (err: unknown) => {
+    if (!err) return;
+    if (typeof err !== "object") return;
+    if ("message" in err && err.message === "UNAUTHORIZED") setEffect(true);
+  };
+
   const createCommentMutation = api.comment.create.useMutation({
     onSuccess: (data) => {
       client.setQueryData<NonNullable<PostByIdQueryOutput>>(
@@ -53,6 +61,7 @@ export const PostContextProvider = ({ children, id: postId }: Props) => {
         }
       );
     },
+    onError,
   });
 
   const editCommentMutation = api.comment.edit.useMutation({
@@ -68,6 +77,7 @@ export const PostContextProvider = ({ children, id: postId }: Props) => {
         }
       );
     },
+    onError,
   });
 
   const deleteCommentMutation = api.comment.delete.useMutation({
@@ -83,6 +93,7 @@ export const PostContextProvider = ({ children, id: postId }: Props) => {
         }
       );
     },
+    onError,
   });
 
   const toggleLikeMutation = api.like.toggle.useMutation({
@@ -112,12 +123,14 @@ export const PostContextProvider = ({ children, id: postId }: Props) => {
         }
       );
     },
+    onError,
   });
 
   const deletePostMutation = api.post.delete.useMutation({
     onSuccess: () => {
       client.removeQueries(queryKey);
     },
+    onError,
   });
 
   const updatePostMutation = api.post.update.useMutation({
@@ -132,25 +145,26 @@ export const PostContextProvider = ({ children, id: postId }: Props) => {
         }
       );
     },
+    onError,
   });
-  
-  post
+
+  post;
   if (status === "loading") return <div>loading</div>;
   if (status === "error") return <div>error</div>;
-  
+
   return (
     <PostContext.Provider
-    value={{
-      post,
-      commentsByParentId,
-      rootComments: commentsByParentId.get(null) || [],
-      createCommentMutation,
-      editCommentMutation,
-      commentDeleteMutation: deleteCommentMutation,
-      toggleLikeMutation,
-      deletePostMutation,
-      updatePostMutation,
-    }}
+      value={{
+        post,
+        commentsByParentId,
+        rootComments: commentsByParentId.get(null) || [],
+        createCommentMutation,
+        editCommentMutation,
+        commentDeleteMutation: deleteCommentMutation,
+        toggleLikeMutation,
+        deletePostMutation,
+        updatePostMutation,
+      }}
     >
       {children}
     </PostContext.Provider>
