@@ -11,8 +11,6 @@ import { PostContent } from "~/components/PostContent";
 import { PostContextProvider, usePost } from "~/context/PostContext";
 import { createInnerTRPCContext } from "~/server/api/trpc";
 
-/**@TODO find out why loading takes so long */
-
 export const getServerSideProps = async (
   context: GetServerSidePropsContext<{ id: string }>
 ) => {

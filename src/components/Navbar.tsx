@@ -2,9 +2,12 @@ import Image from "next/image";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { type Dispatch, type SetStateAction, useRef } from "react";
 import RateMe from "./RateMe";
+import { useSignInEffect } from "~/context/SignInContext";
 
+type Props = { setIsChecked: Dispatch<SetStateAction<boolean>> };
 
-export const Navbar = () => {
+export const Navbar = ({ setIsChecked }: Props) => {
+  const { effect, setEffect } = useSignInEffect();
   const { data: sessionData, status } = useSession();
   const dialog = useRef<HTMLDialogElement>(null);
 
@@ -16,6 +19,7 @@ export const Navbar = () => {
       <div className="navbar-start ml-2">
         <label
           htmlFor="my-drawer"
+          onClick={() => setIsChecked((v) => !v)}
           className="drawer-button cursor-pointer"
         >
           <div className="space-y-2">
@@ -25,7 +29,7 @@ export const Navbar = () => {
           </div>
         </label>
       </div>
-      <div className="navbar-end">
+      <div className="navbar-end mr-2">
         <div className="dropdown-end dropdown z-10">
           {status === "authenticated" ? (
             <label tabIndex={0} className="avatar btn btn-circle btn-ghost">
@@ -40,7 +44,14 @@ export const Navbar = () => {
             </label>
           ) : null}{" "}
           {status === "unauthenticated" ? (
-            <button className="btn btn-ghost rounded-btn">Sign in</button>
+            <button
+              className={`solid btn btn-ghost rounded-btn ${
+                effect ? "animate-beat bg-[hsl(var(--bc)/0.4)]" : ""
+              }`}
+              onAnimationEnd={() => setEffect(false)}
+            >
+              Sign In
+            </button>
           ) : null}
           {status === "loading" ? (
             <span className="loading loading-ring loading-lg" />

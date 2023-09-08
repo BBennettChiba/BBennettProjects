@@ -6,8 +6,17 @@ export default {
     extend: {
       animation: {
         float: "float 2s linear forwards",
+        beat: "beat 1s linear",
       },
       keyframes: {
+        beat: {
+          "0%": { transform: "scale(110%)" },
+          "20%": { transform: "scale(100%)" },
+          "40%": { transform: "scale(110%)" },
+          "60%": { transform: "scale(100%)" },
+          "80%": { transform: "scale(110%)" },
+          "100%": { tranform: "scale(100%)" },
+        },
         float: {
           "0%": {
             opacity: "1",

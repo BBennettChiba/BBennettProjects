@@ -3,11 +3,15 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import superjson from "superjson";
+import { useSignInEffect } from "~/context/SignInContext";
 import { appRouter } from "~/server/api/root";
 import { createInnerTRPCContext } from "~/server/api/trpc";
 import { api } from "~/utils/api";
 
+/**@TODO arrow to sign-in button */
+
 export default function Posts() {
+  const { setEffect } = useSignInEffect();
   const { data: posts, isLoading, error } = api.post.getPosts.useQuery();
   const { status } = useSession();
   const [message, setMessage] = useState("New Post");
@@ -16,6 +20,7 @@ export default function Posts() {
     if (status === "unauthenticated") {
       e.preventDefault();
       setMessage("Please Sign In");
+      setEffect(true);
     }
   };
 

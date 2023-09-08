@@ -44,7 +44,6 @@ export const postRouter = createTRPCRouter({
           },
         })
         .then(async (post) => {
-          /**@TODO investigate why this error occurs */
           if (!post)
             throw new TRPCError({
               code: "NOT_FOUND",
