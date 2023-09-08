@@ -1,6 +1,6 @@
 import { javascript } from "@codemirror/lang-javascript";
 import ReactCodeMirror from "@uiw/react-codemirror";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineFullscreen, AiOutlineFullscreenExit } from "react-icons/ai";
 import { FaCog } from "react-icons/fa";
 import { FaRetweet } from "react-icons/fa";
@@ -14,6 +14,36 @@ export default function CodeEditor() {
   const { tsCode, setTSCode, jsCode } = useProblem();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [codeView, setCodeView] = useState<View>("ts");
+
+  const handleFullScreen = () => {
+    if (isFullscreen) {
+      void document.exitFullscreen();
+    } else {
+      void document.documentElement.requestFullscreen();
+    }
+    setIsFullscreen((f) => !f);
+  };
+
+  useEffect(() => {
+    const exitHandler = () => {
+      if (!document.fullscreenElement) {
+        setIsFullscreen(false);
+        return;
+      }
+      setIsFullscreen(true);
+    };
+
+    document.addEventListener("fullscreenchange", exitHandler);
+    document.addEventListener("webkitfullscreenchange", exitHandler);
+    document.addEventListener("mozfullscreenchange", exitHandler);
+    document.addEventListener("MSFullscreenChange", exitHandler);
+    return () => {
+      document.removeEventListener("fullscreenchange", exitHandler);
+      document.removeEventListener("webkitfullscreenchange", exitHandler);
+      document.removeEventListener("mozfullscreenchange", exitHandler);
+      document.removeEventListener("MSFullscreenChange", exitHandler);
+    };
+  }, [isFullscreen]);
 
   return (
     <Split
@@ -45,7 +75,7 @@ export default function CodeEditor() {
           <button className="h-full">
             <FaCog className="hover:scale-125" size={20} />
           </button>
-          <button className="pr-4" onClick={() => setIsFullscreen((f) => !f)}>
+          <button className="pr-4" onClick={handleFullScreen}>
             {isFullscreen ? (
               <AiOutlineFullscreenExit size={20} className="hover:scale-125" />
             ) : (
