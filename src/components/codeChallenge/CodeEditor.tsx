@@ -9,6 +9,7 @@ import { FaRetweet } from "react-icons/fa";
 import Split from "react-split";
 import Console from "./Console";
 import { useProblem } from "~/context/ProblemContext";
+import { useTutorial } from "~/pages/codeChallenge/[id]";
 
 type View = "ts" | "js";
 
@@ -17,6 +18,7 @@ export default function CodeEditor() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [codeView, setCodeView] = useState<View>("ts");
   const [vimMode, setVimMode] = useState(false);
+  const { tutorialIndex } = useTutorial();
 
   const handleFullScreen = () => {
     if (isFullscreen) {
@@ -55,7 +57,9 @@ export default function CodeEditor() {
       sizes={[75, 25]}
       gutterSize={5}
       gutterAlign="center"
-      className="flex h-[calc(100vh-8rem)] flex-col"
+      className={`flex h-[calc(100vh-8rem)] flex-col ${
+        tutorialIndex === 2 ? "z-30" : ""
+      }`}
       direction="vertical"
     >
       <div className="flex flex-col">
@@ -77,7 +81,6 @@ export default function CodeEditor() {
               </div>
             </div>
           </div>
-          {/* <button className="h-full"> */}
           <div className="dropdown">
             <label tabIndex={0} className="btn m-1">
               <FaCog className="hover:scale-125" size={20} />
@@ -91,7 +94,6 @@ export default function CodeEditor() {
               </li>
             </ul>
           </div>
-          {/* </button> */}
           <button className="pr-4" onClick={handleFullScreen}>
             {isFullscreen ? (
               <AiOutlineFullscreenExit size={20} className="hover:scale-125" />
@@ -109,7 +111,9 @@ export default function CodeEditor() {
             javascript({ typescript: true }),
             vimMode ? vim() : basicSetup,
           ]}
-          className="flex-1 overflow-auto"
+          className={`flex-1 overflow-auto ${
+            tutorialIndex === 3 ? "z-30" : ""
+          }`}
           height="100%"
           onChange={(v) => setTSCode(v)}
         />

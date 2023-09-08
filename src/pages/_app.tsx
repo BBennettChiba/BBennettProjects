@@ -17,7 +17,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <SignInContextProvider>
-        <div className="drawer h-screen">
+        <div className="drawer h-screen overflow-x-hidden">
           <input
             id="my-drawer"
             type="checkbox"

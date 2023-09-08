@@ -3,6 +3,13 @@ import {
   type GetServerSidePropsContext,
   type InferGetServerSidePropsType,
 } from "next";
+import {
+  type Dispatch,
+  type SetStateAction,
+  createContext,
+  useContext,
+  useState,
+} from "react";
 import Split from "react-split";
 import superjson from "superjson";
 import CodeEditor from "~/components/codeChallenge/CodeEditor";
@@ -13,16 +20,32 @@ import { createInnerTRPCContext } from "~/server/api/trpc";
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-const Problem = () => (
-  <Split
-    className="flex h-[calc(100vh-8rem)]"
-    gutterSize={10}
-    gutterAlign="center"
-  >
-    <Description />
-    <CodeEditor />
-  </Split>
-);
+type Context = {
+  tutorialIndex: number;
+  setTutorialIndex: Dispatch<SetStateAction<number>>;
+};
+
+const TutorialContext = createContext<Context>({} as Context);
+export const useTutorial = () => useContext(TutorialContext);
+
+const Problem = () => {
+  const [isTutorial, setIsTutorial] = useState(false);
+  const [tutorialIndex, setTutorialIndex] = useState(1);
+
+  return (
+    <>
+      {isTutorial ? (
+        <div className="absolute z-10 h-full w-full backdrop-blur" />
+      ) : null}
+      <TutorialContext.Provider value={{ tutorialIndex, setTutorialIndex }}>
+        <Split className="flex h-full" gutterSize={10} gutterAlign="center">
+          <Description />
+          <CodeEditor />
+        </Split>
+      </TutorialContext.Provider>
+    </>
+  );
+};
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext<{ id: string }>
@@ -42,10 +65,13 @@ export const getServerSideProps = async (
     },
   };
 };
+
 export default function ProblemWithContext({ id }: Props) {
   return (
     <ProblemContextProvider id={id}>
-      <Problem />
+      <div className="relative">
+        <Problem />
+      </div>
     </ProblemContextProvider>
   );
 }
