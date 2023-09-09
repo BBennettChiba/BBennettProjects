@@ -94,7 +94,7 @@ export default function CodeEditor() {
               className="menu dropdown-content rounded-box z-[1] w-52 bg-base-100 p-2 shadow"
             >
               <li>
-                <a onClick={toggleVim}>vim mode</a>
+                <a onClick={toggleVim}>vim mode {vimMode ? "✓" : ""}</a>
               </li>
             </ul>
           </div>

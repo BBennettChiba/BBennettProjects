@@ -4,8 +4,6 @@ import {
   type InferGetServerSidePropsType,
 } from "next";
 import {
-  type Dispatch,
-  type SetStateAction,
   createContext,
   useContext,
   useState,

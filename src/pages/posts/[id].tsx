@@ -9,7 +9,6 @@ import { appRouter } from "src/server/api/root";
 import CommentForm from "~/components/CommentForm";
 import { PostContent } from "~/components/PostContent";
 import { PostContextProvider, usePost } from "~/context/PostContext";
-import { useSignInEffect } from "~/context/SignInContext";
 import { createInnerTRPCContext } from "~/server/api/trpc";
 
 export const getServerSideProps = async (
@@ -33,7 +32,6 @@ export const getServerSideProps = async (
 };
 
 const PostViewPage = () => {
-  const { setEffect } = useSignInEffect();
   const { rootComments, createCommentMutation, post } = usePost();
   const { mutate, status, error } = createCommentMutation;
 
