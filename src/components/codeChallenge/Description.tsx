@@ -11,7 +11,7 @@ export default function Description() {
   return (
     <div
       className={`flex flex-col overflow-auto ${
-        tutorialIndex === 0 ? "z-30" : ""
+        tutorialIndex === 1 ? "z-30" : ""
       }`}
     >
       <div className="flex flex-1 flex-col">
@@ -35,7 +35,7 @@ export default function Description() {
             <div className="space-y-3">
               <Examples examples={problem.examples} />
             </div>
-            {tutorialIndex === 1 ? (
+            {tutorialIndex === 2 ? (
               <div className="absolute top-0 z-30 w-full space-y-3">
                 <Examples examples={problem.examples} />
               </div>

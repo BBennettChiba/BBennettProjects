@@ -7,8 +7,6 @@ import { type Results } from "~/utils/problems";
 
 type Display = "test cases" | "results";
 
-/**@TODO see why results isn't working when you first run it */
-
 export default function Console() {
   const { runCode, tests } = useProblem();
   const [display, setDisplay] = useState<Display>("test cases");
@@ -18,7 +16,7 @@ export default function Console() {
   return (
     <div
       className={`flex h-full w-full flex-1 flex-col overflow-auto break-words text-sm text-white ${
-        tutorialIndex === 4 ? "z-30" : ""
+        tutorialIndex >= 8 ? "z-30" : ""
       }`}
     >
       <div className="tabs flex-nowrap">

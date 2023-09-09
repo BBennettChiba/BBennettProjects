@@ -14,6 +14,7 @@ import Split from "react-split";
 import superjson from "superjson";
 import CodeEditor from "~/components/codeChallenge/CodeEditor";
 import Description from "~/components/codeChallenge/Description";
+import Tutorial, { TUTORIAL_INFO } from "~/components/codeChallenge/Tutorial";
 import { ProblemContextProvider } from "~/context/ProblemContext";
 import { appRouter } from "~/server/api/root";
 import { createInnerTRPCContext } from "~/server/api/trpc";
@@ -22,28 +23,36 @@ type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 type Context = {
   tutorialIndex: number;
-  setTutorialIndex: Dispatch<SetStateAction<number>>;
+  navigateTutorial: (dir: "next" | "prev") => void;
 };
 
 const TutorialContext = createContext<Context>({} as Context);
 export const useTutorial = () => useContext(TutorialContext);
 
 const Problem = () => {
-  const [isTutorial, setIsTutorial] = useState(false);
-  const [tutorialIndex, setTutorialIndex] = useState(1);
+  const [isTutorial, setIsTutorial] = useState(true);
+  const [tutorialIndex, setTutorialIndex] = useState(0);
+
+  const navigateTutorial = (dir: "next" | "prev") => {
+    switch (dir) {
+      case "next":
+        if (tutorialIndex === TUTORIAL_INFO.length - 1)
+          return setIsTutorial(false);
+        return setTutorialIndex((i) => i + 1);
+      case "prev":
+        if (tutorialIndex === 0) return setIsTutorial(false);
+        return setTutorialIndex((i) => i - 1);
+    }
+  };
 
   return (
-    <>
-      {isTutorial ? (
-        <div className="absolute z-10 h-full w-full backdrop-blur" />
-      ) : null}
-      <TutorialContext.Provider value={{ tutorialIndex, setTutorialIndex }}>
-        <Split className="flex h-full" gutterSize={10} gutterAlign="center">
-          <Description />
-          <CodeEditor />
-        </Split>
-      </TutorialContext.Provider>
-    </>
+    <TutorialContext.Provider value={{ tutorialIndex, navigateTutorial }}>
+      {isTutorial ? <Tutorial /> : null}
+      <Split className="flex h-full" gutterSize={10} gutterAlign="center">
+        <Description />
+        <CodeEditor />
+      </Split>
+    </TutorialContext.Provider>
   );
 };
 
