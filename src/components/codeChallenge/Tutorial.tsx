@@ -74,7 +74,7 @@ export const TUTORIAL_INFO = [
     },
   },
   {
-    position: "right-1/4 translate-x-1/2 translate-y-1/2",
+    position: "right-1/4 translate-x-1/2",
     text: {
       title: "Test Cases",
       description:
@@ -83,7 +83,7 @@ export const TUTORIAL_INFO = [
     },
   },
   {
-    position: "right-1/4 translate-x-1/2 translate-y-1/2",
+    position: "right-1/4 translate-x-1/2",
     text: {
       title: "Extra Tests",
       description:
@@ -92,7 +92,7 @@ export const TUTORIAL_INFO = [
     },
   },
   {
-    position: "right-1/4 translate-x-1/2 translate-y-1/2",
+    position: "right-1/4 translate-x-1/2",
     text: {
       title: "Run",
       description: "You can run your code by hitting the run button",
@@ -100,7 +100,7 @@ export const TUTORIAL_INFO = [
     },
   },
   {
-    position: "right-1/4 translate-x-1/2 translate-y-1/2",
+    position: "right-1/4 translate-x-1/2",
     text: {
       title: "Finished",
       description: "You can end the tutorial now.",
