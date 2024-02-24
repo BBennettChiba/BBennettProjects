@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import projects from "./projects";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
 
 export default function Works() {
   const [current, setCurrent] = useState<(typeof projects)[number]>(
@@ -21,8 +22,8 @@ export default function Works() {
           <div className="flex h-full">
             <div
               className={`flex h-full ${
-                current.img ? "lg:w-3/4" : "w-full"
-              } w-full flex-col`}
+                current.img ? "lg:w-1/2" : ""
+              } flex-col`}
             >
               <h2 className="text-xl lg:text-3xl">{current.name}</h2>
               {current.description}
@@ -33,7 +34,7 @@ export default function Works() {
               ) : null}
             </div>
             {current.img ? (
-              <div className="hidden w-1/4 p-2 lg:block">
+              <div className="hidden w-1/4 p-4 lg:block">
                 {current.img.length === 1 && (
                   <div className="w-11/12">
                     <Image
@@ -44,34 +45,16 @@ export default function Works() {
                   </div>
                 )}
                 {current.img.length > 1 && (
-                  <div className="flex h-full items-center justify-center">
-                    <span
-                      className="w-1/12 cursor-pointer hover:font-extrabold lg:text-4xl"
-                      style={{ opacity: image === 0 ? "30%" : "100%" }}
-                      onClick={() => image !== 0 && handleSlide("left")}
-                    >
-                      {"<"}
-                    </span>
-                    <div className="m-auto w-11/12">
-                      <Image
-                        src={current.img[image]!}
-                        alt={current.img[image]!.src}
-                        title={current.img[image]?.src}
-                      />
-                    </div>
-                    <span
-                      className="w-1/12 cursor-pointer hover:font-extrabold lg:text-4xl"
-                      style={{
-                        opacity:
-                          image < current.img.length - 1 ? "100%" : "30%",
-                      }}
-                      onClick={() =>
-                        image < current.img.length - 1 && handleSlide()
-                      }
-                    >
-                      {">"}
-                    </span>
-                  </div>
+                  <Carousel>
+                  <CarouselContent>
+                    {current.img.map(img =>(
+
+                    <CarouselItem key={img.src}>{<Image src={img} alt="carosel image"/>}</CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </Carousel>
                 )}
               </div>
             ) : null}
