@@ -15,7 +15,7 @@ export const Navbar = ({ setIsChecked }: Props) => {
     dialog.current?.open ? dialog.current.close() : dialog.current?.showModal();
 
   return (
-    <header className="navbar bg-primary">
+    <header className="navbar h-16 bg-primary">
       <div className="navbar-start ml-2">
         <label
           htmlFor="my-drawer"
@@ -30,7 +30,7 @@ export const Navbar = ({ setIsChecked }: Props) => {
         </label>
       </div>
       <div className="navbar-end mr-2">
-        <div className="dropdown dropdown-end z-10">
+        <div className="dropdown dropdown-end z-10 text-gray-400">
           {status === "authenticated" ? (
             <label tabIndex={0} className="avatar btn btn-circle btn-ghost">
               <div className="w-10 rounded-full">

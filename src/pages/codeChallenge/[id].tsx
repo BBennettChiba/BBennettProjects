@@ -72,7 +72,7 @@ export const getServerSideProps = async (
 export default function ProblemWithContext({ id }: Props) {
   return (
     <ProblemContextProvider id={id}>
-      <div className="relative max-h-[calc(100vh-64px-67px)] bg-oldBG text-gray-400">
+      <div className="relative max-h-[calc(100vh-64px-64px)] bg-oldBG text-gray-400">
         <Problem />
       </div>
     </ProblemContextProvider>
