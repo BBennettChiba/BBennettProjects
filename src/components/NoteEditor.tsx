@@ -21,7 +21,7 @@ export default function SDFANoteEditor({
         <input
           type="text"
           placeholder="Post title"
-          className="input input-secondary input-lg w-full font-bold"
+          className="input input-secondary input-lg w-full bg-gray-400 font-bold"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
