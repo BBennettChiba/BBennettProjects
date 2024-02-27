@@ -1,30 +1,27 @@
+import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
 import { useState } from "react";
 import projects from "./projects";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "./ui/carousel";
 
 export default function Works() {
   const [current, setCurrent] = useState<(typeof projects)[number]>(
     projects[0]
   );
-  const [image, setImage] = useState(0);
-
-  const handleSlide = (dir?: string) => {
-    if (dir === "left") setImage(image - 1);
-    else setImage(image + 1);
-  };
 
   return (
     <div className="flex h-[calc(100dvh-44px)] snap-start bg-gray-400 text-black">
       <div className="flex flex-1 flex-col p-4 lg:px-60 lg:py-16">
-        <h1 className="pb-4 lg:text-5xl text-2xl">My Projects</h1>
+        <h1 className="pb-4 text-2xl lg:text-5xl">My Projects</h1>
         <div className="flex flex-1 flex-col justify-between overflow-hidden rounded-xl border border-white p-4 short:p-2">
           <div className="flex h-full">
-            <div
-              className={`flex h-full ${
-                current.img ? "lg:w-1/2" : ""
-              } flex-col`}
-            >
+            <div className={`flex flex-1 flex-col`}>
               <h2 className="text-xl lg:text-3xl">{current.name}</h2>
               {current.description}
               {current.video ? (
@@ -34,28 +31,40 @@ export default function Works() {
               ) : null}
             </div>
             {current.img ? (
-              <div className="hidden w-1/4 p-4 lg:block">
-                {current.img.length === 1 && (
-                  <div className="w-11/12">
-                    <Image
-                      src={current.img[0]}
-                      alt={current.img[0].src}
-                      title={current.img[0].src}
-                    />
-                  </div>
-                )}
-                {current.img.length > 1 && (
-                  <Carousel>
-                  <CarouselContent>
-                    {current.img.map(img =>(
-
-                    <CarouselItem key={img.src}>{<Image src={img} alt="carosel image"/>}</CarouselItem>
+              <div className="relative m-auto hidden flex-1 lg:block">
+                <Carousel
+                  plugins={[
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                    Autoplay({
+                      delay: 2000,
+                    }),
+                  ]}
+                  className="left-1/2 w-80 -translate-x-1/2"
+                >
+                  <CarouselContent className="">
+                    {current.img.map((img) => (
+                      <CarouselItem
+                        className="relative h-[500px]"
+                        key={img.src.toString()}
+                      >
+                        {
+                          <Image
+                            objectFit="contain"
+                            fill
+                            src={img}
+                            alt="carousel image"
+                          />
+                        }
+                      </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious />
-                  <CarouselNext />
+                  {current.img.length > 1 ? (
+                    <>
+                      <CarouselPrevious />
+                      <CarouselNext />
+                    </>
+                  ) : null}
                 </Carousel>
-                )}
               </div>
             ) : null}
           </div>
@@ -83,7 +92,6 @@ export default function Works() {
                 key={i}
                 onClick={() => {
                   setCurrent(a);
-                  setImage(0);
                 }}
                 className={`h-full flex-1 border border-white hover:bg-gray-500 ${
                   current === a ? "bg-gray-500" : ""

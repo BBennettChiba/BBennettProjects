@@ -73,7 +73,7 @@ const ThisWebsite = () => {
       </p>
       <div className="hidden lg:block">
         {thisWebsiteContent.map(({ title, content }, i) => (
-          <div key={i} className="collapse-plus collapse">
+          <div key={i} className="collapse collapse-plus">
             <input type="radio" defaultChecked name="my-accordian-3" />
             <div className="collapse-title max-h-10">{title}</div>
             <div className="collapse-content text-sm lg:text-lg">{content}</div>
@@ -81,12 +81,14 @@ const ThisWebsite = () => {
         ))}
       </div>
       <div className="lg:hidden">
-        <div className="tabs tabs-boxed justify-around bg-gray-600">
+        <div className="tabs-boxed tabs justify-around bg-gray-600">
           {thisWebsiteContent.map(({ title }, i) => (
             <a
               onClick={() => setActive(i)}
               key={i}
-              className={`tab text-black short:tab-sm tab-md ${active === i ? "tab-active" : ""}`}
+              className={`tab tab-md text-black short:tab-sm ${
+                active === i ? "tab-active" : ""
+              }`}
             >
               {title}
             </a>
