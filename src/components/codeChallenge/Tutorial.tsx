@@ -114,7 +114,7 @@ export default function Tutorial() {
   const current = TUTORIAL_INFO[tutorialIndex];
 
   return (
-    <div className="absolute z-10 h-full w-full backdrop-blur">
+    <div className="absolute z-10 h-full w-full text-gray-400 backdrop-blur">
       <div className="relative flex h-full w-full items-center justify-center">
         <div
           className={`card absolute z-50 h-56 w-96 bg-base-100 shadow-xl transition-all ${

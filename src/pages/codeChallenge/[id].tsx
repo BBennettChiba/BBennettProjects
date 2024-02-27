@@ -3,11 +3,7 @@ import {
   type GetServerSidePropsContext,
   type InferGetServerSidePropsType,
 } from "next";
-import {
-  createContext,
-  useContext,
-  useState,
-} from "react";
+import { createContext, useContext, useState } from "react";
 import Split from "react-split";
 import superjson from "superjson";
 import CodeEditor from "~/components/codeChallenge/CodeEditor";
@@ -76,7 +72,7 @@ export const getServerSideProps = async (
 export default function ProblemWithContext({ id }: Props) {
   return (
     <ProblemContextProvider id={id}>
-      <div className="relative">
+      <div className="relative max-h-[calc(100vh-64px-67px)] bg-oldBG text-gray-400">
         <Problem />
       </div>
     </ProblemContextProvider>
