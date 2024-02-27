@@ -86,14 +86,14 @@ export default function Works() {
               </div>
             </div>
           )}
-          <div className="flex h-12 w-full border border-white">
+          <div className="flex w-full border border-white">
             {projects.map((a, i) => (
               <button
                 key={i}
                 onClick={() => {
                   setCurrent(a);
                 }}
-                className={`h-full flex-1 border border-white hover:bg-gray-500 ${
+                className={`h-12 flex-1 border border-white hover:bg-gray-500 ${
                   current === a ? "bg-gray-500" : ""
                 }`}
               >
