@@ -11,20 +11,20 @@ import { getAbsoluteUrl } from "~/utils/client";
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 /**
- * @TODO make this prettier and supply more information 
+ * @TODO make this prettier and supply more information
  */
 export default function URL({ id }: Props) {
   const { data } = api.link.get.useQuery(id);
   if (!data) throw new Error("Error finding data");
   const url = `${getAbsoluteUrl()}/${data.id}`;
   return (
-    <div className="flex h-full items-center justify-center bg-base-100">
+    <div className="flex h-full items-center justify-center bg-background">
       <div className="card h-1/3 w-96 bg-info-content shadow-xl">
-        <div className="justify-between card-body flex flex-col">
+        <div className="card-body flex flex-col justify-between bg-gray-400 text-white">
           <h1 className="card-title">Your Link</h1>
           <h2>{url}</h2>
           <button
-            className="btn-primary btn"
+            className="btn btn-primary"
             onClick={() => {
               void navigator.clipboard.writeText(url);
             }}

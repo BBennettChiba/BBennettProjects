@@ -1,5 +1,5 @@
 import { type Config } from "tailwindcss";
-import { fontFamily }  from "tailwindcss/defaultTheme"
+import { fontFamily } from "tailwindcss/defaultTheme";
 
 export default {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "components/**/*.{js,jsx,ts,tsx}"],
@@ -119,7 +119,10 @@ export default {
       },
     },
   },
-  plugins: [require("@tailwindcss/typography"), require("daisyui"), require("tailwindcss-animate")],
-    darkMode: ["class"],
-  
+  plugins: [
+    require("@tailwindcss/typography"),
+    require("daisyui"),
+    require("tailwindcss-animate"),
+  ],
+  darkMode: ["class"],
 } satisfies Config;
