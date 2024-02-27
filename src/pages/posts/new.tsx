@@ -23,8 +23,8 @@ export default function New() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-4xl mt-10">New Post</h1>
-      <div className="card mt-5 border border-gray-200 bg-base-100 shadow-xl">
+      <h1 className="mt-10 text-4xl">New Post</h1>
+      <div className="card mt-5 border border-gray-200 bg-secondary shadow-xl">
         <NoteEditor
           onSave={({ body, title }) => mutate({ body, title })}
           onCancel={() => router.back()}

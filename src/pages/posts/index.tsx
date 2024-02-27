@@ -39,11 +39,14 @@ export default function Posts() {
           {message}
         </button>
       </Link>
-      <ul className="menu rounded-box w-full bg-base-100 p-2">
+      <ul className="menu rounded-box w-full bg-secondary p-2">
         {posts.length > 0
           ? posts.map((post) => (
               <li key={post.id} className="w-full hover:bg-opacity-20">
-                <Link href={`posts/${post.id}`} className="text-lg inline-block">
+                <Link
+                  href={`posts/${post.id}`}
+                  className="inline-block text-lg"
+                >
                   {post.title}
                 </Link>
               </li>

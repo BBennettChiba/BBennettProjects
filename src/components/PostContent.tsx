@@ -32,7 +32,7 @@ export const PostContent = () => {
   return (
     <div
       ref={parent}
-      className="card mr-5 mt-5 border border-gray-200 bg-base-100 shadow-xl"
+      className="card mr-5 mt-5 border border-gray-200 bg-secondary shadow-xl"
     >
       {isEditing ? (
         <NoteEditor
@@ -49,13 +49,13 @@ export const PostContent = () => {
           {user && user.id === post.user.id && (
             <div className="card-actions mx-2 flex justify-end">
               <button
-                className="btn-secondary btn-sm btn px-5"
+                className="btn btn-secondary btn-sm px-5"
                 onClick={() => setIsEditing(true)}
               >
                 Edit
               </button>
               <button
-                className="btn-warning btn-sm btn px-5"
+                className="btn btn-warning btn-sm px-5"
                 onClick={onDelete}
               >
                 Delete

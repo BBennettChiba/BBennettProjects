@@ -8,7 +8,11 @@ type Props = {
   onCancel: () => void;
   initialValues?: { title: string; body: string };
 };
-export default function NoteEditor({ onSave, onCancel, initialValues }: Props) {
+export default function SDFANoteEditor({
+  onSave,
+  onCancel,
+  initialValues,
+}: Props) {
   const [title, setTitle] = useState(initialValues?.title ?? "");
   const [body, setBody] = useState(initialValues?.body ?? "");
   return (
@@ -17,7 +21,7 @@ export default function NoteEditor({ onSave, onCancel, initialValues }: Props) {
         <input
           type="text"
           placeholder="Post title"
-          className="input-primary input input-lg w-full font-bold"
+          className="input input-secondary input-lg w-full font-bold"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
@@ -37,11 +41,11 @@ export default function NoteEditor({ onSave, onCancel, initialValues }: Props) {
         />
       </div>
       <div className="card-actions justify-end">
-        <button className="btn-secondary btn-sm btn" onClick={onCancel}>
+        <button className="btn btn-secondary btn-sm" onClick={onCancel}>
           Cancel
         </button>
         <button
-          className="btn-accent btn-sm btn"
+          className="btn btn-accent btn-sm"
           onClick={() => {
             onSave({ title, body });
             setBody("");

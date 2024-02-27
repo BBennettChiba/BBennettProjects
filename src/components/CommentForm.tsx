@@ -25,9 +25,9 @@ export default function CommentForm({
       }}
       autoFocus={autoFocus}
     >
-      <div className="min-h-20 flex gap-2">
+      <div className="flex min-h-20 gap-2">
         <textarea
-          className="min-h-full flex-grow resize-y rounded-lg border-2 border-solid border-purple-700 p-2 focus:border-purple-300 focus:outline-none"
+          className="min-h-full flex-grow resize-y rounded-lg border-2 border-solid border-purple-700 bg-gray-400 p-2 focus:border-purple-300 focus:outline-none"
           autoFocus
           value={message}
           onChange={(e) => setMessage(e.target.value)}
