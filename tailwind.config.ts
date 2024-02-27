@@ -75,6 +75,7 @@ export default {
       },
 
       colors: {
+        oldBG: "rgb(25, 30, 36)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
