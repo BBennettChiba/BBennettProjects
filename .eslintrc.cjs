@@ -29,7 +29,6 @@ const config = {
       },
     ],
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-    "func-style": ["error", "expression"],
     "import/order": [
       "error",
       {
