@@ -39,12 +39,12 @@ export default function Works() {
                       delay: 2000,
                     }),
                   ]}
-                  className="left-1/2 w-80 -translate-x-1/2"
+                  className="left-1/2 w-[320px] -translate-x-1/2"
                 >
-                  <CarouselContent className="">
+                  <CarouselContent className="mx-auto">
                     {current.img.map((img) => (
                       <CarouselItem
-                        className="relative h-[500px]"
+                        className="relative h-[500px] pl-0"
                         key={img.src.toString()}
                       >
                         {
