@@ -33,7 +33,7 @@ export default function CommentForm({
           onChange={(e) => setMessage(e.target.value)}
         />
         <button
-          className="btn btn-primary h-20 w-28"
+          className="h-20 w-28 rounded-md bg-violet-700 disabled:bg-opacity-50"
           disabled={loading || !message.trim()}
         >
           {loading ? "Loading" : "Post"}
