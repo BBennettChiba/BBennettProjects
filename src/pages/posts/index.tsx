@@ -39,17 +39,18 @@ export default function Posts() {
           {message}
         </button>
       </Link>
-      <ul className="menu rounded-box w-full bg-secondary p-2">
+      <ul className="rounded-box grid w-full grid-cols-2 gap-2 bg-secondary p-2 lg:grid-cols-4">
         {posts.length > 0
           ? posts.map((post) => (
-              <li key={post.id} className="w-full hover:bg-opacity-20">
-                <Link
-                  href={`posts/${post.id}`}
-                  className="inline-block text-lg"
-                >
+              <Link
+                key={post.id}
+                href={`posts/${post.id}`}
+                className="inline-block h-16 overflow-hidden text-ellipsis whitespace-nowrap text-lg lg:text-xl"
+              >
+                <li className="w-full rounded-md bg-gray-400 p-4 hover:bg-opacity-50">
                   {post.title}
-                </Link>
-              </li>
+                </li>
+              </Link>
             ))
           : null}
       </ul>
