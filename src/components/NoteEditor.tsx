@@ -15,37 +15,39 @@ export default function SDFANoteEditor({
 }: Props) {
   const [title, setTitle] = useState(initialValues?.title ?? "");
   const [body, setBody] = useState(initialValues?.body ?? "");
+
   return (
-    <div className="card-body">
-      <h2 className="card-title">
+    <div className="lg-w-3/4 w-full p-2">
+      <div className="p-2">
+        <h2 className="text-xl">TITLE</h2>
         <input
           type="text"
           placeholder="Post title"
-          className="input input-secondary input-lg w-full bg-gray-400 font-bold"
+          className="input w-full bg-gray-400 font-bold"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-      </h2>
-      <div className="min-h-[30vh]">
+      </div>
+      <div className="lg-min-h-[30vh] min-h-[50vh]">
         <CodeMirror
-          className="border border-gray-300"
+          className="h-full border border-gray-300 p-2"
           value={body}
           onChange={(e) => setBody(e)}
-          width="500px"
-          height="30vh"
-          maxHeight="30vh"
-          minWidth="100%"
+          height="50vh"
           extensions={[
             markdown({ base: markdownLanguage, codeLanguages: languages }),
           ]}
         />
       </div>
-      <div className="card-actions justify-end">
-        <button className="btn btn-secondary btn-sm" onClick={onCancel}>
+      <div className="flex justify-end gap-3 pt-3">
+        <button
+          className="h-8 w-16 rounded-sm bg-red-500 px-2"
+          onClick={onCancel}
+        >
           Cancel
         </button>
         <button
-          className="btn btn-accent btn-sm"
+          className="h-8 w-16 rounded-sm bg-green-500 px-2 text-black disabled:bg-opacity-40"
           onClick={() => {
             onSave({ title, body });
             setBody("");
