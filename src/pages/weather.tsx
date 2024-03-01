@@ -103,7 +103,7 @@ export default function Weather() {
   return (
     <div className="container mx-auto">
       <div className="m-4 md:mx-32 md:mt-20 ">
-        <div className="flex rounded-lg bg-base-300 p-4 md:p-10">
+        <div className="flex rounded-lg bg-gray-300 p-4 md:p-10">
           <div className="m-2 flex w-1/2 flex-col items-center justify-around border-r">
             <div className="md:text-md mx-5 text-6xl">
               <span>{current?.currentTemp}</span>&deg;
@@ -119,13 +119,13 @@ export default function Weather() {
             ))}
           </div>
         </div>
-        <section className="grid grid-cols-[repeat(auto-fit,10rem)] justify-center gap-2 p-4">
+        <section className="grid grid-cols-[repeat(auto-fit,8rem)] justify-center gap-2 p-4">
           {daily?.map(({ maxTemp, iconCode, timestamp }, i) => {
             const Icon = ICON_MAP.get(iconCode || 0) || FaSun;
             return (
               <div
                 key={i}
-                className="card flex flex-col items-center justify-between rounded-md border p-4 text-2xl"
+                className="card flex flex-col items-center justify-between rounded-md border p-2 text-xl"
               >
                 <Icon />
                 <div>{DAY_FORMATTER.format(timestamp)}</div>
@@ -143,7 +143,7 @@ export default function Weather() {
               ) => {
                 const Icon = ICON_MAP.get(iconCode || 0) || FaSun;
                 return (
-                  <tr key={i} className="odd:bg-base-300 even:bg-base-200">
+                  <tr key={i} className="odd:bg-gray-300 even:bg-gray-200">
                     <td className="px-2 py-1">
                       <div>{DAY_FORMATTER.format(timestamp)}</div>
                       <div>{HOUR_FORMATTER.format(timestamp)}</div>
